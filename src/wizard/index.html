@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../i18n.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWIZA Moneypenny — Setup</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @font-face {
+      font-family: 'DK Jambo';
+      src: url('../fonts/DKJambo.otf') format('opentype');
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* TWIZA Brand Colors */
+      --fuchsia: #D4006A;
+      --fuchsia-dim: #D30F63;
+      --purple: #6600FF;
+      --green: #5EC900;
+      --green-alt: #61CE70;
+      --orange: #FFBC7D;
+      --cyan: #6EC1E4;
+
+      /* Backgrounds */
+      --bg-deep: #010205;
+      --bg-dark: #050913;
+      --bg-panel: #0D111A;
+      --bg-elevated: #171420;
+      --bg-card: #2A2E36;
+
+      /* Text */
+      --text-primary: #FFFFFF;
+      --text-secondary: #74727B;
+      --text-muted: #54595F;
+
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, #D4006A, #6600FF);
+      --gradient-bg: linear-gradient(180deg, #010205, #050913, #0D111A);
+      --gradient-card-hover: linear-gradient(135deg, #440c2a, #370039);
+
+      /* Borders */
+      --border: rgba(255, 255, 255, 0.05);
+      --border-input: #54595F;
+      --border-focus: #D4006A;
+
+      /* Effects */
+      --glow-fuchsia: 0 0 20px rgba(212, 0, 106, 0.35);
+      --glow-purple: 0 0 20px rgba(102, 0, 255, 0.3);
+    }
+
+    body {
+      font-family: 'Titillium Web', system-ui, -apple-system, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      -webkit-app-region: drag;
+    }
+
+    /* Title bar */
+    .titlebar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px 12px;
+      gap: 8px;
+      -webkit-app-region: drag;
+      background: var(--bg-deep);
+    }
+    .titlebar button {
+      -webkit-app-region: no-drag;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      opacity: 0.7;
+    }
+    .titlebar button:hover { opacity: 1; }
+    .btn-minimize { background: #FFBC7D; }
+    .btn-close { background: #D4006A; }
+
+    /* Layout */
+    .container {
+      display: flex;
+      height: calc(100vh - 37px);
+      -webkit-app-region: no-drag;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: var(--bg-dark);
+      border-right: 1px solid var(--border);
+      padding: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-logo {
+      text-align: center;
+      margin-bottom: 36px;
+      padding: 0 24px;
+    }
+    .sidebar-logo img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      opacity: 0.95;
+    }
+    .sidebar-logo .logo-text {
+      font-family: 'DK Jambo', sans-serif;
+      font-size: 18px;
+      background: linear-gradient(135deg, #D4006A, #6600FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 10px;
+      line-height: 1.2;
+    }
+    .sidebar-logo .logo-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-top: 4px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      cursor: default;
+      transition: all 0.25s;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+      position: relative;
+    }
+    .step-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: transparent;
+      border-radius: 0 3px 3px 0;
+      transition: background 0.25s;
+    }
+    .step-item.active { color: var(--text-primary); }
+    .step-item.active::before { background: var(--fuchsia); }
+    .step-item.completed { color: var(--text-secondary); }
+    .step-item .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.25s;
+      flex-shrink: 0;
+    }
+    .step-item.active .step-num {
+      border-color: var(--fuchsia);
+      color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+    }
+    .step-item.completed .step-num {
+      border-color: var(--green);
+      background: var(--green);
+      color: var(--bg-deep);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 40px 48px;
+      overflow-y: auto;
+      background: var(--gradient-bg);
+      position: relative;
+    }
+
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    h1 .accent {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .payoff {
+      font-style: italic;
+      font-weight: 700;
+      color: #FFFFFF;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    /* Form elements */
+    label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], input[type="password"], textarea, select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-input);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+    .field-group { margin-bottom: 24px; }
+
+    /* Provider cards */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .provider-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .provider-card:hover {
+      border-color: var(--text-muted);
+      background: var(--bg-panel);
+    }
+    .provider-card.selected {
+      border-color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+      background: var(--bg-panel);
+    }
+    .provider-card .provider-icon { font-size: 37px; margin-bottom: 8px; }
+    .provider-card .provider-name { font-weight: 600; font-size: 16px; }
+    .provider-card .provider-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Key input row */
+    .key-row { display: flex; gap: 10px; align-items: flex-start; }
+    .key-row input { flex: 1; }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: #fff;
+    }
+    .btn-primary:hover { box-shadow: var(--glow-fuchsia); filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-primary:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      filter: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-input);
+    }
+    .btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+    .btn-validate {
+      background: transparent;
+      color: var(--fuchsia);
+      border: 1px solid var(--fuchsia);
+      white-space: nowrap;
+      padding: 12px 20px;
+    }
+    .btn-validate:hover { background: rgba(212, 0, 106, 0.1); box-shadow: var(--glow-fuchsia); }
+    .btn-install {
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 14px 40px;
+      font-size: 17px;
+      border-radius: 10px;
+    }
+    .btn-install:hover { box-shadow: var(--glow-fuchsia); filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-install:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; filter: none; }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Validation badge */
+    .validation-msg {
+      font-size: 14px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .validation-msg.success { color: var(--green); }
+    .validation-msg.error { color: var(--fuchsia); }
+
+    /* Emoji picker */
+    .emoji-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .emoji-option {
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .emoji-option:hover { border-color: var(--text-muted); transform: scale(1.1); }
+    .emoji-option.selected { border-color: var(--purple); box-shadow: var(--glow-purple); background: var(--bg-panel); }
+
+    /* Personality templates */
+    .personality-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .personality-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .personality-card:hover { border-color: var(--text-muted); background: var(--bg-panel); }
+    .personality-card.selected {
+      border-color: var(--purple);
+      box-shadow: var(--glow-purple);
+      background: var(--bg-panel);
+    }
+    .personality-card .p-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+    .personality-card .p-desc { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Profile pic upload */
+    .avatar-upload {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px dashed var(--border-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      overflow: hidden;
+      font-size: 32px;
+      color: var(--text-muted);
+    }
+    .avatar-upload:hover { border-color: var(--fuchsia); }
+    .avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Summary */
+    .summary-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-label { color: var(--text-secondary); }
+    .summary-value { font-weight: 600; }
+
+    /* Install progress */
+    .install-progress { display: none; margin-top: 24px; }
+    .install-progress.active { display: block; }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--bg-card);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      width: 0%;
+      transition: width 0.5s;
+      border-radius: 2px;
+    }
+    .progress-log {
+      background: #0C0C0C;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 13px;
+      color: #CCCCCC;
+      min-height: 300px;
+      max-height: 450px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      letter-spacing: 0.3px;
+    }
+    .progress-log .line-ok { color: #16C60C; }
+    .progress-log .line-err { color: #E74856; }
+    .progress-log .line-warn { color: #F9F1A5; }
+    .progress-log .line-info { color: #3B78FF; }
+    .progress-log .line-step { color: #B4009E; font-weight: bold; }
+
+    /* Welcome hero */
+    .hero-visual { text-align: center; margin: 16px 0 28px; }
+    .hero-icon {
+      font-size: 74px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .feature-item {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+    }
+    .feature-item .fi-icon { font-size: 23px; flex-shrink: 0; }
+    .feature-item .fi-text { color: var(--text-secondary); }
+
+    /* Local Models section */
+    .local-models-label {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .local-models-label .badge-green {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(94,201,0,0.15);
+      color: var(--green);
+    }
+    .local-model-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .local-model-card:hover {
+      border-color: var(--text-muted);
+      background: var(--bg-panel);
+    }
+    .local-model-card.selected {
+      border-color: var(--green);
+      box-shadow: 0 0 20px rgba(94,201,0,0.2);
+      background: var(--bg-panel);
+    }
+    .local-model-card .lm-icon { font-size: 32px; margin-bottom: 6px; }
+    .local-model-card .lm-name { font-weight: 600; font-size: 15px; }
+    .local-model-card .lm-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+    .info-box-local {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      margin-bottom: 14px;
+      padding: 12px 16px;
+      background: rgba(110, 193, 228, 0.06);
+      border: 1px solid rgba(110, 193, 228, 0.15);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .skip-local {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .skip-local input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--fuchsia);
+      cursor: pointer;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+
+<script>
+  // Catch all errors visibly
+  window.onerror = function(msg, url, line, col, error) {
+    document.title = 'JS ERROR: ' + msg;
+    var d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;z-index:99999;font-size:14px;';
+    d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+    document.body.appendChild(d);
+    return false;
+  };
+  console.log('DEBUG: wizard script loaded');
+</script>
+
+</head>
+<body>
+<!-- Language Selection Overlay — appears BEFORE anything else -->
+<div id="lang-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-deep);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;">
+  <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:28px;height:32px;opacity:0.85;" onerror="this.style.display='none'" />
+  <h1 style="font-family:'DK Jambo',sans-serif;font-size:52px;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0;">TWIZA Moneypenny</h1>
+  <p style="color:var(--text-secondary);font-size:18px;margin-bottom:8px;">Choose your language / Scegli la lingua</p>
+  <div style="display:flex;gap:20px;">
+    <button onclick="chooseLang('it')" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 40px;border-radius:14px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;font-size:20px;font-weight:600;color:var(--text-primary);transition:all 0.3s;" onmouseover="this.style.borderColor='var(--fuchsia)';this.style.boxShadow='var(--glow-fuchsia)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+      <span style="font-size:48px;">🇮🇹</span>
+      Italiano
+    </button>
+    <button onclick="chooseLang('en')" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 40px;border-radius:14px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;font-size:20px;font-weight:600;color:var(--text-primary);transition:all 0.3s;" onmouseover="this.style.borderColor='var(--fuchsia)';this.style.boxShadow='var(--glow-fuchsia)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+      <span style="font-size:48px;">🇬🇧</span>
+      English
+    </button>
+  </div>
+  <script>
+    function chooseLang(lang) {
+      if (typeof I18N !== 'undefined') I18N.setLang(lang);
+      document.getElementById('lang-overlay').style.transition = 'opacity 0.4s';
+      document.getElementById('lang-overlay').style.opacity = '0';
+      setTimeout(() => { document.getElementById('lang-overlay').style.display = 'none'; }, 400);
+      // Update lang-choice buttons in welcome page too
+      document.querySelectorAll('.lang-choice-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      try { window.twiza.saveWizardState({ lang: lang }); } catch {}
+    }
+    // If language was already chosen (saved state), skip overlay
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const saved = await window.twiza.loadWizardState();
+        if (saved && saved.lang) {
+          document.getElementById('lang-overlay').style.display = 'none';
+        }
+      } catch {}
+    });
+  </script>
+</div>
+  <div class="titlebar">
+    <button class="btn-minimize" onclick="twiza.minimizeWindow()"></button>
+    <button class="btn-close" onclick="twiza.closeWindow()"></button>
+  </div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <img src="../../assets/branding/moneypenny-avatar.jpg" alt="Moneypenny" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--fuchsia);margin-bottom:8px;box-shadow:0 0 12px rgba(212,0,106,0.3);" onerror="this.style.display='none'" />
+        <div class="logo-text" style="font-family:'DK Jambo',sans-serif;">TWIZA Moneypenny</div>
+        <div class="logo-sub">by SHAKAZAMBA</div>
+      </div>
+      <div class="lang-toggle" style="display:flex;justify-content:center;gap:6px;margin-bottom:20px;padding:0 24px;">
+        <button class="lang-toggle-btn" data-lang="en" onclick="I18N.setLang('en')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;color:var(--text-secondary);transition:all 0.2s;">🇬🇧 EN</button>
+        <button class="lang-toggle-btn" data-lang="it" onclick="I18N.setLang('it')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;color:var(--text-secondary);transition:all 0.2s;">🇮🇹 IT</button>
+      </div>
+      <style>.lang-toggle-btn.active{border-color:var(--fuchsia)!important;color:var(--text-primary)!important;}</style>
+      <div class="step-item active" data-step="0">
+        <span class="step-num">1</span> <span data-i18n="wizard.step.welcome">Welcome</span>
+      </div>
+      <div class="step-item" data-step="1">
+        <span class="step-num">2</span> <span data-i18n="wizard.step.provider">AI Provider</span>
+      </div>
+      <div class="step-item" data-step="2">
+        <span class="step-num">3</span> <span data-i18n="wizard.step.identity">Identity</span>
+      </div>
+      <div class="step-item" data-step="3">
+        <span class="step-num">4</span> <span data-i18n="wizard.step.install">Install</span>
+      </div>
+      <div style="margin-top:auto;padding:16px 24px 16px;text-align:center;">
+        <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="width:120px;height:auto;opacity:0.7;" onerror="this.style.display='none'" />
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="main">
+
+      <!-- Step 1: Welcome -->
+      <div class="page active" id="page-0">
+        <h1><span data-i18n="welcome.title.pre">Welcome to </span><span class="accent"><span style="font-family:'DK Jambo'" data-i18n="welcome.title.brand">TWIZA</span></span></h1>
+        <p class="payoff" data-i18n="welcome.payoff">...more than an agent!</p>
+        <p class="subtitle" data-i18n="welcome.subtitle">Il tuo agente AI personale per Windows — privato, potente e completamente tuo.</p>
+
+        <!-- Language selection - prominent -->
+        <div class="lang-choice" style="display:flex;justify-content:center;gap:12px;margin:18px 0 10px;">
+          <button class="lang-choice-btn" data-lang="it" onclick="I18N.setLang('it');document.querySelectorAll('.lang-choice-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang==='it'))" style="display:flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;font-size:16px;font-weight:600;color:var(--text-primary);transition:all 0.2s;">🇮🇹 Italiano</button>
+          <button class="lang-choice-btn" data-lang="en" onclick="I18N.setLang('en');document.querySelectorAll('.lang-choice-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang==='en'))" style="display:flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;font-size:16px;font-weight:600;color:var(--text-primary);transition:all 0.2s;">🇬🇧 English</button>
+        </div>
+        <style>.lang-choice-btn.active{border-color:var(--fuchsia)!important;background:rgba(255,0,128,0.1)!important;box-shadow:0 0 12px rgba(255,0,128,0.2);}</style>
+        <script>
+          // Highlight current language on load
+          document.addEventListener('DOMContentLoaded', () => {
+            const lang = (typeof I18N !== 'undefined') ? I18N.getLang() : 'it';
+            document.querySelectorAll('.lang-choice-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+          });
+        </script>
+
+        <div class="hero-visual">
+          <div class="hero-icon">🦾</div>
+        </div>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="fi-icon">🤖</span>
+            <span class="fi-text" data-i18n="welcome.feature.ai">Personal AI with memory & personality</span>
+          </div>
+          <div class="feature-item">
+            <span class="fi-icon">🔒</span>
+            <span class="fi-text" data-i18n="welcome.feature.local">100% local — your data stays yours</span>
+          </div>
+          <div class="feature-item">
+            <span class="fi-icon">💬</span>
+            <span class="fi-text" data-i18n="welcome.feature.chat">Chat via web, WhatsApp, Telegram, Discord</span>
+          </div>
+          <div class="feature-item">
+            <span class="fi-icon">🧠</span>
+            <span class="fi-text" data-i18n="welcome.feature.models">Cloud or local AI models — your choice</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <div></div>
+          <button class="btn btn-primary" onclick="try{goToStep(1)}catch(e){alert('Error: '+e.message)}" data-i18n="welcome.btn.start">Get Started →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: AI Provider -->
+      <div class="page" id="page-1">
+        <h1><span data-i18n="provider.title.pre">Choose your </span><span class="accent" data-i18n="provider.title.accent">AI Provider</span></h1>
+        <p class="subtitle" data-i18n="provider.subtitle">Select a cloud AI provider and enter your API key. You can change this later.</p>
+
+        <label style="margin-bottom:12px" data-i18n="provider.cloud.label">Cloud Providers</label>
+        <div class="provider-grid">
+          <div class="provider-card" data-provider="anthropic" onclick="selectProvider('anthropic')">
+            <div class="provider-icon">🟤</div>
+            <div class="provider-name">Anthropic</div>
+            <div class="provider-desc" data-i18n="provider.anthropic.desc">Claude — Best overall</div>
+          </div>
+          <div class="provider-card" data-provider="openai" onclick="selectProvider('openai')">
+            <div class="provider-icon">🟢</div>
+            <div class="provider-name">OpenAI</div>
+            <div class="provider-desc" data-i18n="provider.openai.desc">GPT-4o — Most popular</div>
+          </div>
+          <div class="provider-card" data-provider="gemini" onclick="selectProvider('gemini')">
+            <div class="provider-icon">🔵</div>
+            <div class="provider-name">Google Gemini</div>
+            <div class="provider-desc" data-i18n="provider.gemini.sub">Free tier available!</div>
+          </div>
+          <div class="provider-card" data-provider="ollama" onclick="selectProvider('ollama')">
+            <div class="provider-icon">🦙</div>
+            <div class="provider-name">Ollama</div>
+            <div class="provider-desc" data-i18n="provider.ollama.desc">100% offline, no API key needed</div>
+          </div>
+        </div>
+
+        <div class="field-group" id="api-key-section" style="display:none">
+          <label data-i18n="provider.apikey.label">API Key</label>
+          <div class="key-row">
+            <input type="password" id="api-key" placeholder="sk-ant-..." />
+            <button class="btn btn-validate" onclick="validateKey()" data-i18n="provider.btn.validate">✓ Validate</button>
+          </div>
+          <div class="validation-msg" id="key-validation"></div>
+        </div>
+
+        <!-- Local Models Section -->
+        <div style="margin-top: 32px;">
+          <div style="background:rgba(94,201,0,0.1);border:1px solid rgba(94,201,0,0.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:14px;">
+            <span data-i18n="provider.local.included">✅ Base model included: qwen2.5:3b (Qwen 2.5, works offline)</span>
+          </div>
+          <div class="local-models-label">
+            <span data-i18n="provider.local.title">Local Models</span> <span class="badge-green" data-i18n="provider.local.badge">● Optional — downloaded after install</span>
+          </div>
+          <div class="provider-grid" id="local-model-grid">
+            <div class="local-model-card" data-local-model="qwen3-32b" onclick="toggleLocalModel('qwen3-32b', this)">
+              <div class="lm-icon">🧠</div>
+              <div class="lm-name">Qwen 3 32B</div>
+              <div class="lm-desc" data-i18n="provider.local.qwen.desc">Strong reasoning, multilingual</div>
+            </div>
+            <div class="local-model-card" data-local-model="deepseek-r1-14b" onclick="toggleLocalModel('deepseek-r1-14b', this)">
+              <div class="lm-icon">🔬</div>
+              <div class="lm-name">DeepSeek R1 14B</div>
+              <div class="lm-desc" data-i18n="provider.local.deepseek.desc">Deep reasoning, code-savvy</div>
+            </div>
+            <div class="local-model-card" data-local-model="mistral-small-24b" onclick="toggleLocalModel('mistral-small-24b', this)">
+              <div class="lm-icon">🟠</div>
+              <div class="lm-name">Mistral Small 24B</div>
+              <div class="lm-desc" data-i18n="provider.local.mistral.desc">Fast, multilingual, efficient</div>
+            </div>
+            <div class="local-model-card" data-local-model="kimi-k2.5" onclick="toggleLocalModel('kimi-k2.5', this)">
+              <div class="lm-icon">🌙</div>
+              <div class="lm-name">Kimi K2.5</div>
+              <div class="lm-desc">Moonshot — 2x faster, great tools</div>
+            </div>
+          </div>
+          <div class="info-box-local">
+            <span>💡</span>
+            <span data-i18n="provider.local.info">Local models run offline via Ollama. NVIDIA GPU 8GB+ recommended. You can skip this and add models later.</span>
+          </div>
+          <label class="skip-local">
+            <input type="checkbox" id="skip-local-models" onchange="handleSkipLocal(this.checked)" />
+            <span data-i18n="provider.local.skip">Skip local models (cloud only)</span>
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(0)" data-i18n="btn.back">← Back</button>
+          <button class="btn btn-primary" id="btn-step2-next" disabled onclick="goToStep(2)" data-i18n="btn.next">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Identity -->
+      <div class="page" id="page-2">
+        <h1><span data-i18n="identity.title.pre">Create your </span><span class="accent" data-i18n="identity.title.accent">Agent</span></h1>
+        <p class="subtitle" data-i18n="identity.subtitle">Give your AI assistant a name, look, and personality.</p>
+
+        <div style="display: flex; gap: 24px; align-items: flex-start;">
+          <div>
+            <label data-i18n="identity.pic.label">Profile Picture</label>
+            <div class="avatar-upload" id="avatar-upload" onclick="document.getElementById('avatar-input').click()">
+              <span id="avatar-placeholder">+</span>
+              <img id="avatar-preview" style="display:none" />
+            </div>
+            <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="handleAvatar(this)" />
+          </div>
+          <div style="flex:1">
+            <div class="field-group">
+              <label data-i18n="identity.name.label">Agent Name</label>
+              <input type="text" id="agent-name" placeholder="e.g. Jarvis, Friday, Atlas..." data-i18n="identity.name.placeholder" data-i18n-attr="placeholder" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label data-i18n="identity.emoji.label">Emoji</label>
+          <div class="emoji-grid" id="emoji-grid"></div>
+        </div>
+
+        <div class="field-group">
+          <label data-i18n="identity.personality.label">Personality</label>
+          <div class="personality-grid">
+            <div class="personality-card selected" data-personality="moneypenny" onclick="selectPersonality('moneypenny')" style="border-color: var(--fuchsia); position: relative;">
+              <div style="position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--fuchsia);background:rgba(212,0,106,0.12);padding:2px 8px;border-radius:4px;">★ Recommended</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+                <img src="../assets/branding/moneypenny-avatar.png" alt="Moneypenny" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--fuchsia);" />
+                <div class="p-name">🦒 Moneypenny</div>
+              </div>
+              <div class="p-desc" style="color:var(--text-secondary);">L'assistente AI personale di SHAKAZAMBA. Diretta, sarcastica, competente. Una giraffa fuxia con il cuore d'oro.</div>
+              <div style="margin-top:6px;font-size:11px;color:var(--text-muted);">by SHAKAZAMBA · IT/EN · Sarcastic, direct, warm</div>
+            </div>
+            <div class="personality-card" data-personality="balanced" onclick="selectPersonality('balanced')">
+              <div class="p-name" data-i18n="identity.p.balanced.name">⚖️ Balanced</div>
+              <div class="p-desc" data-i18n="identity.p.balanced.desc">Friendly, helpful, concise. Good default for most people.</div>
+            </div>
+            <div class="personality-card" data-personality="professional" onclick="selectPersonality('professional')">
+              <div class="p-name" data-i18n="identity.p.professional.name">💼 Professional</div>
+              <div class="p-desc" data-i18n="identity.p.professional.desc">Formal, precise, structured. Great for work tasks.</div>
+            </div>
+            <div class="personality-card" data-personality="creative" onclick="selectPersonality('creative')">
+              <div class="p-name" data-i18n="identity.p.creative.name">🎨 Creative</div>
+              <div class="p-desc" data-i18n="identity.p.creative.desc">Playful, expressive, imaginative. For creative work & fun.</div>
+            </div>
+            <div class="personality-card" data-personality="custom" onclick="selectPersonality('custom')">
+              <div class="p-name" data-i18n="identity.p.custom.name">✏️ Custom</div>
+              <div class="p-desc" data-i18n="identity.p.custom.desc">Write your own personality from scratch.</div>
+            </div>
+          </div>
+          <div id="custom-personality-area" style="display:none;margin-top:12px;">
+            <textarea id="custom-personality-text" rows="5" placeholder="Describe your agent personality here..." data-i18n="identity.p.custom.placeholder" data-i18n-attr="placeholder" style="width:100%;resize:vertical;"></textarea>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--border-color,#333);margin-top:24px;padding-top:20px;">
+          <h2 style="font-size:1.2rem;margin-bottom:8px;"><span data-i18n="identity.user.title">About You</span></h2>
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;" data-i18n="identity.user.subtitle">Your agent will use this info to personalize your experience.</p>
+          <div style="display:flex;gap:24px;align-items:flex-start;">
+            <div>
+              <label data-i18n="identity.user.pic.label">Your Photo</label>
+              <div class="avatar-upload" id="user-avatar-upload" onclick="document.getElementById('user-avatar-input').click()" style="width:80px;height:80px;">
+                <span id="user-avatar-placeholder">+</span>
+                <img id="user-avatar-preview" style="display:none" />
+              </div>
+              <input type="file" id="user-avatar-input" accept="image/*" style="display:none" onchange="handleUserAvatar(this)" />
+            </div>
+            <div style="flex:1">
+              <div class="field-group">
+                <label data-i18n="identity.user.name.label">Your Name</label>
+                <input type="text" id="user-name" placeholder="e.g. Mario Rossi" data-i18n="identity.user.name.placeholder" data-i18n-attr="placeholder" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(1)" data-i18n="btn.back">← Back</button>
+          <button class="btn btn-primary" onclick="goToStep(3)" data-i18n="btn.next">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Summary + Install -->
+      <div class="page" id="page-3">
+        <h1><span data-i18n="install.title.pre">Ready to </span><span class="accent" data-i18n="install.title.accent">Install</span></h1>
+        <p class="subtitle" data-i18n="install.subtitle">Review your setup and hit install. This will configure WSL2, install dependencies, and set up your agent.</p>
+
+        <div class="summary-card" id="summary-card"></div>
+
+        <div style="text-align: center;">
+          <button class="btn btn-install" id="btn-install" onclick="startInstall()" data-i18n="install.btn">
+            🚀 Install TWIZA Moneypenny
+          </button>
+        </div>
+
+        <div class="install-progress" id="install-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-log" id="progress-log">Initializing...</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="btn-back-summary" onclick="goToStep(2)" data-i18n="btn.back">← Back</button>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // State persistence — file-based via IPC (survives reboot + app reinstall)
+    // Saved to %APPDATA%/TWIZA/wizard-state.json
+    // ============================================================
+
+    // loadSavedState is async — we use a global promise
+    let savedState = null;
+    const _savedStateReady = (async () => {
+      try {
+        savedState = await window.twiza.loadWizardState();
+      } catch (e) {
+        console.warn('[wizard] Failed to load saved state:', e);
+      }
+    })();
+
+    function saveState() {
+      try {
+        window.twiza.saveWizardState({
+          currentStep: state.currentStep,
+          provider: state.provider,
+          apiKey: state.apiKey,
+          keyValidated: state.keyValidated,
+          agentName: state.agentName,
+          agentEmoji: state.agentEmoji,
+          personality: state.personality,
+          selectedLocalModels: state.selectedLocalModels,
+          skipLocalModels: state.skipLocalModels,
+          customPersonalityText: state.customPersonalityText,
+          lang: (typeof I18N !== 'undefined' && I18N.getLang) ? I18N.getLang() : 'en',
+        });
+      } catch {}
+    }
+
+    function clearSavedState() {
+      // Preserve language preference before clearing
+      const lang = I18N.getLang();
+      try { window.twiza.clearWizardState(); } catch {}
+      // Re-save just the language so it persists across relaunches
+      try { window.twiza.saveWizardState({ lang: lang }); } catch {}
+    }
+    const state = {
+      currentStep: 0,
+      provider: (savedState && savedState.provider) || null,
+      apiKey: (savedState && savedState.apiKey) || '',
+      keyValidated: (savedState && savedState.keyValidated) || false,
+      agentName: (savedState && savedState.agentName) || '',
+      agentEmoji: (savedState && savedState.agentEmoji) || '🦒',
+      personality: (savedState && savedState.personality) || 'moneypenny',
+      profilePic: null,
+      selectedLocalModels: (savedState && savedState.selectedLocalModels) || [],
+      skipLocalModels: (savedState && savedState.skipLocalModels) || false,
+      customPersonalityText: (savedState && savedState.customPersonalityText) || '',
+    };
+
+    const emojis = ['🦒','🤖','🦾','🧠','⚡','🔮','🌟','💎','🦊','🐉','🦅','🎯','🛡️','🚀','💜','🔥','👾'];
+
+    const emojiGrid = document.getElementById('emoji-grid');
+    emojis.forEach(e => {
+      const div = document.createElement('div');
+      div.className = 'emoji-option' + (e === state.agentEmoji ? ' selected' : '');
+      div.textContent = e;
+      div.onclick = () => {
+        document.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
+        div.classList.add('selected');
+        state.agentEmoji = e;
+      };
+      emojiGrid.appendChild(div);
+    });
+
+    function toggleLocalModel(modelId, el) {
+      if (state.skipLocalModels) return;
+      el.classList.toggle('selected');
+      const idx = state.selectedLocalModels.indexOf(modelId);
+      if (idx >= 0) state.selectedLocalModels.splice(idx, 1);
+      else state.selectedLocalModels.push(modelId);
+    }
+
+    function handleSkipLocal(checked) {
+      state.skipLocalModels = checked;
+      document.querySelectorAll('.local-model-card').forEach(c => {
+        c.classList.remove('selected');
+        c.style.opacity = checked ? '0.4' : '1';
+        c.style.pointerEvents = checked ? 'none' : 'auto';
+      });
+      state.selectedLocalModels = [];
+    }
+
+    function goToStep(step) {
+      if (state.currentStep === 2) {
+        state.agentName = document.getElementById('agent-name').value;
+        state.userName = document.getElementById('user-name').value;
+        const customTextarea = document.getElementById('custom-personality-text');
+        if (customTextarea) state.customPersonalityText = customTextarea.value;
+      }
+      document.querySelectorAll('.step-item').forEach((el, i) => {
+        el.classList.remove('active');
+        if (i < step) el.classList.add('completed');
+        else el.classList.remove('completed');
+        if (i === step) el.classList.add('active');
+      });
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${step}`).classList.add('active');
+      if (step === 3) buildSummary();
+      // Auto-select Ollama when entering step 2 with no provider chosen
+      if (step === 1 && !state.provider) {
+        selectProvider('ollama');
+      }
+      state.currentStep = step;
+      saveState();
+      // Re-apply translations after step change to ensure all visible elements are translated
+      if (typeof I18N !== 'undefined') {
+        try { I18N.setLang(I18N.getLang()); } catch {}
+      }
+    }
+
+    function selectProvider(p) {
+      // If switching away from a cloud provider with a validated key, save it as additional
+      if (state.provider && state.provider !== 'ollama' && state.apiKey && state.keyValidated) {
+        if (!state.additionalProviders) state.additionalProviders = {};
+        state.additionalProviders[state.provider] = state.apiKey;
+      }
+      state.provider = p;
+      document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+      document.querySelector(`[data-provider="${p}"]`).classList.add('selected');
+      if (p === 'ollama') {
+        // Ollama: no API key needed, enable next button immediately
+        document.getElementById('api-key-section').style.display = 'none';
+        state.apiKey = '';
+        state.keyValidated = true;
+        updateStep2Button();
+      } else {
+        document.getElementById('api-key-section').style.display = 'block';
+        const placeholders = { anthropic: 'sk-ant-api03-...', openai: 'sk-proj-...', gemini: 'AIzaSy...' };
+        document.getElementById('api-key').placeholder = placeholders[p] || '';
+        document.getElementById('key-validation').innerHTML = '';
+        state.keyValidated = false;
+        updateStep2Button();
+      }
+      saveState();
+    }
+
+    async function validateKey() {
+      const key = document.getElementById('api-key').value.trim();
+      if (!key) return;
+      state.apiKey = key;
+      const result = await window.twiza.validateKey(state.provider, key);
+      const el = document.getElementById('key-validation');
+      if (result.valid) {
+        el.className = 'validation-msg success';
+        el.innerHTML = '✓ ' + result.message;
+        state.keyValidated = true;
+      } else {
+        el.className = 'validation-msg error';
+        el.innerHTML = '✗ ' + result.message;
+        state.keyValidated = false;
+      }
+      updateStep2Button();
+    }
+
+    function updateStep2Button() {
+      document.getElementById('btn-step2-next').disabled = !state.keyValidated;
+    }
+
+    function selectPersonality(p) {
+      state.personality = p;
+      document.querySelectorAll('.personality-card').forEach(c => c.classList.remove('selected'));
+      document.querySelector(`[data-personality="${p}"]`).classList.add('selected');
+      // Show/hide custom personality textarea
+      const customArea = document.getElementById('custom-personality-area');
+      if (customArea) {
+        customArea.style.display = (p === 'custom') ? 'block' : 'none';
+      }
+      if (p === 'moneypenny') {
+        const nameInput = document.getElementById('agent-name');
+        if (!nameInput.value || nameInput.value === 'TWIZA') {
+          nameInput.value = 'Moneypenny';
+          state.agentName = 'Moneypenny';
+        }
+        // Select giraffe emoji if available, else use default
+        const giraffeEmoji = '🦒';
+        document.querySelectorAll('.emoji-option').forEach(el => {
+          el.classList.remove('selected');
+          if (el.textContent === giraffeEmoji) el.classList.add('selected');
+        });
+        state.agentEmoji = giraffeEmoji;
+        // Set avatar
+        document.getElementById('avatar-preview').src = './assets/branding/moneypenny-avatar.png';
+        document.getElementById('avatar-preview').style.display = 'block';
+        document.getElementById('avatar-placeholder').style.display = 'none';
+        state.profilePic = './assets/branding/moneypenny-avatar.png';
+      }
+      saveState();
+    }
+
+    function handleAvatar(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('avatar-preview').src = e.target.result;
+        document.getElementById('avatar-preview').style.display = 'block';
+        document.getElementById('avatar-placeholder').style.display = 'none';
+        state.profilePic = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleUserAvatar(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('user-avatar-preview').src = e.target.result;
+        document.getElementById('user-avatar-preview').style.display = 'block';
+        document.getElementById('user-avatar-placeholder').style.display = 'none';
+        state.userAvatar = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function buildSummary() {
+      const providerNames = { anthropic: 'Anthropic (Claude)', openai: 'OpenAI (GPT-4o)', gemini: 'Google Gemini', ollama: '🦙 Ollama (Local)' };
+      const personalityNames = { moneypenny: '🦒 Moneypenny', balanced: I18N.t('identity.p.balanced.name'), professional: I18N.t('identity.p.professional.name'), creative: I18N.t('identity.p.creative.name'), custom: I18N.t('identity.p.custom.name') };
+      const name = state.agentName || 'TWIZA';
+      const maskedKey = state.apiKey ? state.apiKey.slice(0, 12) + '...' + state.apiKey.slice(-4) : '—';
+      // Show additional providers that were saved when switching away
+      const additionalKeys = state.additionalProviders ? Object.entries(state.additionalProviders).map(([p, k]) => `${providerNames[p] || p}: ${k.slice(0, 8)}...`).join(', ') : '';
+      const keyDisplay = state.apiKey ? maskedKey : (additionalKeys ? additionalKeys : '—');
+      let localInfo;
+      if (state.skipLocalModels) {
+        localInfo = I18N.t('install.summary.local.skipped');
+      } else if (state.selectedLocalModels.length > 0) {
+        localInfo = state.selectedLocalModels.join(', ');
+      } else if (state.provider === 'ollama') {
+        localInfo = 'qwen2.5:3b (incluso nella build)';
+      } else {
+        localInfo = I18N.t('install.summary.local.none');
+      }
+      document.getElementById('summary-card').innerHTML = `
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.name')}</span><span class="summary-value">${state.agentEmoji} ${name}</span></div>
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.provider')}</span><span class="summary-value">${providerNames[state.provider] || '—'}</span></div>
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.apikey')}</span><span class="summary-value" style="font-family:'JetBrains Mono',monospace;font-size:14px">${keyDisplay}</span></div>
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.local')}</span><span class="summary-value">${localInfo}</span></div>
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.personality')}</span><span class="summary-value">${personalityNames[state.personality]}</span></div>
+        <div class="summary-row"><span class="summary-label">${I18N.t('install.summary.components')}</span><span class="summary-value">WSL2 + OpenClaw + Ollama</span></div>
+        ${state.userName ? `<div class="summary-row"><span class="summary-label">${I18N.t('install.summary.user') || 'User'}</span><span class="summary-value">${state.userName}</span></div>` : ''}
+      `;
+    }
+
+    async function startInstall() {
+      const btn = document.getElementById('btn-install');
+      btn.disabled = true;
+      btn.textContent = I18N.t('install.btn.installing');
+      document.getElementById('btn-back-summary').style.display = 'none';
+      document.getElementById('install-progress').classList.add('active');
+      const log = document.getElementById('progress-log');
+      const fill = document.getElementById('progress-fill');
+      let progress = 5;
+      fill.style.width = progress + '%';
+      log.textContent = ''; // Clear "Initializing..." before starting
+
+      // FIX: Await listener registration before starting install to prevent race condition
+      // where Rust emits events before JS listener is ready
+      // Color-code terminal lines
+      function appendLine(text) {
+        const line = document.createElement('span');
+        const stripped = text.replace(/\x1b\[[0-9;]*m/g, ''); // strip ANSI codes
+        if (/\[OK\]|completat|installed|ready|pronta|copiata/i.test(stripped)) {
+          line.className = 'line-ok';
+        } else if (/\[FAIL\]|\[ERRORE\]|ERROR|fallito|failed/i.test(stripped)) {
+          line.className = 'line-err';
+        } else if (/\[WARN\]|⚠|attenzione|skipped/i.test(stripped)) {
+          line.className = 'line-warn';
+        } else if (/\[\d+\/\d+\]/i.test(stripped)) {
+          line.className = 'line-step';
+        } else if (/INFO|Checking|Saving|Config/i.test(stripped)) {
+          line.className = 'line-info';
+        }
+        line.textContent = stripped;
+        log.appendChild(line);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      try {
+        await window.twiza.onInstallProgress((msg) => {
+          msg.split('\n').forEach(l => {
+            if (l.trim()) appendLine(l + '\n');
+          });
+          progress = Math.min(progress + 2, 95);
+          fill.style.width = progress + '%';
+        });
+      } catch (e) {
+        console.warn('Failed to register progress listener:', e);
+      }
+
+      appendLine('> Starting TWIZA installation...\n');
+
+      // Define showLaunchButton BEFORE the await (so the safety watcher can use it)
+      let installResolved = false;
+
+      // Animated "finalizing" state — shown between install completion and launch button
+      function showFinalizingState() {
+        fill.style.width = '100%';
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-inline"></span> ' + (I18N.t('install.btn.finalizing') || 'Finalizing...');
+        btn.style.background = 'linear-gradient(135deg, #FF6B35, #FF8C42)';
+        btn.style.fontSize = '16px';
+        btn.style.padding = '14px 40px';
+        // Add spinner CSS if not already present
+        if (!document.getElementById('spinner-style')) {
+          const style = document.createElement('style');
+          style.id = 'spinner-style';
+          style.textContent = `
+            .spinner-inline {
+              display: inline-block;
+              width: 18px; height: 18px;
+              border: 3px solid rgba(255,255,255,0.3);
+              border-top-color: #fff;
+              border-radius: 50%;
+              animation: spinner-spin 0.8s linear infinite;
+              vertical-align: middle;
+              margin-right: 8px;
+            }
+            @keyframes spinner-spin {
+              to { transform: rotate(360deg); }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+
+      // Function to transition to "launch" state (reused by success + safety timeout)
+      function showLaunchButton() {
+        if (document.getElementById('btn-install')._launched) return; // prevent double-fire
+        document.getElementById('btn-install')._launched = true;
+        fill.style.width = '100%';
+        clearSavedState();
+        btn.textContent = I18N.t('install.btn.launch') || '🚀 Start Moneypenny';
+        btn.style.background = 'linear-gradient(135deg, #5EC900, #00A86B)';
+        btn.style.fontSize = '18px';
+        btn.style.padding = '16px 48px';
+        btn.disabled = false;
+        btn.onclick = async () => {
+          btn.disabled = true;
+          btn.textContent = I18N.t('install.btn.starting') || '⏳ Starting...';
+          try {
+            await window.twiza.startGateway();
+            btn.textContent = I18N.t('install.btn.almostready') || '⏳ Almost ready...';
+            let ready = false;
+            for (let i = 0; i < 15; i++) {
+              await new Promise(r => setTimeout(r, 1000));
+              try {
+                const status = await window.twiza.gatewayStatus();
+                if (status === 'online') { ready = true; break; }
+              } catch {}
+            }
+            if (!ready) {
+              await new Promise(r => setTimeout(r, 3000));
+            }
+            await window.twiza.openWebchatBrowser();
+          } catch (e) {
+            console.error('[wizard] Failed to start:', e);
+            // Still try to open webchat even if gateway start reported failure
+            try { await window.twiza.openWebchatBrowser(); } catch {}
+          }
+          setTimeout(() => { try { window.twiza.closeWindow(); } catch {} }, 1500);
+        };
+      }
+
+      // ===== SAFETY WATCHER =====
+      // Watch the progress log for the FINAL completion marker from Phase 4 only.
+      // IMPORTANT: Do NOT match "INSTALLAZIONE COMPLETATA" from the PowerShell installer —
+      // that fires at end of Phase 2 (WSL bootstrap), BEFORE config deploy (Phase 3) and
+      // settings save (Phase 4). Only match the marker from main.js Phase 4.
+      const _safetyWatcher = setInterval(() => {
+        const logEl = document.getElementById('install-log');
+        if (logEl && /\[OK\] Installation complete! Your agent is ready/.test(logEl.textContent)) {
+          if (!installResolved) {
+            console.warn('[wizard] Safety watcher detected Phase 4 completion — showing finalizing state');
+            installResolved = true;
+            clearInterval(_safetyWatcher);
+            showFinalizingState();
+            setTimeout(() => showLaunchButton(), 3000);
+          }
+        }
+      }, 1000);
+      // Hard timeout: 10 minutes (model import can take a while with 3.2GB bundle)
+      setTimeout(() => {
+        clearInterval(_safetyWatcher);
+        if (!installResolved && btn.disabled) {
+          console.warn('[wizard] Hard timeout (10min) — showing finalizing then launch');
+          installResolved = true;
+          showFinalizingState();
+          setTimeout(() => showLaunchButton(), 2000);
+        }
+      }, 600000);
+
+      let result;
+      try {
+        console.log('[wizard] Calling completeSetup...');
+        result = await window.twiza.completeSetup({
+          provider: state.provider,
+          apiKey: state.apiKey,
+          agentName: state.agentName || 'TWIZA',
+          agentEmoji: state.agentEmoji,
+          personality: state.personality,
+          customPersonalityText: state.customPersonalityText,
+          profilePic: state.profilePic,
+          userName: state.userName || '',
+          userAvatar: state.userAvatar || '',
+          localModels: state.skipLocalModels ? [] : state.selectedLocalModels,
+          additionalProviders: state.additionalProviders || {},
+          lang: I18N.currentLang || 'en',
+        });
+        console.log('[wizard] completeSetup returned:', JSON.stringify(result));
+      } catch (err) {
+        console.error('[wizard] completeSetup threw:', err);
+        result = { success: false, error: String(err) };
+      }
+      installResolved = true;
+      clearInterval(_safetyWatcher);
+
+      // Defensive: treat any non-error result as success if it has no error property
+      if (!result) result = { success: false, error: 'No response from installer' };
+      if (typeof result === 'object' && !result.success && !result.error) {
+        console.log('[wizard] Treating ambiguous result as success');
+        result.success = true;
+      }
+
+      if (result.success) {
+        appendLine('\n[OK] Installation complete! Your agent is ready.\n');
+        showLaunchButton();
+      } else if (result && result.error === 'RESTART_REQUIRED') {
+        fill.style.width = '100%';
+        fill.style.background = 'linear-gradient(90deg, #FF6B00, #FF9500)';
+        appendLine('\n' + I18N.t('install.reboot.needed') + '\n');
+        appendLine(I18N.t('install.reboot.saved') + '\n');
+        appendLine(I18N.t('install.reboot.instructions') + '\n');
+        // Save state so wizard resumes after reboot
+        state.currentStep = 3;  // Will resume at install step
+        saveState();
+        btn.textContent = I18N.t('install.btn.reboot');
+        btn.style.background = 'linear-gradient(135deg, #FF6B00, #FF9500)';
+        btn.style.fontSize = '17px';
+        btn.style.padding = '14px 40px';
+        btn.disabled = false;
+        btn.onclick = () => {
+          if (confirm(I18N.t('install.reboot.confirm'))) {
+            // Trigger reboot via IPC to main process (renderer has no require() access)
+            try { window.twiza.rebootPC(); } catch {}
+          }
+        };
+      } else {
+        fill.style.background = '#D4006A';
+        appendLine('\n[ERRORE] ' + ((result && result.error) || 'Errore sconosciuto') + '\n');
+        btn.textContent = I18N.t('install.btn.retry');
+        btn.disabled = false;
+        btn.onclick = () => startInstall();
+        document.getElementById('btn-back-summary').style.display = 'block';
+      }
+
+    }
+
+    // ============================================================
+    // Auto-restore state after reboot / re-open
+    // ============================================================
+    _savedStateReady.then(() => {
+    (function restoreWizardState() {
+      if (!savedState) return;
+
+      console.log('[wizard] Restoring saved state:', savedState);
+
+      // Restore language
+      if (savedState.lang && typeof I18N !== 'undefined') {
+        try { I18N.setLang(savedState.lang); } catch {}
+      }
+
+      // Restore all state values directly (UI functions may not set state.* correctly)
+      if (savedState.provider) state.provider = savedState.provider;
+      if (savedState.apiKey) state.apiKey = savedState.apiKey;
+      if (savedState.keyValidated) state.keyValidated = true;
+      if (savedState.agentName) state.agentName = savedState.agentName;
+      if (savedState.agentEmoji) state.agentEmoji = savedState.agentEmoji;
+      if (savedState.personality) state.personality = savedState.personality;
+      if (savedState.skipLocalModels) state.skipLocalModels = savedState.skipLocalModels;
+      if (savedState.selectedLocalModels) state.selectedLocalModels = [...savedState.selectedLocalModels];
+      if (savedState.customPersonalityText) state.customPersonalityText = savedState.customPersonalityText;
+      if (savedState.userName) state.userName = savedState.userName;
+      if (savedState.userAvatar) state.userAvatar = savedState.userAvatar;
+
+      // Restore provider selection (UI)
+      if (savedState.provider) {
+        try { selectProvider(savedState.provider); } catch {}
+        // Restore API key if present
+        if (savedState.apiKey && savedState.provider !== 'ollama') {
+          try { document.getElementById('api-key').value = savedState.apiKey; } catch {}
+        }
+      }
+
+      // Restore agent name (UI)
+      if (savedState.agentName) {
+        try { document.getElementById('agent-name').value = savedState.agentName; } catch {}
+      }
+
+      // Restore user name (UI)
+      if (savedState.userName) {
+        try { document.getElementById('user-name').value = savedState.userName; } catch {}
+      }
+
+      // Restore user avatar (UI)
+      if (savedState.userAvatar) {
+        try {
+          document.getElementById('user-avatar-preview').src = savedState.userAvatar;
+          document.getElementById('user-avatar-preview').style.display = 'block';
+          document.getElementById('user-avatar-placeholder').style.display = 'none';
+        } catch {}
+      }
+
+      // Restore emoji (UI)
+      if (savedState.agentEmoji) {
+        document.querySelectorAll('.emoji-option').forEach(el => {
+          el.classList.remove('selected');
+          if (el.textContent === savedState.agentEmoji) el.classList.add('selected');
+        });
+      }
+
+      // Restore personality (UI)
+      if (savedState.personality) {
+        try { selectPersonality(savedState.personality); } catch {}
+      }
+
+      // Restore custom personality text
+      if (savedState.customPersonalityText) {
+        const customTextarea = document.getElementById('custom-personality-text');
+        if (customTextarea) customTextarea.value = savedState.customPersonalityText;
+      }
+
+      // Restore local model selections
+      if (savedState.skipLocalModels) {
+        document.getElementById('skip-local-models').checked = true;
+        handleSkipLocal(true);
+      } else if (savedState.selectedLocalModels && savedState.selectedLocalModels.length > 0) {
+        savedState.selectedLocalModels.forEach(modelId => {
+          const card = document.querySelector(`[data-local-model="${modelId}"]`);
+          if (card) {
+            card.classList.add('selected');
+            if (!state.selectedLocalModels.includes(modelId)) {
+              state.selectedLocalModels.push(modelId);
+            }
+          }
+        });
+      }
+
+      // Navigate to the saved step (or step 3 if resuming from reboot)
+      const targetStep = savedState.currentStep || 0;
+      if (targetStep > 0) {
+        // Show a "welcome back" message briefly
+        const welcomeBack = document.createElement('div');
+        welcomeBack.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#5EC900,#00A86B);color:white;padding:12px 28px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;animation:fadeIn 0.3s ease;box-shadow:0 4px 20px rgba(94,201,0,0.3);';
+        welcomeBack.textContent = I18N.t('install.welcomeback');
+        document.body.appendChild(welcomeBack);
+        setTimeout(() => { welcomeBack.style.transition = 'opacity 0.5s'; welcomeBack.style.opacity = '0'; setTimeout(() => welcomeBack.remove(), 500); }, 3000);
+
+        goToStep(targetStep);
+
+        // If resuming at the install step (step 3) after reboot, auto-start installation
+        if (targetStep === 3) {
+          setTimeout(() => {
+            console.log('[wizard] Auto-starting installation after reboot resume...');
+            startInstall();
+          }, 1500);
+        }
+      }
+    })();
+    }); // end _savedStateReady.then
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Titillium Web',sans-serif; background:#0a0a0a; color:#fff; line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; flex:1; }
+        header { padding:2rem 0; border-bottom:1px solid #333; }
+        .back-link { display:inline-block; color:#FF0080; text-decoration:none; margin-bottom:1rem; font-weight:600; }
+        .back-link:hover { color:#ff3399; }
+        h1 { font-size:2.5rem; font-weight:700; color:#FF0080; margin-bottom:1rem; }
+        .subtitle { font-size:1.1rem; color:#ccc; margin-bottom:2rem; }
+        .lang-switcher { display:flex; gap:.5rem; margin-bottom:2rem; flex-wrap:wrap; }
+        .lang-btn { background:#1a1a1a; border:1px solid #333; color:#fff; padding:.5rem 1rem; border-radius:5px; cursor:pointer; font-family:inherit; transition:all .3s; }
+        .lang-btn:hover,.lang-btn.active { background:#FF0080; border-color:#FF0080; }
+        main { padding:2rem 0; }
+        .section { margin-bottom:3rem; }
+        .section-title { font-size:1.6rem; font-weight:600; color:#FF0080; margin-bottom:1rem; border-bottom:1px solid #333; padding-bottom:.5rem; }
+        .card { background:#1a1a1a; border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; border-left:4px solid #FF0080; }
+        .card h3 { color:#FF0080; margin-bottom:.5rem; font-size:1.2rem; }
+        .card p { color:#ccc; }
+        .code-block { background:#0a0a0a; border:1px solid #333; border-radius:5px; padding:1rem; margin:.8rem 0; font-family:'Monaco','Menlo',monospace; color:#00ff00; overflow-x:auto; font-size:.9rem; }
+        .info-box { background:rgba(0,123,255,.1); border:1px solid #007bff; border-radius:5px; padding:1rem; margin:1rem 0; color:#7ec8ff; }
+        .warning-box { background:rgba(255,193,7,.1); border:1px solid #ffc107; border-radius:5px; padding:1rem; margin:1rem 0; color:#ffc107; }
+        .providers-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; margin:1rem 0; }
+        .provider-card { background:#111; border:1px solid #333; border-radius:8px; padding:1.2rem; text-align:center; }
+        .provider-card .name { font-weight:600; color:#FF0080; font-size:1.1rem; margin-bottom:.3rem; }
+        .provider-card .detail { color:#aaa; font-size:.9rem; }
+        .env-table { width:100%; border-collapse:collapse; margin:1rem 0; }
+        .env-table th,.env-table td { padding:.7rem; text-align:left; border-bottom:1px solid #333; }
+        .env-table th { color:#FF0080; font-weight:600; }
+        .env-table td { color:#ccc; }
+        .env-table code { color:#00ff00; background:#0a0a0a; padding:2px 6px; border-radius:3px; }
+        footer { text-align:center; padding:2rem; border-top:1px solid #333; color:#888; margin-top:auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+        <h1 data-lang-key="title">Il Gateway</h1>
+        <p class="subtitle" data-lang-key="subtitle">Il cuore di TWIZA Moneypenny: il servizio che orchestra AI, canali e strumenti.</p>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('it')">🇮🇹 IT</button>
+            <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+            <button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
+            <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+            <button class="lang-btn" onclick="setLang('pt-BR')">🇧🇷 PT</button>
+            <button class="lang-btn" onclick="setLang('zh-CN')">🇨🇳 简中</button>
+            <button class="lang-btn" onclick="setLang('zh-TW')">🇹🇼 繁中</button>
+        </div>
+    </header>
+    <main>
+        <div class="section">
+            <h2 class="section-title" data-lang-key="what-title">🧠 Cos'è il Gateway</h2>
+            <div class="card">
+                <p data-lang-key="what-desc">Il Gateway è il processo centrale di OpenClaw. Gira sulla porta <strong>18789</strong> e gestisce: sessioni di chat, connessioni ai canali, chiamate ai modelli AI, esecuzione di tool e strumenti, autenticazione e sicurezza. Tutto passa dal Gateway.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="commands-title">⚡ Comandi Essenziali</h2>
+            <div class="card">
+                <h3 data-lang-key="cmd-status">Stato del Gateway</h3>
+                <div class="code-block">openclaw gateway status</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="cmd-start">Avvio / Arresto / Riavvio</h3>
+                <div class="code-block">openclaw gateway start
+openclaw gateway stop
+openclaw gateway restart</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="cmd-config">Configurazione</h3>
+                <div class="code-block">openclaw config get                    # mostra tutta la config
+openclaw config get agents.model        # mostra un campo specifico
+openclaw config set agents.model anthropic/claude-sonnet-4-20250514</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="cmd-dashboard">Dashboard</h3>
+                <div class="code-block">openclaw dashboard                     # apre la dashboard nel browser</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="cmd-logs">Log</h3>
+                <div class="code-block">openclaw gateway logs                  # log in tempo reale
+openclaw gateway logs --lines 100      # ultime 100 righe</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="providers-title">🦾 Provider AI</h2>
+            <p data-lang-key="providers-desc" style="color:#ccc;margin-bottom:1rem;">TWIZA Moneypenny supporta provider cloud e locali. Puoi cambiarli in qualsiasi momento.</p>
+            <div class="providers-grid">
+                <div class="provider-card">
+                    <div class="name">Anthropic</div>
+                    <div class="detail" data-lang-key="prov-anthropic">Claude Opus, Sonnet, Haiku. Il provider di default.</div>
+                </div>
+                <div class="provider-card">
+                    <div class="name">OpenAI</div>
+                    <div class="detail" data-lang-key="prov-openai">GPT-4o, GPT-4, o-series. Supporto completo.</div>
+                </div>
+                <div class="provider-card">
+                    <div class="name">Google</div>
+                    <div class="detail" data-lang-key="prov-google">Gemini 2.5 Pro/Flash. Contesto da 1M token.</div>
+                </div>
+                <div class="provider-card">
+                    <div class="name">Ollama</div>
+                    <div class="detail" data-lang-key="prov-ollama">🏠 Modelli locali. Llama, Qwen, Mistral, DeepSeek. Privacy totale.</div>
+                </div>
+                <div class="provider-card">
+                    <div class="name">Groq</div>
+                    <div class="detail" data-lang-key="prov-groq">Inferenza ultra-veloce. Llama 70B a velocità record.</div>
+                </div>
+                <div class="provider-card">
+                    <div class="name">OpenRouter</div>
+                    <div class="detail" data-lang-key="prov-openrouter">Accesso a 100+ modelli con un'unica API key.</div>
+                </div>
+            </div>
+            <div class="info-box" data-lang-key="providers-config">
+                <strong>Configurazione:</strong> Imposta il provider con <code>openclaw config set agents.model provider/model-name</code> e la chiave API con <code>openclaw config set providers.PROVIDER.apiKey YOUR_KEY</code>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="security-title">🔐 Sicurezza</h2>
+            <div class="card">
+                <h3 data-lang-key="sec-auth">Autenticazione</h3>
+                <p data-lang-key="sec-auth-desc">Il Gateway usa token di autenticazione. In modalità locale (loopback), l'accesso è automatico. Per accesso remoto, serve un token configurato.</p>
+                <div class="code-block">openclaw config set gateway.auth.token YOUR_SECRET_TOKEN</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="sec-bind">Binding di Rete</h3>
+                <p data-lang-key="sec-bind-desc">Di default il Gateway ascolta solo su localhost (127.0.0.1). Per accesso da rete:</p>
+                <div class="code-block">openclaw config set gateway.bind 0.0.0.0    # tutte le interfacce
+openclaw config set gateway.bind loopback    # solo localhost (default)</div>
+                <div class="warning-box" data-lang-key="sec-bind-warn">⚠️ Esporre il Gateway su 0.0.0.0 senza token è un rischio di sicurezza. Configura SEMPRE un token prima.</div>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="sec-exec">Approvazione Comandi</h3>
+                <p data-lang-key="sec-exec-desc">I comandi di sistema eseguiti dall'AI richiedono approvazione. Puoi configurare whitelist e policy per automatizzare quelli sicuri.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="tools-title">🛠️ Strumenti</h2>
+            <p data-lang-key="tools-desc" style="color:#ccc;margin-bottom:1rem;">Il Gateway espone strumenti potenti all'AI:</p>
+            <div class="card">
+                <p data-lang-key="tools-list">
+                    <strong>Browser</strong> — Navigazione web automatizzata<br>
+                    <strong>Exec</strong> — Esecuzione comandi shell (con approvazione)<br>
+                    <strong>Web Search</strong> — Ricerca DuckDuckGo integrata<br>
+                    <strong>Web Fetch</strong> — Lettura contenuti da URL<br>
+                    <strong>File System</strong> — Lettura e scrittura file nel workspace<br>
+                    <strong>Skills</strong> — Capacità specializzate installabili<br>
+                    <strong>Cron</strong> — Job schedulati e promemoria<br>
+                    <strong>Nodes</strong> — Controllo dispositivi companion (camera, schermo, posizione)<br>
+                    <strong>TTS</strong> — Sintesi vocale via ElevenLabs<br>
+                    <strong>Image Gen</strong> — Generazione immagini AI
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="env-title">🔧 Variabili d'Ambiente</h2>
+            <table class="env-table">
+                <tr><th data-lang-key="env-var">Variabile</th><th data-lang-key="env-desc-h">Descrizione</th><th>Default</th></tr>
+                <tr><td><code>OPENCLAW_HOME</code></td><td data-lang-key="env-home">Directory principale di OpenClaw</td><td><code>~/.openclaw</code></td></tr>
+                <tr><td><code>OPENCLAW_STATE_DIR</code></td><td data-lang-key="env-state">Directory stato e sessioni</td><td><code>~/.openclaw/state</code></td></tr>
+                <tr><td><code>OPENCLAW_CONFIG_PATH</code></td><td data-lang-key="env-config">Percorso file configurazione</td><td><code>~/.openclaw/config.yaml</code></td></tr>
+                <tr><td><code>OPENCLAW_LOG_LEVEL</code></td><td data-lang-key="env-log">Livello di log (debug/info/warn/error)</td><td><code>info</code></td></tr>
+                <tr><td><code>OPENCLAW_PORT</code></td><td data-lang-key="env-port">Porta del Gateway</td><td><code>18789</code></td></tr>
+            </table>
+        </div>
+    </main>
+</div>
+<footer>
+    <p data-lang-key="footer">Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong></p>
+</footer>
+
+<script>
+const translations = {
+    'it': {
+        'back':'Torna alla Home','title':'Il Gateway','subtitle':'Il cuore di TWIZA Moneypenny: il servizio che orchestra AI, canali e strumenti.',
+        'what-title':'🧠 Cos\'è il Gateway','what-desc':'Il Gateway è il processo centrale di OpenClaw. Gira sulla porta <strong>18789</strong> e gestisce: sessioni di chat, connessioni ai canali, chiamate ai modelli AI, esecuzione di tool e strumenti, autenticazione e sicurezza. Tutto passa dal Gateway.',
+        'commands-title':'⚡ Comandi Essenziali','cmd-status':'Stato del Gateway','cmd-start':'Avvio / Arresto / Riavvio','cmd-config':'Configurazione','cmd-dashboard':'Dashboard','cmd-logs':'Log',
+        'providers-title':'🦾 Provider AI','providers-desc':'TWIZA Moneypenny supporta provider cloud e locali. Puoi cambiarli in qualsiasi momento.',
+        'prov-anthropic':'Claude Opus, Sonnet, Haiku. Il provider di default.','prov-openai':'GPT-4o, GPT-4, o-series. Supporto completo.','prov-google':'Gemini 2.5 Pro/Flash. Contesto da 1M token.','prov-ollama':'🏠 Modelli locali. Llama, Qwen, Mistral, DeepSeek. Privacy totale.','prov-groq':'Inferenza ultra-veloce. Llama 70B a velocità record.','prov-openrouter':'Accesso a 100+ modelli con un\'unica API key.',
+        'providers-config':'<strong>Configurazione:</strong> Imposta il provider con <code>openclaw config set agents.model provider/model-name</code> e la chiave API con <code>openclaw config set providers.PROVIDER.apiKey YOUR_KEY</code>',
+        'security-title':'🔐 Sicurezza','sec-auth':'Autenticazione','sec-auth-desc':'Il Gateway usa token di autenticazione. In modalità locale (loopback), l\'accesso è automatico. Per accesso remoto, serve un token configurato.','sec-bind':'Binding di Rete','sec-bind-desc':'Di default il Gateway ascolta solo su localhost (127.0.0.1). Per accesso da rete:','sec-bind-warn':'⚠️ Esporre il Gateway su 0.0.0.0 senza token è un rischio di sicurezza. Configura SEMPRE un token prima.','sec-exec':'Approvazione Comandi','sec-exec-desc':'I comandi di sistema eseguiti dall\'AI richiedono approvazione. Puoi configurare whitelist e policy per automatizzare quelli sicuri.',
+        'tools-title':'🛠️ Strumenti','tools-desc':'Il Gateway espone strumenti potenti all\'AI:','tools-list':'<strong>Browser</strong> — Navigazione web automatizzata<br><strong>Exec</strong> — Esecuzione comandi shell (con approvazione)<br><strong>Web Search</strong> — Ricerca DuckDuckGo integrata<br><strong>Web Fetch</strong> — Lettura contenuti da URL<br><strong>File System</strong> — Lettura e scrittura file nel workspace<br><strong>Skills</strong> — Capacità specializzate installabili<br><strong>Cron</strong> — Job schedulati e promemoria<br><strong>Nodes</strong> — Controllo dispositivi companion (camera, schermo, posizione)<br><strong>TTS</strong> — Sintesi vocale via ElevenLabs<br><strong>Image Gen</strong> — Generazione immagini AI',
+        'env-title':'🔧 Variabili d\'Ambiente','env-var':'Variabile','env-desc-h':'Descrizione','env-home':'Directory principale di OpenClaw','env-state':'Directory stato e sessioni','env-config':'Percorso file configurazione','env-log':'Livello di log (debug/info/warn/error)','env-port':'Porta del Gateway',
+        'footer':'Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong>'
+    },
+    'en': {
+        'back':'Back to Home','title':'The Gateway','subtitle':'The heart of TWIZA Moneypenny: the service that orchestrates AI, channels and tools.',
+        'what-title':'🧠 What is the Gateway','what-desc':'The Gateway is OpenClaw\'s core process. It runs on port <strong>18789</strong> and manages: chat sessions, channel connections, AI model calls, tool execution, authentication and security. Everything flows through the Gateway.',
+        'commands-title':'⚡ Essential Commands','cmd-status':'Gateway Status','cmd-start':'Start / Stop / Restart','cmd-config':'Configuration','cmd-dashboard':'Dashboard','cmd-logs':'Logs',
+        'providers-title':'🦾 AI Providers','providers-desc':'TWIZA Moneypenny supports cloud and local providers. Switch anytime.',
+        'prov-anthropic':'Claude Opus, Sonnet, Haiku. The default provider.','prov-openai':'GPT-4o, GPT-4, o-series. Full support.','prov-google':'Gemini 2.5 Pro/Flash. 1M token context.','prov-ollama':'🏠 Local models. Llama, Qwen, Mistral, DeepSeek. Total privacy.','prov-groq':'Ultra-fast inference. Llama 70B at record speed.','prov-openrouter':'Access 100+ models with a single API key.',
+        'providers-config':'<strong>Configuration:</strong> Set the provider with <code>openclaw config set agents.model provider/model-name</code> and the API key with <code>openclaw config set providers.PROVIDER.apiKey YOUR_KEY</code>',
+        'security-title':'🔐 Security','sec-auth':'Authentication','sec-auth-desc':'The Gateway uses auth tokens. In local mode (loopback), access is automatic. For remote access, a configured token is required.','sec-bind':'Network Binding','sec-bind-desc':'By default the Gateway listens only on localhost (127.0.0.1). For network access:','sec-bind-warn':'⚠️ Exposing the Gateway on 0.0.0.0 without a token is a security risk. ALWAYS configure a token first.','sec-exec':'Command Approval','sec-exec-desc':'System commands executed by the AI require approval. You can configure whitelists and policies to automate safe ones.',
+        'tools-title':'🛠️ Tools','tools-desc':'The Gateway exposes powerful tools to the AI:','tools-list':'<strong>Browser</strong> — Automated web browsing<br><strong>Exec</strong> — Shell command execution (with approval)<br><strong>Web Search</strong> — Built-in DuckDuckGo search<br><strong>Web Fetch</strong> — Read content from URLs<br><strong>File System</strong> — Read and write workspace files<br><strong>Skills</strong> — Installable specialized capabilities<br><strong>Cron</strong> — Scheduled jobs and reminders<br><strong>Nodes</strong> — Companion device control (camera, screen, location)<br><strong>TTS</strong> — Voice synthesis via ElevenLabs<br><strong>Image Gen</strong> — AI image generation',
+        'env-title':'🔧 Environment Variables','env-var':'Variable','env-desc-h':'Description','env-home':'OpenClaw home directory','env-state':'State and sessions directory','env-config':'Config file path','env-log':'Log level (debug/info/warn/error)','env-port':'Gateway port',
+        'footer':'Developed with 🦾 by <strong>Team SHAKAZAMBA</strong>'
+    },
+    'de': {
+        'back':'Zurück zur Startseite','title':'Das Gateway','subtitle':'Das Herz von TWIZA Moneypenny: Der Dienst der KI, Kanäle und Tools orchestriert.',
+        'what-title':'🧠 Was ist das Gateway','what-desc':'Das Gateway ist der zentrale Prozess von OpenClaw. Es läuft auf Port <strong>18789</strong> und verwaltet: Chat-Sitzungen, Kanalverbindungen, KI-Modellaufrufe, Tool-Ausführung, Authentifizierung und Sicherheit.',
+        'commands-title':'⚡ Wichtige Befehle','cmd-status':'Gateway-Status','cmd-start':'Start / Stopp / Neustart','cmd-config':'Konfiguration','cmd-dashboard':'Dashboard','cmd-logs':'Logs',
+        'providers-title':'🦾 KI-Provider','providers-desc':'TWIZA Moneypenny unterstützt Cloud- und lokale Provider. Jederzeit wechselbar.',
+        'prov-anthropic':'Claude Opus, Sonnet, Haiku. Standard-Provider.','prov-openai':'GPT-4o, GPT-4, o-series. Volle Unterstützung.','prov-google':'Gemini 2.5 Pro/Flash. 1M Token Kontext.','prov-ollama':'🏠 Lokale Modelle. Llama, Qwen, Mistral, DeepSeek. Totale Privatsphäre.','prov-groq':'Ultraschnelle Inferenz. Llama 70B mit Rekordgeschwindigkeit.','prov-openrouter':'Zugang zu 100+ Modellen mit einem API-Key.',
+        'security-title':'🔐 Sicherheit','sec-auth':'Authentifizierung','sec-bind':'Netzwerk-Binding','sec-exec':'Befehlsgenehmigung',
+        'tools-title':'🛠️ Werkzeuge','tools-desc':'Das Gateway stellt der KI leistungsstarke Werkzeuge zur Verfügung:',
+        'env-title':'🔧 Umgebungsvariablen','env-var':'Variable','env-desc-h':'Beschreibung',
+        'footer':'Entwickelt mit 🦾 vom <strong>Team SHAKAZAMBA</strong>'
+    },
+    'es': {
+        'back':'Volver al Inicio','title':'El Gateway','subtitle':'El corazón de TWIZA Moneypenny: el servicio que orquesta IA, canales y herramientas.',
+        'what-title':'🧠 Qué es el Gateway','what-desc':'El Gateway es el proceso central de OpenClaw. Funciona en el puerto <strong>18789</strong> y gestiona: sesiones de chat, conexiones de canales, llamadas a modelos IA, ejecución de herramientas, autenticación y seguridad.',
+        'commands-title':'⚡ Comandos Esenciales','cmd-status':'Estado del Gateway','cmd-start':'Inicio / Parada / Reinicio','cmd-config':'Configuración','cmd-dashboard':'Dashboard','cmd-logs':'Logs',
+        'providers-title':'🦾 Proveedores IA','providers-desc':'TWIZA Moneypenny soporta proveedores cloud y locales. Cambia cuando quieras.',
+        'security-title':'🔐 Seguridad','tools-title':'🛠️ Herramientas','env-title':'🔧 Variables de Entorno',
+        'footer':'Desarrollado con 🦾 por <strong>Team SHAKAZAMBA</strong>'
+    },
+    'pt-BR': {
+        'back':'Voltar ao Início','title':'O Gateway','subtitle':'O coração do TWIZA Moneypenny: o serviço que orquestra IA, canais e ferramentas.',
+        'what-title':'🧠 O que é o Gateway','what-desc':'O Gateway é o processo central do OpenClaw. Roda na porta <strong>18789</strong> e gerencia: sessões de chat, conexões de canais, chamadas a modelos IA, execução de ferramentas, autenticação e segurança.',
+        'commands-title':'⚡ Comandos Essenciais','providers-title':'🦾 Provedores IA','security-title':'🔐 Segurança','tools-title':'🛠️ Ferramentas','env-title':'🔧 Variáveis de Ambiente',
+        'footer':'Desenvolvido com 🦾 pelo <strong>Team SHAKAZAMBA</strong>'
+    },
+    'zh-CN': {
+        'back':'返回首页','title':'网关','subtitle':'TWIZA Moneypenny的核心：协调AI、频道和工具的服务。',
+        'what-title':'🧠 什么是网关','what-desc':'网关是OpenClaw的核心进程。运行在端口<strong>18789</strong>上，管理：聊天会话、频道连接、AI模型调用、工具执行、认证和安全。一切都通过网关。',
+        'commands-title':'⚡ 基本命令','providers-title':'🦾 AI提供商','security-title':'🔐 安全','tools-title':'🛠️ 工具','env-title':'🔧 环境变量',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 开发'
+    },
+    'zh-TW': {
+        'back':'返回首頁','title':'閘道','subtitle':'TWIZA Moneypenny的核心：協調AI、頻道和工具的服務。',
+        'what-title':'🧠 什麼是閘道','what-desc':'閘道是OpenClaw的核心程序。運行在端口<strong>18789</strong>上，管理：聊天會話、頻道連接、AI模型調用、工具執行、認證和安全。一切都通過閘道。',
+        'commands-title':'⚡ 基本命令','providers-title':'🦾 AI提供商','security-title':'🔐 安全','tools-title':'🛠️ 工具','env-title':'🔧 環境變數',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 開發'
+    }
+};
+
+let currentLang = 'it';
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    const t = translations[lang] || translations['it'];
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (t[key]) el.innerHTML = t[key];
+    });
+}
+</script>
+</body>
+</html>

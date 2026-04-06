@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWIZA Moneypenny — Chat Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'DK Jambo';
+      src: url('fonts/DKJambo.otf') format('opentype');
+    }
+
+    :root {
+      --fuchsia: #D4006A;
+      --purple: #6600FF;
+      --dark: #0D0D15;
+      --dark-surface: #141420;
+      --dark-card: #1A1A28;
+      --dark-border: #2A2A3E;
+      --dark-hover: #222236;
+      --text-primary: #E8E8F0;
+      --text-secondary: #9999BB;
+      --text-muted: #6666880;
+      --gradient-main: linear-gradient(135deg, #D4006A 0%, #6600FF 100%);
+      --gradient-subtle: linear-gradient(135deg, rgba(212,0,106,0.12) 0%, rgba(102,0,255,0.12) 100%);
+      --shadow-glow: 0 0 20px rgba(212,0,106,0.2);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-xs: 6px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Titillium Web', sans-serif;
+      background: var(--dark);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 17.8px; /* base 15.5 * 1.15 = 17.8 */
+    }
+
+    /* ── Grid Background Pattern ── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(212,0,106,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,0,106,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .grid-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(212,0,106,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(102,0,255,0.05) 0%, transparent 60%);
+    }
+
+    /* ── Titlebar ── */
+    .titlebar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      background: var(--dark-surface);
+      border-bottom: 1px solid var(--dark-border);
+      padding: 0 18px;
+      -webkit-app-region: drag;
+      user-select: none;
+    }
+
+    .titlebar-logo {
+      font-family: 'DK Jambo', sans-serif;
+      font-size: 23px;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-right: 6px;
+    }
+
+    .titlebar-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .titlebar-status {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.8px;
+      color: var(--text-muted);
+      -webkit-app-region: no-drag;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #00CC66;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .titlebar-btns {
+      display: flex;
+      gap: 9px;
+      margin-left: 18px;
+      -webkit-app-region: no-drag;
+    }
+
+    .titlebar-btn {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .titlebar-btn:hover { opacity: 0.8; }
+    .btn-minimize { background: #FFBD2E; }
+    .btn-maximize { background: #28C840; }
+    .btn-close { background: #FF5F57; }
+
+    /* ── Main Layout ── */
+    .main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 280px;
+      background: rgba(20,20,32,0.92);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid var(--dark-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 18px;
+      border-bottom: 1px solid var(--dark-border);
+    }
+
+    .new-chat-btn {
+      width: 100%;
+      padding: 12px 18px;
+      background: var(--gradient-main);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: white;
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: all 0.2s;
+    }
+
+    .new-chat-btn:hover {
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-1px);
+    }
+
+    .sidebar-search {
+      padding: 14px 18px;
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-xs);
+      color: var(--text-primary);
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .sidebar-search input:focus {
+      border-color: var(--fuchsia);
+    }
+
+    .sidebar-search input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 10px;
+    }
+
+    .chat-item {
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 3px;
+    }
+
+    .chat-item:hover {
+      background: var(--dark-hover);
+    }
+
+    .chat-item.active {
+      background: var(--gradient-subtle);
+      border: 1px solid rgba(212,0,106,0.25);
+    }
+
+    .chat-item-title {
+      font-size: 15.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item-preview {
+      font-size: 13.8px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item-time {
+      font-size: 12.6px;
+      color: var(--text-muted);
+      float: right;
+    }
+
+    .sidebar-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--dark-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-footer-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--gradient-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .sidebar-footer-info {
+      flex: 1;
+    }
+
+    .sidebar-footer-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .sidebar-footer-model {
+      font-size: 12.6px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .sidebar-footer-gear {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 20px;
+      transition: color 0.2s;
+    }
+
+    .sidebar-footer-gear:hover {
+      color: var(--fuchsia);
+    }
+
+    /* ── Chat Area ── */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: transparent;
+    }
+
+    .chat-header {
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--dark-border);
+      background: rgba(20,20,32,0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .chat-header-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gradient-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .chat-header-name {
+      font-weight: 700;
+      font-size: 18.4px;
+    }
+
+    .chat-header-sub {
+      font-size: 13.8px;
+      color: var(--text-muted);
+    }
+
+    .chat-header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-header-action {
+      background: rgba(42,42,62,0.6);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-xs);
+      color: var(--text-secondary);
+      padding: 7px 14px;
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 13.8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chat-header-action:hover {
+      border-color: var(--fuchsia);
+      color: var(--fuchsia);
+      background: rgba(212,0,106,0.08);
+    }
+
+    /* ── Messages ── */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 14px;
+      max-width: 72%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .msg-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .msg.assistant .msg-avatar {
+      background: var(--gradient-main);
+    }
+
+    .msg.user .msg-avatar {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+    }
+
+    .msg-content {}
+
+    .msg-bubble {
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      line-height: 1.55;
+      font-size: 16.7px;
+    }
+
+    .msg.assistant .msg-bubble {
+      background: rgba(26,26,40,0.85);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--dark-border);
+      border-top-left-radius: 4px;
+    }
+
+    .msg.user .msg-bubble {
+      background: var(--gradient-subtle);
+      border: 1px solid rgba(212,0,106,0.2);
+      border-top-right-radius: 4px;
+    }
+
+    .msg-bubble code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255,255,255,0.07);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 14.9px;
+    }
+
+    .msg-bubble pre {
+      background: rgba(13,13,21,0.9);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-xs);
+      padding: 14px;
+      margin: 10px 0 4px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14.4px;
+      line-height: 1.45;
+    }
+
+    .msg-bubble .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 14px;
+      background: var(--dark-hover);
+      border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+      margin: 10px 0 0;
+      font-size: 12.6px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .msg-bubble .code-header + pre {
+      margin-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .msg-time {
+      font-size: 12.6px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      padding: 0 4px;
+    }
+
+    .msg.user .msg-time {
+      text-align: right;
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px 14px;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .typing-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--fuchsia);
+      animation: typingBounce 1.4s ease-in-out infinite;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-7px); opacity: 1; }
+    }
+
+    .typing-label {
+      font-size: 13.8px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── Model Badge ── */
+    .model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(102,0,255,0.12);
+      border: 1px solid rgba(102,0,255,0.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #AA88FF;
+      margin-top: 6px;
+    }
+
+    .model-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #AA88FF;
+    }
+
+    /* ── Input ── */
+    .input-area {
+      padding: 18px 22px;
+      border-top: 1px solid var(--dark-border);
+      background: rgba(20,20,32,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--fuchsia);
+      box-shadow: 0 0 0 3px rgba(212,0,106,0.1);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 6px;
+      padding-bottom: 4px;
+    }
+
+    .input-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 20px;
+      padding: 5px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .input-action-btn:hover {
+      color: var(--fuchsia);
+      background: rgba(212,0,106,0.1);
+    }
+
+    .input-field {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 16.7px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      min-height: 26px;
+      max-height: 130px;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gradient-main);
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .send-btn:hover {
+      box-shadow: var(--shadow-glow);
+      transform: scale(1.05);
+    }
+
+    .input-hints {
+      display: flex;
+      gap: 14px;
+      margin-top: 9px;
+      padding: 0 4px;
+    }
+
+    .input-hint {
+      font-size: 12.6px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-hint kbd {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11.5px;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--dark-border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Grid background pattern -->
+  <div class="grid-bg"></div>
+
+  <!-- Titlebar -->
+  <div class="titlebar">
+    <span class="titlebar-logo">TWIZA</span>
+    <span class="titlebar-label">Moneypenny</span>
+    <div class="titlebar-status">
+      <span class="status-dot"></span>
+      <span>Online — llama3.2:3b (locale)</span>
+    </div>
+    <div class="titlebar-btns">
+      <button class="titlebar-btn btn-minimize"></button>
+      <button class="titlebar-btn btn-maximize"></button>
+      <button class="titlebar-btn btn-close"></button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <button class="new-chat-btn">
+          <span>✨</span> Nuova conversazione
+        </button>
+      </div>
+      <div class="sidebar-search">
+        <input type="text" placeholder="🔍 Cerca nelle chat...">
+      </div>
+      <div class="chat-list">
+        <div class="chat-item active">
+          <span class="chat-item-time">20:39</span>
+          <div class="chat-item-title">Build TWIZA Moneypenny</div>
+          <div class="chat-item-preview">Push completato! Il repo è pulito...</div>
+        </div>
+        <div class="chat-item">
+          <span class="chat-item-time">19:10</span>
+          <div class="chat-item-title">Setup modelli locali</div>
+          <div class="chat-item-preview">llama3.2 scaricato, pronto all'uso</div>
+        </div>
+        <div class="chat-item">
+          <span class="chat-item-time">Ieri</span>
+          <div class="chat-item-title">Configurazione canali</div>
+          <div class="chat-item-preview">WhatsApp e Telegram configurati</div>
+        </div>
+        <div class="chat-item">
+          <span class="chat-item-time">16 Feb</span>
+          <div class="chat-item-title">Primo avvio 🎉</div>
+          <div class="chat-item-preview">Benvenuto! Sono il tuo agente...</div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-avatar">🦾</div>
+        <div class="sidebar-footer-info">
+          <div class="sidebar-footer-name">Moneypenny</div>
+          <div class="sidebar-footer-model">llama3.2:3b • locale</div>
+        </div>
+        <span class="sidebar-footer-gear">⚙️</span>
+      </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area">
+      <div class="chat-header">
+        <div class="chat-header-avatar">🦾</div>
+        <div>
+          <div class="chat-header-name">Moneypenny</div>
+          <div class="chat-header-sub">...more than an agent!</div>
+        </div>
+        <div class="chat-header-actions">
+          <button class="chat-header-action">📊 Status</button>
+          <button class="chat-header-action">🧠 Modello</button>
+          <button class="chat-header-action">📎 File</button>
+        </div>
+      </div>
+
+      <div class="messages">
+        <!-- User message -->
+        <div class="msg user">
+          <div class="msg-avatar">👤</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Ciao! Come funzioni? Che modello stai usando?
+            </div>
+            <div class="msg-time">20:35</div>
+          </div>
+        </div>
+
+        <!-- Assistant message -->
+        <div class="msg assistant">
+          <div class="msg-avatar">🦾</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Ciao! 👋 Sono il tuo agente <strong>Moneypenny</strong>, il tuo agente AI personale installato direttamente sul tuo PC.<br><br>
+              
+              Sto girando su <code>llama3.2:3b</code> — un modello <strong>locale</strong> da 2GB che funziona interamente sulla tua macchina. Nessun dato esce dal tuo computer! 🔒<br><br>
+              
+              Posso anche usare modelli cloud (Anthropic, OpenAI, Google) se li configuri nel setup. Ma di default, tutto resta <strong>locale e privato</strong>.
+            </div>
+            <div class="model-badge"><span class="dot"></span> llama3.2:3b • locale • 2.0 GB</div>
+            <div class="msg-time">20:35</div>
+          </div>
+        </div>
+
+        <!-- User message -->
+        <div class="msg user">
+          <div class="msg-avatar">👤</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Come faccio a collegarti a WhatsApp?
+            </div>
+            <div class="msg-time">20:37</div>
+          </div>
+        </div>
+
+        <!-- Assistant message with code -->
+        <div class="msg assistant">
+          <div class="msg-avatar">🦾</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Facile! Vai nelle <strong>Impostazioni → Canali → WhatsApp</strong> e segui la guida. In pratica basta:
+
+              <div class="code-header">
+                <span>config</span>
+                <span style="cursor:pointer;color:var(--fuchsia)">📋 Copia</span>
+              </div>
+              <pre>{
+  "channels": {
+    "whatsapp": {
+      "enabled": true,
+      "selfChatMode": true
+    }
+  }
+}</pre>
+
+              Poi scannerizzi il QR code dal telefono e sei connesso! Ti arriverà un messaggio di conferma direttamente nella chat. 📱
+            </div>
+            <div class="msg-time">20:37</div>
+          </div>
+        </div>
+
+        <!-- User message -->
+        <div class="msg user">
+          <div class="msg-avatar">👤</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Posso scaricare modelli più potenti?
+            </div>
+            <div class="msg-time">20:38</div>
+          </div>
+        </div>
+
+        <!-- Assistant message -->
+        <div class="msg assistant">
+          <div class="msg-avatar">🦾</div>
+          <div class="msg-content">
+            <div class="msg-bubble">
+              Certo! Dalla sezione <strong>🧠 Modello</strong> puoi scaricare altri modelli Ollama.<br><br>
+              
+              Ecco quelli consigliati:<br><br>
+              ⚡ <code>llama3.2:3b</code> — 2GB — Velocissimo, per chat quotidiane<br>
+              🧠 <code>qwen3:14b</code> — 9.3GB — Ottimo bilanciamento<br>
+              🔬 <code>deepseek-r1:14b</code> — 9GB — Ragionamento step-by-step<br>
+              🚀 <code>qwen3:32b</code> — 20GB — Potenza massima (serve ≥16GB VRAM)<br><br>
+              
+              Tutto si scarica con un click, direttamente dall'app. Zero config manuale! 🦒
+            </div>
+            <div class="msg-time">20:39</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="typing-indicator">
+        <div class="typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="typing-label">Moneypenny sta pensando...</span>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <div class="input-actions">
+            <button class="input-action-btn" title="Allega file">📎</button>
+            <button class="input-action-btn" title="Voce">🎤</button>
+          </div>
+          <textarea class="input-field" rows="1" placeholder="Scrivi un messaggio al tuo agente..."></textarea>
+          <button class="send-btn" title="Invia">➤</button>
+        </div>
+        <div class="input-hints">
+          <span class="input-hint"><kbd>Enter</kbd> Invia</span>
+          <span class="input-hint"><kbd>Shift+Enter</kbd> Nuova riga</span>
+          <span class="input-hint"><kbd>/</kbd> Comandi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

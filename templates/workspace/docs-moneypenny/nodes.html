@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nodi Companion - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Titillium Web',sans-serif; background:#0a0a0a; color:#fff; line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; flex:1; }
+        header { padding:2rem 0; border-bottom:1px solid #333; }
+        .back-link { display:inline-block; color:#FF0080; text-decoration:none; margin-bottom:1rem; font-weight:600; }
+        .back-link:hover { color:#ff3399; }
+        h1 { font-size:2.5rem; font-weight:700; color:#FF0080; margin-bottom:1rem; }
+        .subtitle { font-size:1.1rem; color:#ccc; margin-bottom:2rem; }
+        .lang-switcher { display:flex; gap:.5rem; margin-bottom:2rem; flex-wrap:wrap; }
+        .lang-btn { background:#1a1a1a; border:1px solid #333; color:#fff; padding:.5rem 1rem; border-radius:5px; cursor:pointer; font-family:inherit; transition:all .3s; }
+        .lang-btn:hover,.lang-btn.active { background:#FF0080; border-color:#FF0080; }
+        main { padding:2rem 0; }
+        .section { margin-bottom:3rem; }
+        .section-title { font-size:1.6rem; font-weight:600; color:#FF0080; margin-bottom:1rem; border-bottom:1px solid #333; padding-bottom:.5rem; }
+        .card { background:#1a1a1a; border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; border-left:4px solid #FF0080; }
+        .card h3 { color:#FF0080; margin-bottom:.5rem; font-size:1.2rem; }
+        .card p { color:#ccc; }
+        .code-block { background:#0a0a0a; border:1px solid #333; border-radius:5px; padding:1rem; margin:.8rem 0; font-family:'Monaco','Menlo',monospace; color:#00ff00; overflow-x:auto; font-size:.9rem; }
+        .devices-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; margin:1.5rem 0; }
+        .device-card { background:#111; border:1px solid #333; border-radius:10px; padding:1.5rem; text-align:center; transition:transform .2s; }
+        .device-card:hover { transform:translateY(-3px); }
+        .device-icon { font-size:3rem; margin-bottom:.5rem; }
+        .device-name { font-weight:600; color:#FF0080; font-size:1.1rem; margin-bottom:.3rem; }
+        .device-desc { color:#aaa; font-size:.9rem; }
+        .capabilities-list { list-style:none; padding:0; }
+        .capabilities-list li { padding:.8rem; margin:.3rem 0; background:#111; border-radius:5px; border-left:3px solid #FF0080; color:#ccc; }
+        .capabilities-list li strong { color:#FF0080; }
+        .warning-box { background:rgba(255,193,7,.1); border:1px solid #ffc107; border-radius:5px; padding:1rem; margin:1rem 0; color:#ffc107; }
+        .info-box { background:rgba(0,123,255,.1); border:1px solid #007bff; border-radius:5px; padding:1rem; margin:1rem 0; color:#7ec8ff; }
+        footer { text-align:center; padding:2rem; border-top:1px solid #333; color:#888; margin-top:auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+        <h1 data-lang-key="title">Nodi Companion</h1>
+        <p class="subtitle" data-lang-key="subtitle">Estendi TWIZA Moneypenny a telefoni, tablet e altri computer. I tuoi occhi e le tue orecchie nel mondo reale.</p>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('it')">🇮🇹 IT</button>
+            <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+            <button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
+            <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+            <button class="lang-btn" onclick="setLang('pt-BR')">🇧🇷 PT</button>
+            <button class="lang-btn" onclick="setLang('zh-CN')">🇨🇳 简中</button>
+            <button class="lang-btn" onclick="setLang('zh-TW')">🇹🇼 繁中</button>
+        </div>
+    </header>
+    <main>
+        <div class="section">
+            <h2 class="section-title" data-lang-key="what-title">📱 Cosa Sono i Nodi</h2>
+            <div class="card">
+                <p data-lang-key="what-desc">I nodi sono app companion che connettono i tuoi dispositivi fisici al Gateway di OpenClaw. Permettono all'AI di accedere a fotocamera, posizione GPS, notifiche, schermo e molto altro — trasformando il tuo telefono in un'estensione sensoriale dell'assistente.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="devices-title">🖥️ Dispositivi Supportati</h2>
+            <div class="devices-grid">
+                <div class="device-card">
+                    <div class="device-icon">📱</div>
+                    <div class="device-name">iOS</div>
+                    <div class="device-desc" data-lang-key="ios-desc">App companion per iPhone e iPad. Camera, foto, posizione, notifiche.</div>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🤖</div>
+                    <div class="device-name">Android</div>
+                    <div class="device-desc" data-lang-key="android-desc">App companion per dispositivi Android. Tutte le funzionalità sensore.</div>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🍎</div>
+                    <div class="device-name">macOS</div>
+                    <div class="device-desc" data-lang-key="macos-desc">App nativa macOS. Screen recording, automazione, camera ed esecuzione remota.</div>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">💻</div>
+                    <div class="device-name" data-lang-key="nodehost-name">Node Host (CLI)</div>
+                    <div class="device-desc" data-lang-key="nodehost-desc">Qualsiasi macchina con Node.js. Esecuzione comandi remota e tool routing.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="capabilities-title">🎯 Capacità dei Nodi</h2>
+            <ul class="capabilities-list">
+                <li><strong>📸 Camera</strong> — <span data-lang-key="cap-camera">Scatta foto dalla camera frontale o posteriore, registra clip video.</span></li>
+                <li><strong>🖼️ Foto</strong> — <span data-lang-key="cap-photos">Accedi alle foto più recenti dal rullino del dispositivo.</span></li>
+                <li><strong>🖥️ Screen Recording</strong> — <span data-lang-key="cap-screen">Registra lo schermo del dispositivo per monitoraggio o assistenza.</span></li>
+                <li><strong>📍 Posizione</strong> — <span data-lang-key="cap-location">GPS con precisione configurabile (approssimata, bilanciata, precisa).</span></li>
+                <li><strong>🔔 Notifiche</strong> — <span data-lang-key="cap-notif">Leggi, apri o rispondi alle notifiche del dispositivo.</span></li>
+                <li><strong>⚡ Esecuzione Remota</strong> — <span data-lang-key="cap-exec">Esegui comandi sulla macchina remota (con sistema di approvazione).</span></li>
+                <li><strong>📊 Info Dispositivo</strong> — <span data-lang-key="cap-info">Batteria, spazio disco, stato connessione, versione OS.</span></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="pairing-title">🔗 Collegamento (Pairing)</h2>
+            <div class="card">
+                <h3 data-lang-key="pair-qr">QR Code</h3>
+                <p data-lang-key="pair-qr-desc">Il modo più semplice. Apri l'app companion, seleziona "Connetti" e scansiona il QR mostrato dalla dashboard o dal terminale.</p>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="pair-code">Setup Code</h3>
+                <p data-lang-key="pair-code-desc">Per connessioni remote (VPS, Tailscale). Genera un codice dalla dashboard e inseriscilo nell'app companion.</p>
+            </div>
+            <div class="card">
+                <h3 data-lang-key="pair-cli">Node Host CLI</h3>
+                <p data-lang-key="pair-cli-desc">Per collegare un'altra macchina come nodo di esecuzione:</p>
+                <div class="code-block">openclaw node run --host gateway-ip --port 18789 --display-name "Build Server"</div>
+            </div>
+            <div class="warning-box" data-lang-key="pair-security">⚠️ Il pairing genera un token crittografico unico per dispositivo. I comandi eseguiti sui nodi richiedono approvazione esplicita dall'utente per sicurezza.</div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" data-lang-key="routing-title">🔀 Tool Routing</h2>
+            <div class="card">
+                <p data-lang-key="routing-desc">L'AI può indirizzare i tool verso nodi specifici. Per esempio: "scatta una foto dalla camera del telefono" invia il comando al nodo mobile, mentre "esegui git pull sul build server" lo manda al Node Host configurato. Ogni nodo ha un nome e le sue capacità sono auto-rilevate.</p>
+            </div>
+            <div class="info-box" data-lang-key="routing-ssh">
+                <strong>Accesso Remoto:</strong> Se il Gateway è su loopback, puoi connettere nodi remoti tramite tunnel SSH: <code>ssh -L 18789:localhost:18789 user@gateway-host</code>
+            </div>
+        </div>
+    </main>
+</div>
+<footer>
+    <p data-lang-key="footer">Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong></p>
+</footer>
+
+<script>
+const translations = {
+    'it': {
+        'back':'Torna alla Home','title':'Nodi Companion','subtitle':'Estendi TWIZA Moneypenny a telefoni, tablet e altri computer. I tuoi occhi e le tue orecchie nel mondo reale.',
+        'what-title':'📱 Cosa Sono i Nodi','what-desc':'I nodi sono app companion che connettono i tuoi dispositivi fisici al Gateway di OpenClaw. Permettono all\'AI di accedere a fotocamera, posizione GPS, notifiche, schermo e molto altro — trasformando il tuo telefono in un\'estensione sensoriale dell\'assistente.',
+        'devices-title':'🖥️ Dispositivi Supportati','ios-desc':'App companion per iPhone e iPad. Camera, foto, posizione, notifiche.','android-desc':'App companion per dispositivi Android. Tutte le funzionalità sensore.','macos-desc':'App nativa macOS. Screen recording, automazione, camera ed esecuzione remota.','nodehost-name':'Node Host (CLI)','nodehost-desc':'Qualsiasi macchina con Node.js. Esecuzione comandi remota e tool routing.',
+        'capabilities-title':'🎯 Capacità dei Nodi','cap-camera':'Scatta foto dalla camera frontale o posteriore, registra clip video.','cap-photos':'Accedi alle foto più recenti dal rullino del dispositivo.','cap-screen':'Registra lo schermo del dispositivo per monitoraggio o assistenza.','cap-location':'GPS con precisione configurabile (approssimata, bilanciata, precisa).','cap-notif':'Leggi, apri o rispondi alle notifiche del dispositivo.','cap-exec':'Esegui comandi sulla macchina remota (con sistema di approvazione).','cap-info':'Batteria, spazio disco, stato connessione, versione OS.',
+        'pairing-title':'🔗 Collegamento (Pairing)','pair-qr':'QR Code','pair-qr-desc':'Il modo più semplice. Apri l\'app companion, seleziona "Connetti" e scansiona il QR mostrato dalla dashboard o dal terminale.','pair-code':'Setup Code','pair-code-desc':'Per connessioni remote (VPS, Tailscale). Genera un codice dalla dashboard e inseriscilo nell\'app companion.','pair-cli':'Node Host CLI','pair-cli-desc':'Per collegare un\'altra macchina come nodo di esecuzione:','pair-security':'⚠️ Il pairing genera un token crittografico unico per dispositivo. I comandi eseguiti sui nodi richiedono approvazione esplicita dall\'utente per sicurezza.',
+        'routing-title':'🔀 Tool Routing','routing-desc':'L\'AI può indirizzare i tool verso nodi specifici. Per esempio: "scatta una foto dalla camera del telefono" invia il comando al nodo mobile, mentre "esegui git pull sul build server" lo manda al Node Host configurato. Ogni nodo ha un nome e le sue capacità sono auto-rilevate.','routing-ssh':'<strong>Accesso Remoto:</strong> Se il Gateway è su loopback, puoi connettere nodi remoti tramite tunnel SSH: <code>ssh -L 18789:localhost:18789 user@gateway-host</code>',
+        'footer':'Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong>'
+    },
+    'en': {
+        'back':'Back to Home','title':'Companion Nodes','subtitle':'Extend TWIZA Moneypenny to phones, tablets and other computers. Your eyes and ears in the real world.',
+        'what-title':'📱 What Are Nodes','what-desc':'Nodes are companion apps that connect your physical devices to the OpenClaw Gateway. They allow the AI to access camera, GPS location, notifications, screen and more — turning your phone into a sensory extension of the assistant.',
+        'devices-title':'🖥️ Supported Devices','ios-desc':'Companion app for iPhone and iPad. Camera, photos, location, notifications.','android-desc':'Companion app for Android devices. All sensor capabilities.','macos-desc':'Native macOS app. Screen recording, automation, camera and remote execution.','nodehost-name':'Node Host (CLI)','nodehost-desc':'Any machine with Node.js. Remote command execution and tool routing.',
+        'capabilities-title':'🎯 Node Capabilities','cap-camera':'Take photos from front or back camera, record video clips.','cap-photos':'Access the most recent photos from the device camera roll.','cap-screen':'Record the device screen for monitoring or assistance.','cap-location':'GPS with configurable accuracy (coarse, balanced, precise).','cap-notif':'Read, open or reply to device notifications.','cap-exec':'Execute commands on the remote machine (with approval system).','cap-info':'Battery, disk space, connection status, OS version.',
+        'pairing-title':'🔗 Pairing','pair-qr':'QR Code','pair-qr-desc':'The easiest way. Open the companion app, select "Connect" and scan the QR shown in the dashboard or terminal.','pair-code':'Setup Code','pair-code-desc':'For remote connections (VPS, Tailscale). Generate a code from the dashboard and enter it in the companion app.','pair-cli':'Node Host CLI','pair-cli-desc':'To connect another machine as an execution node:','pair-security':'⚠️ Pairing generates a unique cryptographic token per device. Commands executed on nodes require explicit user approval for security.',
+        'routing-title':'🔀 Tool Routing','routing-desc':'The AI can route tools to specific nodes. For example: "take a photo from the phone camera" sends the command to the mobile node, while "run git pull on the build server" sends it to the configured Node Host. Each node has a name and its capabilities are auto-detected.','routing-ssh':'<strong>Remote Access:</strong> If the Gateway is on loopback, you can connect remote nodes via SSH tunnel: <code>ssh -L 18789:localhost:18789 user@gateway-host</code>',
+        'footer':'Developed with 🦾 by <strong>Team SHAKAZAMBA</strong>'
+    },
+    'de': {
+        'back':'Zurück zur Startseite','title':'Companion-Knoten','subtitle':'Erweitere TWIZA Moneypenny auf Telefone, Tablets und andere Computer. Deine Augen und Ohren in der realen Welt.',
+        'what-title':'📱 Was sind Knoten','devices-title':'🖥️ Unterstützte Geräte','capabilities-title':'🎯 Knoten-Fähigkeiten','pairing-title':'🔗 Kopplung','routing-title':'🔀 Tool-Routing',
+        'footer':'Entwickelt mit 🦾 vom <strong>Team SHAKAZAMBA</strong>'
+    },
+    'es': {
+        'back':'Volver al Inicio','title':'Nodos Companion','subtitle':'Extiende TWIZA Moneypenny a teléfonos, tablets y otros ordenadores. Tus ojos y oídos en el mundo real.',
+        'what-title':'📱 Qué Son los Nodos','devices-title':'🖥️ Dispositivos Soportados','capabilities-title':'🎯 Capacidades de los Nodos','pairing-title':'🔗 Vinculación','routing-title':'🔀 Enrutamiento de Herramientas',
+        'footer':'Desarrollado con 🦾 por <strong>Team SHAKAZAMBA</strong>'
+    },
+    'pt-BR': {
+        'back':'Voltar ao Início','title':'Nós Companion','subtitle':'Estenda TWIZA Moneypenny para telefones, tablets e outros computadores. Seus olhos e ouvidos no mundo real.',
+        'what-title':'📱 O que São os Nós','devices-title':'🖥️ Dispositivos Suportados','capabilities-title':'🎯 Capacidades dos Nós','pairing-title':'🔗 Pareamento','routing-title':'🔀 Roteamento de Ferramentas',
+        'footer':'Desenvolvido com 🦾 pelo <strong>Team SHAKAZAMBA</strong>'
+    },
+    'zh-CN': {
+        'back':'返回首页','title':'伴侣节点','subtitle':'将TWIZA Moneypenny扩展到手机、平板和其他电脑。你在现实世界的眼睛和耳朵。',
+        'what-title':'📱 什么是节点','devices-title':'🖥️ 支持的设备','capabilities-title':'🎯 节点能力','pairing-title':'🔗 配对','routing-title':'🔀 工具路由',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 开发'
+    },
+    'zh-TW': {
+        'back':'返回首頁','title':'伴侶節點','subtitle':'將TWIZA Moneypenny擴展到手機、平板和其他電腦。你在現實世界的眼睛和耳朵。',
+        'what-title':'📱 什麼是節點','devices-title':'🖥️ 支援的裝置','capabilities-title':'🎯 節點能力','pairing-title':'🔗 配對','routing-title':'🔀 工具路由',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 開發'
+    }
+};
+
+let currentLang = 'it';
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    const t = translations[lang] || translations['it'];
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (t[key]) el.innerHTML = t[key];
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacità - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --bg: #0a0a0a; --card: #1a1a1a; --border: #2a2a2a; --text: #b0b0b0; --dim: #808080; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card); border-right: 1px solid var(--border); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .sidebar-logo img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: cover; }
+        .sidebar-logo h2 { color: var(--pink); font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--dim); font-size: 0.8rem; }
+        .nav-menu { list-style: none; } .nav-item { margin-bottom: 0.3rem; }
+        .nav-link { display: block; color: var(--text); text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { background: var(--pink); color: #fff; }
+        .nav-section { color: var(--dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem; }
+        .sidebar-footer { margin-top: auto; text-align: center; color: var(--dim); font-size: 0.75rem; padding-top: 1rem; }
+        .content { margin-left: 260px; flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        .lang-bar { position: fixed; top: 1rem; right: 1rem; z-index: 1000; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .lang-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+        .lang-btn.active { background: var(--pink); color: #fff; border-color: var(--pink); }
+        header { padding: 1rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+        .back-link { color: var(--pink); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        h1 { font-size: 2.5rem; color: var(--pink); margin: 0.5rem 0; }
+        .subtitle { color: var(--text); font-size: 1.1rem; }
+        h2 { color: var(--pink); font-size: 1.3rem; margin-bottom: 1rem; }
+        p { color: var(--text); margin-bottom: 0.8rem; }
+        a { color: var(--pink); text-decoration: none; } a:hover { text-decoration: underline; }
+        .cap-section { margin: 1.5rem 0; padding: 1.5rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.2s; }
+        .cap-section:hover { border-color: var(--pink); }
+        .code-block { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem; margin: 0.8rem 0; font-family: monospace; color: var(--text); font-size: 0.85rem; }
+        .highlight { color: var(--pink); font-weight: 600; }
+        footer { margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+        @media (max-width: 768px) { .sidebar { display: none; } .content { margin-left: 0; padding: 1rem; } }
+    </style>
+</head>
+<body>
+    <div class="lang-bar">
+        <button class="lang-btn active" data-lang="it">🇮🇹</button>
+        <button class="lang-btn" data-lang="en">🇬🇧</button>
+        <button class="lang-btn" data-lang="de">🇩🇪</button>
+        <button class="lang-btn" data-lang="es">🇪🇸</button>
+        <button class="lang-btn" data-lang="pt-BR">🇧🇷</button>
+        <button class="lang-btn" data-lang="zh-CN">🇨🇳</button>
+        <button class="lang-btn" data-lang="zh-TW">🇹🇼</button>
+    </div>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny">
+                <h2>🦾 Moneypenny</h2>
+                <p data-lang-key="tagline">La tua assistente AI personale</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link" data-lang-key="nav-home">Home</a></li>
+                <li class="nav-item"><a href="capabilities.html" class="nav-link active" data-lang-key="nav-cap">Capacità</a></li>
+                <li class="nav-item"><a href="connectors.html" class="nav-link" data-lang-key="nav-conn">Connettori</a></li>
+                <li class="nav-item"><a href="models.html" class="nav-link" data-lang-key="nav-models">Modelli AI</a></li>
+                <li class="nav-item"><a href="privacy.html" class="nav-link" data-lang-key="nav-privacy">Privacy</a></li>
+            
+                <li class="nav-item"><a href="getting-started.html" class="nav-link">🚀 <span data-lang-key="nav-gs">Guida Rapida</span></a></li>
+                <li class="nav-item"><a href="channels.html" class="nav-link">📡 <span data-lang-key="nav-ch">Canali Chat</span></a></li>
+                <li class="nav-item"><a href="gateway.html" class="nav-link">⚡ Gateway</a></li>
+                <li class="nav-item"><a href="nodes.html" class="nav-link">📱 <span data-lang-key="nav-nodes">Nodi Companion</span></a></li>
+                <li class="nav-item"><a href="troubleshooting.html" class="nav-link">🔧 <span data-lang-key="nav-ts">Risoluzione Problemi</span></a></li>
+            </ul>
+            <div class="sidebar-footer"><p>Sviluppato dal<br><strong style="color:var(--pink);">Team SHAKAZAMBA</strong></p></div>
+        </nav>
+        <main class="content">
+            <header>
+                <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+                <h1 data-lang-key="title">⚙️ Le Mie Capacità</h1>
+                <p class="subtitle" data-lang-key="subtitle">Tutto ciò che posso fare per te, dal semplice al complesso.</p>
+            </header>
+
+            <div class="cap-section">
+                <h2>💬 <span data-lang-key="c1t">Chat in Linguaggio Naturale</span></h2>
+                <p data-lang-key="c1d">Parlo italiano, inglese e decine di altre lingue. Comprendo il contesto, seguo il filo del discorso e ricordo le nostre conversazioni precedenti.</p>
+                <div class="code-block"><span class="highlight">Tu:</span> "Ciao! Come funzioni?"<br><span class="highlight">Moneypenny:</span> "Ciao! Sono un'AI che gira completamente sul tuo computer..."</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>⚡ <span data-lang-key="c2t">Esecuzione Comandi</span></h2>
+                <p data-lang-key="c2d">Posso eseguire comandi di sistema, installare software, gestire file e configurare il tuo ambiente.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Installa Python" · "Mostrami i file nella cartella Documenti"<br>"Controlla lo spazio libero su disco" · "Apri il Task Manager"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>🌐 <span data-lang-key="c3t">Navigazione Web</span></h2>
+                <p data-lang-key="c3d">Posso cercare informazioni online, leggere pagine web, scaricare contenuti e analizzare link.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Cerca le ultime notizie sulla tecnologia"<br>"Riassumimi questo articolo: https://..." · "Controlla il meteo"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>📄 <span data-lang-key="c4t">Analisi Documenti</span></h2>
+                <p data-lang-key="c4d">Posso leggere e analizzare PDF, immagini, fogli Excel, documenti Word e molto altro.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Analizza questo PDF e creami un riassunto"<br>"Cosa vedi in questa immagine?" · "Estrai i dati da questo Excel"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>💻 <span data-lang-key="c5t">Programmazione</span></h2>
+                <p data-lang-key="c5d">Scrivo, modifico, debug e spiego codice in tutti i linguaggi di programmazione principali.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Crea un'app web in HTML/CSS/JS" · "Correggi questo errore Python"<br>"Spiega come funziona questo codice" · "Ottimizza questa funzione"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>📁 <span data-lang-key="c6t">Gestione File</span></h2>
+                <p data-lang-key="c6d">Organizzo, rinomino, sposto e gestisco i tuoi file e cartelle in modo intelligente.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Organizza le foto per data" · "Elimina i file duplicati"<br>"Comprimi questa cartella" · "Fai backup di questi documenti"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>🧠 <span data-lang-key="c7t">Sistema di Memoria</span></h2>
+                <p data-lang-key="c7d">Ricordo informazioni importanti tra le sessioni, preferenze personali e contesto delle nostre conversazioni.</p>
+                <div class="code-block">• <span data-lang-key="mem1">Salvo automaticamente informazioni importanti</span><br>• <span data-lang-key="mem2">Ricordo le tue preferenze e abitudini</span><br>• <span data-lang-key="mem3">Mantengo il contesto dei progetti in corso</span></div>
+            </div>
+
+            <div class="cap-section">
+                <h2>⏰ <span data-lang-key="c8t">Task Programmati</span></h2>
+                <p data-lang-key="c8d">Posso eseguire task automatici: backup periodici, monitoraggio sistema, invio promemoria.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Ricordami ogni giorno alle 9:00 di controllare le email"<br>"Fai backup settimanale" · "Controlla aggiornamenti ogni lunedì"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>🔊 <span data-lang-key="c9t">Text-to-Speech</span></h2>
+                <p data-lang-key="c9d">Posso "parlare" con la mia voce per raccontare storie, riassunti o spiegazioni lunghe.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Raccontami una storia" · "Spiegami a voce come funziona..."<br>"Leggimi questo articolo"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>👁️ <span data-lang-key="c10t">Analisi Immagini</span></h2>
+                <p data-lang-key="c10d">Vedo e comprendo immagini, screenshot, diagrammi, grafici e posso descriverli o analizzarli.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Cosa vedi in questo screenshot?" · "Analizza questo grafico"<br>"Descrivi questa foto" · "Estrai il testo da questa immagine"</div>
+            </div>
+
+            <div class="cap-section">
+                <h2>🦾 <span data-lang-key="c11t">Delegazione a Sub-Agenti</span></h2>
+                <p data-lang-key="c11d">Per task complessi, posso creare agenti specializzati che lavorano autonomamente in background.</p>
+                <div class="code-block"><span class="highlight" data-lang-key="examples">Esempi:</span><br>"Crea un'app completa per gestire ricette"<br>"Analizza tutti i documenti e creami un report"<br>"Refactoring completo di questo progetto"</div>
+            </div>
+
+            <footer>
+                <p>TWIZA Moneypenny — <span data-lang-key="footer">Sviluppato dal Team SHAKAZAMBA</span></p>
+            </footer>
+        </main>
+    </div>
+    <script>
+        const T = {
+            it: { tagline:'La tua assistente AI personale', 'nav-home':'Home', 'nav-cap':'Capacità', 'nav-conn':'Connettori', 'nav-models':'Modelli AI', 'nav-privacy':'Privacy', 'nav-docs':'Documentazione', 'nav-gs':'Guida Rapida', 'nav-ch':'Canali Chat', 'nav-nodes':'Nodi Companion', 'nav-ts':'Risoluzione Problemi', back:'Torna alla Home', title:'⚙️ Le Mie Capacità', subtitle:'Tutto ciò che posso fare per te, dal semplice al complesso.', c1t:'Chat in Linguaggio Naturale', c1d:'Parlo italiano, inglese e decine di altre lingue. Comprendo il contesto e ricordo le conversazioni.', c2t:'Esecuzione Comandi', c2d:'Posso eseguire comandi di sistema, installare software, gestire file e configurare il tuo ambiente.', c3t:'Navigazione Web', c3d:'Posso cercare informazioni online, leggere pagine web, scaricare contenuti e analizzare link.', c4t:'Analisi Documenti', c4d:'Posso leggere e analizzare PDF, immagini, fogli Excel, documenti Word e molto altro.', c5t:'Programmazione', c5d:'Scrivo, modifico, debug e spiego codice in tutti i linguaggi principali.', c6t:'Gestione File', c6d:'Organizzo, rinomino, sposto e gestisco i tuoi file e cartelle in modo intelligente.', c7t:'Sistema di Memoria', c7d:'Ricordo informazioni importanti tra le sessioni, preferenze e contesto.', c8t:'Task Programmati', c8d:'Posso eseguire task automatici: backup periodici, monitoraggio, promemoria.', c9t:'Text-to-Speech', c9d:'Posso parlare con la mia voce per storie, riassunti o spiegazioni.', c10t:'Analisi Immagini', c10d:'Vedo e comprendo immagini, screenshot, diagrammi e grafici.', c11t:'Delegazione a Sub-Agenti', c11d:'Per task complessi, creo agenti specializzati che lavorano autonomamente.', examples:'Esempi:', mem1:'Salvo automaticamente informazioni importanti', mem2:'Ricordo le tue preferenze e abitudini', mem3:'Mantengo il contesto dei progetti in corso', footer:'Sviluppato dal Team SHAKAZAMBA' },
+            en: { tagline:'Your personal AI assistant', 'nav-home':'Home', 'nav-cap':'Capabilities', 'nav-conn':'Connectors', 'nav-models':'AI Models', 'nav-privacy':'Privacy', 'nav-docs':'Documentation', 'nav-gs':'Quick Start', 'nav-ch':'Chat Channels', 'nav-nodes':'Companion Nodes', 'nav-ts':'Troubleshooting', back:'Back to Home', title:'⚙️ My Capabilities', subtitle:'Everything I can do for you, from simple to complex.', c1t:'Natural Language Chat', c1d:'I speak Italian, English and dozens of other languages. I understand context and remember conversations.', c2t:'Command Execution', c2d:'I can run system commands, install software, manage files and configure your environment.', c3t:'Web Browsing', c3d:'I can search online, read web pages, download content and analyze links.', c4t:'Document Analysis', c4d:'I can read and analyze PDFs, images, Excel sheets, Word documents and more.', c5t:'Programming', c5d:'I write, modify, debug and explain code in all major languages.', c6t:'File Management', c6d:'I organize, rename, move and intelligently manage your files and folders.', c7t:'Memory System', c7d:'I remember important info across sessions, personal preferences and project context.', c8t:'Scheduled Tasks', c8d:'I can run automatic tasks: periodic backups, monitoring, reminders.', c9t:'Text-to-Speech', c9d:'I can speak with my voice for stories, summaries or explanations.', c10t:'Image Analysis', c10d:'I see and understand images, screenshots, diagrams and charts.', c11t:'Sub-Agent Delegation', c11d:'For complex tasks, I create specialized agents that work autonomously.', examples:'Examples:', mem1:'I automatically save important information', mem2:'I remember your preferences and habits', mem3:'I maintain context of ongoing projects', footer:'Developed by Team SHAKAZAMBA' },
+            de: { tagline:'Ihre persönliche KI-Assistentin', 'nav-home':'Start', 'nav-cap':'Fähigkeiten', 'nav-conn':'Konnektoren', 'nav-models':'KI-Modelle', 'nav-privacy':'Datenschutz', 'nav-docs':'Dokumentation', 'nav-gs':'Schnellstart', 'nav-ch':'Chat-Kanäle', 'nav-nodes':'Companion-Knoten', 'nav-ts':'Fehlerbehebung', back:'Zurück', title:'⚙️ Meine Fähigkeiten', subtitle:'Alles, was ich für Sie tun kann.', footer:'Entwickelt vom Team SHAKAZAMBA' },
+            es: { tagline:'Tu asistente AI personal', 'nav-home':'Inicio', 'nav-cap':'Capacidades', 'nav-conn':'Conectores', 'nav-models':'Modelos AI', 'nav-privacy':'Privacidad', 'nav-docs':'Documentación', 'nav-gs':'Inicio Rápido', 'nav-ch':'Canales Chat', 'nav-nodes':'Nodos Companion', 'nav-ts':'Solución de Problemas', back:'Volver', title:'⚙️ Mis Capacidades', subtitle:'Todo lo que puedo hacer por ti.', footer:'Desarrollado por Team SHAKAZAMBA' },
+            'pt-BR': { tagline:'Sua assistente AI pessoal', 'nav-home':'Início', 'nav-cap':'Capacidades', 'nav-conn':'Conectores', 'nav-models':'Modelos AI', 'nav-privacy':'Privacidade', 'nav-docs':'Documentação', 'nav-gs':'Início Rápido', 'nav-ch':'Canais Chat', 'nav-nodes':'Nós Companion', 'nav-ts':'Solução de Problemas', back:'Voltar', title:'⚙️ Minhas Capacidades', subtitle:'Tudo que posso fazer por você.', footer:'Desenvolvido pelo Team SHAKAZAMBA' },
+            'zh-CN': { tagline:'您的个人AI助手', 'nav-home':'首页', 'nav-cap':'功能', 'nav-conn':'连接器', 'nav-models':'AI模型', 'nav-privacy':'隐私', 'nav-docs':'文档', 'nav-gs':'快速入门', 'nav-ch':'聊天频道', 'nav-nodes':'Companion节点', 'nav-ts':'故障排除', back:'返回', title:'⚙️ 我的功能', subtitle:'我能为您做的一切。', footer:'由Team SHAKAZAMBA开发' },
+            'zh-TW': { tagline:'您的個人AI助手', 'nav-home':'首頁', 'nav-cap':'功能', 'nav-conn':'連接器', 'nav-models':'AI模型', 'nav-privacy':'隱私', 'nav-docs':'文件', 'nav-gs':'快速入門', 'nav-ch':'聊天頻道', 'nav-nodes':'Companion節點', 'nav-ts':'疑難排解', back:'返回', title:'⚙️ 我的功能', subtitle:'我能為您做的一切。', footer:'由Team SHAKAZAMBA開發' }
+        };
+        let lang='it'; const bl=navigator.language||'it';
+        if(bl.startsWith('zh-TW')||bl.startsWith('zh-Hant'))lang='zh-TW';else if(bl.startsWith('zh'))lang='zh-CN';else if(bl.startsWith('pt'))lang='pt-BR';else if(bl.startsWith('de'))lang='de';else if(bl.startsWith('es'))lang='es';else if(bl.startsWith('en'))lang='en';
+        function setLang(l){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));document.querySelectorAll('[data-lang-key]').forEach(el=>{const k=el.dataset.langKey;if(T[l]&&T[l][k])el.textContent=T[l][k];});localStorage.setItem('moneypenny-lang',l);}
+        document.addEventListener('DOMContentLoaded',()=>{const s=localStorage.getItem('moneypenny-lang');if(s&&T[s])lang=s;setLang(lang);document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));});
+    </script>
+</body>
+</html>

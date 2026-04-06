@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWIZA Moneypenny — Wizard Preview</title>
+  <style>
+    @font-face {
+      font-family: 'DK Jambo';
+      src: url('fonts/DKJambo.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Titillium Web';
+      src: url('fonts/TitilliumWeb-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Titillium Web';
+      src: url('fonts/TitilliumWeb-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Titillium Web';
+      src: url('fonts/TitilliumWeb-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Titillium Web';
+      src: url('fonts/TitilliumWeb-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Titillium Web';
+      src: url('fonts/TitilliumWeb-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --fuchsia: #D4006A;
+      --fuchsia-dim: #D30F63;
+      --purple: #6600FF;
+      --green: #5EC900;
+      --orange: #FFBC7D;
+      --cyan: #6EC1E4;
+      --bg-deep: #010205;
+      --bg-dark: #050913;
+      --bg-panel: #0D111A;
+      --bg-elevated: #171420;
+      --bg-card: #2A2E36;
+      --text-primary: #FFFFFF;
+      --text-secondary: #74727B;
+      --text-muted: #54595F;
+      --gradient-primary: linear-gradient(135deg, #D4006A, #6600FF);
+      --gradient-bg: linear-gradient(180deg, #010205, #050913, #0D111A);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-input: #54595F;
+      --border-focus: #D4006A;
+      --glow-fuchsia: 0 0 20px rgba(212, 0, 106, 0.35);
+      --glow-purple: 0 0 20px rgba(102, 0, 255, 0.3);
+    }
+
+    body {
+      font-family: 'Titillium Web', system-ui, -apple-system, sans-serif;
+      background: 
+        linear-gradient(rgba(212, 0, 106, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 0, 106, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(212, 0, 106, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 0, 106, 0.06) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 30%, rgba(212, 0, 106, 0.25) 0%, rgba(102, 0, 255, 0.08) 40%, transparent 70%),
+        #000;
+      background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px, 100% 100%, 100% 100%;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+      min-height: 100vh;
+    }
+
+    .preview-badge {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-size: 12.6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .preview-title {
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-size: 36.8px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .preview-subtitle {
+      color: var(--text-secondary);
+      font-size: 16.1px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    /* Window chrome */
+    .window {
+      width: 90vw;
+      max-width: 1200px;
+      min-width: 320px;
+      background: var(--bg-deep);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(212, 0, 106, 0.15), 0 8px 32px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 40px;
+    }
+
+    .titlebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bg-deep);
+      border-bottom: 1px solid var(--border);
+    }
+    .titlebar-title {
+      font-size: 13.8px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .titlebar-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .titlebar-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #ffbc2e; }
+    .dot-green { background: #28c840; }
+
+    /* Layout */
+    .container {
+      display: flex;
+      height: 65vh;
+      min-height: 400px;
+      max-height: 700px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: var(--bg-dark);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-logo {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 0 20px;
+    }
+    .sidebar-logo .logo-text {
+      font-family: 'DK Jambo', sans-serif;
+      font-size: 32.2px;
+      font-weight: normal;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sidebar-logo .payoff {
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-size: 0.7em;
+      font-style: italic;
+      color: #ffffff;
+      margin-top: 0.3em;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+      opacity: 0.9;
+    }
+
+    .sidebar-logo .logo-sub {
+      font-size: 10.3px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-top: 4px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.25s;
+      color: var(--text-muted);
+      font-size: 13.8px;
+      font-weight: 500;
+      position: relative;
+    }
+    .step-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: transparent;
+      border-radius: 0 3px 3px 0;
+      transition: background 0.25s;
+    }
+    .step-item.active { color: var(--text-primary); }
+    .step-item.active::before { background: var(--fuchsia); }
+    .step-item.completed { color: var(--text-secondary); }
+    .step-item .step-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--border-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12.6px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.25s;
+      flex-shrink: 0;
+    }
+    .step-item.active .step-num {
+      border-color: var(--fuchsia);
+      color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+    }
+    .step-item.completed .step-num {
+      border-color: var(--green);
+      background: var(--green);
+      color: var(--bg-deep);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 2em 2.5em;
+      overflow-y: auto;
+      background: var(--gradient-bg);
+      position: relative;
+    }
+
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-size: 25.3px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    .brand-name {
+      font-family: 'DK Jambo', sans-serif;
+      font-weight: normal;
+    }
+
+    h1 .accent {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 14.9px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* Provider cards */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .provider-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .provider-card:hover {
+      border-color: var(--text-muted);
+      background: var(--bg-panel);
+    }
+    .provider-card.selected {
+      border-color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+      background: var(--bg-panel);
+    }
+    .provider-card .provider-icon { font-size: 32.2px; margin-bottom: 6px; }
+    .provider-card .provider-name { font-weight: 600; font-size: 14.9px; }
+    .provider-card .provider-desc { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+
+    /* Form elements */
+    label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-input);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.8px;
+      outline: none;
+    }
+    input:focus { border-color: var(--fuchsia); box-shadow: var(--glow-fuchsia); }
+
+    .field-group { margin-bottom: 20px; }
+
+    .key-row { display: flex; gap: 8px; }
+    .key-row input { flex: 1; }
+
+    /* Buttons */
+    .btn {
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 13.8px;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background: var(--gradient-primary); color: #fff; }
+    .btn-primary:hover { box-shadow: var(--glow-fuchsia); filter: brightness(1.1); }
+    .btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-input); }
+    .btn-validate { background: transparent; color: var(--fuchsia); border: 1px solid var(--fuchsia); white-space: nowrap; padding: 10px 16px; }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .validation-msg { font-size: 12.6px; margin-top: 6px; display: flex; align-items: center; gap: 5px; color: var(--green); }
+
+    /* Feature list */
+    .hero-visual { text-align: center; margin: 12px 0 24px; }
+    .hero-icon { font-size: 64.4px; display: inline-block; animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .feature-item {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.8px;
+    }
+    .feature-item .fi-icon { font-size: 20.7px; flex-shrink: 0; }
+    .feature-item .fi-text { color: var(--text-secondary); }
+
+    /* Personality */
+    .personality-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .personality-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .personality-card:hover { border-color: var(--text-muted); }
+    .personality-card.selected { border-color: var(--purple); box-shadow: var(--glow-purple); }
+    .personality-card .p-name { font-weight: 600; font-size: 13.8px; margin-bottom: 3px; }
+    .personality-card .p-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Emoji grid */
+    .emoji-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .emoji-option {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 23px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .emoji-option:hover { border-color: var(--text-muted); transform: scale(1.1); }
+    .emoji-option.selected { border-color: var(--purple); box-shadow: var(--glow-purple); }
+
+    /* Avatar */
+    .avatar-upload {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px dashed var(--border-input);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 27.6px; color: var(--text-muted);
+    }
+
+    /* Summary */
+    .summary-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14.9px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-label { color: var(--text-secondary); }
+    .summary-value { font-weight: 600; }
+
+    .btn-install {
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 12px 36px;
+      font-size: 16.1px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-install:hover { box-shadow: var(--glow-fuchsia); filter: brightness(1.1); }
+
+    /* Tabs */
+    .screen-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 3px;
+      width: fit-content;
+    }
+    .screen-tab {
+      padding: 8px 20px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      font-size: 13.8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .screen-tab.active {
+      background: var(--gradient-primary);
+      color: white;
+    }
+    .screen-tab:hover:not(.active) { color: var(--text-primary); }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 2px; }
+
+    @media (max-width: 700px) {
+      .window { width: 95vw; }
+      .sidebar { display: none; }
+      .container { height: auto; min-height: 70vh; }
+      .main { padding: 1.5em; }
+      .provider-grid { grid-template-columns: 1fr; }
+      .feature-list { grid-template-columns: 1fr; }
+      .personality-grid { grid-template-columns: 1fr; }
+      .screen-tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-badge">📸 Preview</div>
+  <div class="preview-title"><span class="brand-name" style="background:linear-gradient(135deg,#D4006A,#6600FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent">TWIZA</span> Moneypenny — Setup Wizard</div>
+  <div style="font-style:italic;color:#ffffff;font-size:1.1em;margin-bottom:0.6em;letter-spacing:0.03em;font-weight:700">...more than an agent!</div>
+  <div class="preview-subtitle">Interactive preview — click the tabs to navigate between screens</div>
+
+  <div class="screen-tabs">
+    <button class="screen-tab active" onclick="showScreen(0)">Welcome</button>
+    <button class="screen-tab" onclick="showScreen(1)">AI Provider</button>
+    <button class="screen-tab" onclick="showScreen(2)">Identity</button>
+    <button class="screen-tab" onclick="showScreen(3)">Install</button>
+  </div>
+
+  <div class="window">
+    <div class="titlebar">
+      <div class="titlebar-dots">
+        <div class="titlebar-dot dot-red"></div>
+        <div class="titlebar-dot dot-yellow"></div>
+        <div class="titlebar-dot dot-green"></div>
+      </div>
+      <div class="titlebar-title">TWIZA Agent — Setup</div>
+      <div style="width:52px"></div>
+    </div>
+
+    <div class="container">
+      <div class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-text">TWIZA</div>
+          <div class="logo-sub">Moneypenny</div>
+          <div class="payoff">...more than an agent!</div>
+        </div>
+        <div class="step-item active" data-step="0">
+          <span class="step-num">1</span> Welcome
+        </div>
+        <div class="step-item" data-step="1">
+          <span class="step-num">2</span> AI Provider
+        </div>
+        <div class="step-item" data-step="2">
+          <span class="step-num">3</span> Identity
+        </div>
+        <div class="step-item" data-step="3">
+          <span class="step-num">4</span> Install
+        </div>
+      </div>
+
+      <div class="main">
+        <!-- Step 1: Welcome -->
+        <div class="page active" id="page-0">
+          <h1>Welcome to <span class="accent brand-name">TWIZA</span></h1>
+          <p class="subtitle">Your personal AI agent for Windows. Private, powerful, and completely yours.</p>
+          <p style="font-style:italic;color:#ffffff;font-size:1em;margin-top:-0.8em;margin-bottom:1em;font-weight:700;letter-spacing:0.5px">...more than an agent!</p>
+          <div class="hero-visual"><div class="hero-icon">🦾</div></div>
+          <div class="feature-list">
+            <div class="feature-item"><span class="fi-icon">🤖</span><span class="fi-text">Personal AI with memory & personality</span></div>
+            <div class="feature-item"><span class="fi-icon">🔒</span><span class="fi-text">100% local — your data stays yours</span></div>
+            <div class="feature-item"><span class="fi-icon">💬</span><span class="fi-text">Chat via web, WhatsApp, Telegram, Discord</span></div>
+            <div class="feature-item"><span class="fi-icon">🧠</span><span class="fi-text">Cloud or local AI models — your choice</span></div>
+          </div>
+          <div class="btn-row"><div></div><button class="btn btn-primary" onclick="showScreen(1)">Get Started →</button></div>
+        </div>
+
+        <!-- Step 2: AI Provider -->
+        <div class="page" id="page-1">
+          <h1>Choose your <span class="accent">AI Provider</span></h1>
+          <p class="subtitle">Select a cloud AI provider and enter your API key. You can change this later.</p>
+          <label style="margin-bottom:10px">Cloud Providers</label>
+          <div class="provider-grid">
+            <div class="provider-card selected">
+              <div class="provider-icon">🟤</div>
+              <div class="provider-name">Anthropic</div>
+              <div class="provider-desc">Claude — Best overall</div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon">🟢</div>
+              <div class="provider-name">OpenAI</div>
+              <div class="provider-desc">GPT-4o — Most popular</div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon">🔵</div>
+              <div class="provider-name">Google Gemini</div>
+              <div class="provider-desc">Free tier available!</div>
+            </div>
+          </div>
+
+          <label style="margin-bottom:10px;margin-top:20px">Local Models <span style="font-size:10px;color:var(--green);font-weight:400;text-transform:none;letter-spacing:0">● Bundled — no internet needed</span></label>
+          <div class="provider-grid">
+            <div class="provider-card" style="position:relative">
+              <div class="provider-icon">🧠</div>
+              <div class="provider-name">Qwen 3</div>
+              <div class="provider-desc">32B — Best local model</div>
+              <div style="position:absolute;top:8px;right:8px;background:var(--green);color:var(--bg-deep);font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px">BUNDLED</div>
+            </div>
+            <div class="provider-card" style="position:relative">
+              <div class="provider-icon">🔬</div>
+              <div class="provider-name">DeepSeek R1</div>
+              <div class="provider-desc">14B — Reasoning model</div>
+              <div style="position:absolute;top:8px;right:8px;background:var(--green);color:var(--bg-deep);font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px">BUNDLED</div>
+            </div>
+            <div class="provider-card" style="position:relative">
+              <div class="provider-icon">🌀</div>
+              <div class="provider-name">Mistral Small</div>
+              <div class="provider-desc">24B — Fast &amp; multilingual</div>
+              <div style="position:absolute;top:8px;right:8px;background:var(--green);color:var(--bg-deep);font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px">BUNDLED</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:18px">💡</span>
+            <span style="font-size:12px;color:var(--text-secondary)">Local models run 100% offline via Ollama on your GPU. Requires NVIDIA GPU with 8GB+ VRAM. Cloud + local can work together in hybrid mode.</span>
+          </div>
+          <div class="field-group">
+            <label>API Key</label>
+            <div class="key-row">
+              <input type="password" value="sk-ant-api03-****************************" />
+              <button class="btn btn-validate">✓ Validate</button>
+            </div>
+            <div class="validation-msg">✓ Key validated — Claude 3.5 Sonnet ready</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" onclick="showScreen(0)">← Back</button>
+            <button class="btn btn-primary" onclick="showScreen(2)">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Identity -->
+        <div class="page" id="page-2">
+          <h1>Create your <span class="accent">Agent</span></h1>
+          <p class="subtitle">Give your AI assistant a name, look, and personality.</p>
+          <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 16px;">
+            <div>
+              <label>Profile Picture</label>
+              <div class="avatar-upload">+</div>
+            </div>
+            <div style="flex:1">
+              <div class="field-group">
+                <label>Agent Name</label>
+                <input type="text" value="Moneypenny" style="color: var(--fuchsia)" />
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Emoji</label>
+            <div class="emoji-grid">
+              <div class="emoji-option">🤖</div>
+              <div class="emoji-option selected">🦾</div>
+              <div class="emoji-option">🧠</div>
+              <div class="emoji-option">⚡</div>
+              <div class="emoji-option">🔮</div>
+              <div class="emoji-option">🌟</div>
+              <div class="emoji-option">💎</div>
+              <div class="emoji-option">🦊</div>
+              <div class="emoji-option">🐉</div>
+              <div class="emoji-option">🦅</div>
+              <div class="emoji-option">🎯</div>
+              <div class="emoji-option">🛡️</div>
+              <div class="emoji-option">🚀</div>
+              <div class="emoji-option">💜</div>
+              <div class="emoji-option">🔥</div>
+              <div class="emoji-option">👾</div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Personality</label>
+            <div class="personality-grid">
+              <div class="personality-card"><div class="p-name">⚖️ Balanced</div><div class="p-desc">Friendly, helpful, concise</div></div>
+              <div class="personality-card"><div class="p-name">💼 Professional</div><div class="p-desc">Formal, precise, structured</div></div>
+              <div class="personality-card"><div class="p-name">🎨 Creative</div><div class="p-desc">Playful, expressive, imaginative</div></div>
+              <div class="personality-card selected"><div class="p-name">✏️ Custom</div><div class="p-desc">Write your own personality</div></div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" onclick="showScreen(1)">← Back</button>
+            <button class="btn btn-primary" onclick="showScreen(3)">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Install -->
+        <div class="page" id="page-3">
+          <h1>Ready to <span class="accent">Install</span></h1>
+          <p class="subtitle">Review your setup and hit install.</p>
+          <div class="summary-card">
+            <div class="summary-row"><span class="summary-label">Agent Name</span><span class="summary-value">🦾 Moneypenny</span></div>
+            <div class="summary-row"><span class="summary-label">AI Provider</span><span class="summary-value">Anthropic (Claude)</span></div>
+            <div class="summary-row"><span class="summary-label">API Key</span><span class="summary-value" style="font-family:'JetBrains Mono',monospace;font-size: 12.6px">sk-ant-api03-...Xk4w</span></div>
+            <div class="summary-row"><span class="summary-label">Personality</span><span class="summary-value">✏️ Custom</span></div>
+            <div class="summary-row"><span class="summary-label">Components</span><span class="summary-value">WSL2 + OpenClaw + Ollama</span></div>
+            <div class="summary-row"><span class="summary-label">Bundled Models</span><span class="summary-value">Qwen 3 32B · DeepSeek R1 · Mistral Small</span></div>
+          </div>
+          <div style="text-align: center;">
+            <button class="btn-install">🚀 Install TWIZA Moneypenny</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" onclick="showScreen(2)">← Back</button>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showScreen(n) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + n).classList.add('active');
+
+      document.querySelectorAll('.step-item').forEach((el, i) => {
+        el.classList.remove('active', 'completed');
+        if (i < n) el.classList.add('completed');
+        if (i === n) el.classList.add('active');
+      });
+
+      document.querySelectorAll('.screen-tab').forEach((t, i) => {
+        t.classList.toggle('active', i === n);
+      });
+    }
+  </script>
+</body>
+</html>

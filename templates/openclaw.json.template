@@ -1,0 +1,181 @@
+{
+    "ui": {
+        "assistant": {
+            "name": "Moneypenny",
+            "avatar": "media/agent-avatar.png"
+        }
+    },
+    "auth": {
+        "profiles": {
+            "anthropic:default": {
+                "provider": "anthropic",
+                "mode": "api_key"
+            },
+            "openai:default": {
+                "provider": "openai",
+                "mode": "api_key"
+            }
+        }
+    },
+    "models": {
+        "providers": {
+            "ollama": {
+                "baseUrl": "http://127.0.0.1:11434/v1",
+                "apiKey": "ollama-local",
+                "api": "openai-completions",
+                "models": [
+                    {
+                        "id": "qwen2.5:3b",
+                        "name": "Gemma 3 4B",
+                        "reasoning": false,
+                        "input": [
+                            "text"
+                        ],
+                        "cost": {
+                            "input": 0,
+                            "output": 0,
+                            "cacheRead": 0,
+                            "cacheWrite": 0
+                        },
+                        "contextWindow": 40960,
+                        "maxTokens": 40960
+                    }
+                ]
+            }
+        }
+    },
+    "agents": {
+        "defaults": {
+            "model": {
+                "primary": "ollama/qwen2.5:3b"
+            },
+            "models": {
+                "anthropic/claude-sonnet-4-20250514": {
+                    "alias": "sonnet"
+                },
+                "anthropic/claude-opus-4-6": {
+                    "alias": "opus"
+                },
+                "openai/gpt-4.1": {
+                    "alias": "gpt"
+                },
+                "gemini/gemini-2.5-flash": {
+                    "alias": "gemini"
+                },
+                "ollama/qwen2.5:3b": {
+                    "alias": "qwen"
+                }
+            },
+            "workspace": "___TWIZA_WORKSPACE___",
+            "bootstrapMaxChars": 20000,
+            "contextTokens": 100000,
+            "memorySearch": {
+                "enabled": true,
+                "sources": [
+                    "memory",
+                    "sessions"
+                ],
+                "provider": "ollama",
+                "sync": {
+                    "onSessionStart": true,
+                    "watch": true,
+                    "intervalMinutes": 15
+                },
+                "query": {
+                    "maxResults": 10,
+                    "hybrid": {
+                        "enabled": true,
+                        "vectorWeight": 0.7,
+                        "textWeight": 0.3
+                    }
+                }
+            },
+            "contextPruning": {
+                "mode": "cache-ttl",
+                "ttl": "30s",
+                "keepLastAssistants": 1,
+                "softTrimRatio": 0.2,
+                "hardClearRatio": 0.3
+            },
+            "compaction": {
+                "mode": "default",
+                "reserveTokensFloor": 30000,
+                "maxHistoryShare": 0.2
+            },
+            "maxConcurrent": 4,
+            "subagents": {
+                "maxConcurrent": 8
+            }
+        },
+        "list": [
+            {
+                "id": "main",
+                "identity": {
+                    "name": "Moneypenny",
+                    "emoji": "\ud83e\uddbe",
+                    "avatar": "media/agent-avatar.png"
+                },
+                "groupChat": {
+                    "mentionPatterns": [
+                        "moneypenny",
+                        "Moneypenny",
+                        "MONEYPENNY",
+                        "money penny",
+                        "Money Penny"
+                    ]
+                }
+            }
+        ]
+    },
+    "messages": {
+        "ackReactionScope": "group-mentions"
+    },
+    "commands": {
+        "native": "auto",
+        "nativeSkills": "auto",
+        "restart": true,
+        "ownerDisplay": "raw"
+    },
+    "hooks": {
+        "internal": {
+            "enabled": true,
+            "entries": {
+                "boot-md": {
+                    "enabled": true
+                },
+                "command-logger": {
+                    "enabled": true
+                },
+                "session-memory": {
+                    "enabled": true
+                }
+            }
+        }
+    },
+    "channels": {
+        "webchat": {
+            "enabled": true
+        }
+    },
+    "gateway": {
+        "port": 18789,
+        "mode": "local",
+        "bind": "loopback",
+        "auth": {
+            "mode": "token",
+            "token": "___TWIZA_GENERATED_TOKEN___"
+        },
+        "tailscale": {
+            "mode": "off"
+        }
+    },
+    "skills": {
+        "install": {
+            "nodeManager": "npm"
+        },
+        "entries": {}
+    },
+    "plugins": {
+        "entries": {}
+    }
+}

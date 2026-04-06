@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelli AI - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --bg: #0a0a0a; --card: #1a1a1a; --border: #2a2a2a; --text: #b0b0b0; --dim: #808080; }
+        
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card); border-right: 1px solid var(--border); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .sidebar-logo img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: cover; }
+        .sidebar-logo h2 { color: var(--pink); font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--dim); font-size: 0.8rem; }
+        .nav-menu { list-style: none; }
+        .nav-item { margin-bottom: 0.3rem; }
+        .nav-link { display: block; color: var(--text); text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { background: var(--pink); color: #fff; }
+        .nav-section { color: var(--dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem; }
+        .sidebar-footer { margin-top: auto; text-align: center; color: var(--dim); font-size: 0.75rem; padding-top: 1rem; }
+        
+        .content { margin-left: 260px; flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        
+        .lang-bar { position: fixed; top: 1rem; right: 1rem; z-index: 1000; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .lang-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+        .lang-btn.active { background: var(--pink); color: #fff; border-color: var(--pink); }
+        
+        header { padding: 1rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+        .back-link { color: var(--pink); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        h1 { font-size: 2.5rem; color: var(--pink); margin: 0.5rem 0; }
+        .subtitle { color: var(--text); font-size: 1.1rem; }
+        h2 { color: var(--pink); font-size: 1.5rem; margin: 2rem 0 1rem; }
+        h3 { color: #fff; font-size: 1.2rem; margin: 1rem 0 0.5rem; }
+        h4 { color: var(--pink); margin: 0 0 0.5rem; font-size: 1rem; }
+        p { color: var(--text); margin-bottom: 0.8rem; }
+        a { color: var(--pink); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        .section-box { margin: 2rem 0; padding: 2rem; border-radius: 12px; border: 2px solid; }
+        .section-local { background: linear-gradient(135deg, var(--card) 0%, rgba(0,255,136,0.08) 100%); border-color: #00ff88; }
+        .section-cloud { background: linear-gradient(135deg, var(--card) 0%, rgba(100,149,237,0.08) 100%); border-color: #6495ed; }
+        .section-search { background: linear-gradient(135deg, var(--card) 0%, rgba(255,165,0,0.08) 100%); border-color: #ffa500; }
+        
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-green { background: #00ff88; color: #000; }
+        .badge-blue { background: #6495ed; color: #fff; }
+        .badge-orange { background: #ffa500; color: #000; }
+        
+        .model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .model-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; transition: border-color 0.2s; }
+        .model-card:hover { border-color: var(--pink); }
+        .model-card-name { font-weight: 700; color: #fff; font-size: 1rem; margin-bottom: 0.3rem; }
+        .model-card-family { color: var(--pink); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .model-card-desc { color: var(--dim); font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .model-card-specs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .spec-tag { background: var(--card); border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.7rem; color: var(--text); }
+        .spec-tag.highlight { border-color: var(--pink); color: var(--pink); }
+        
+        .provider-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
+        .provider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+        .provider-models { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
+        .model-tag { background: var(--card); border: 1px solid var(--border); padding: 0.25rem 0.5rem; border-radius: 16px; font-size: 0.8rem; color: var(--text); }
+        
+        .code-block { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem; margin: 0.8rem 0; font-family: 'Courier New', monospace; color: var(--text); font-size: 0.85rem; }
+        .placeholder { color: var(--dim); font-style: italic; }
+        
+        .comparison { margin: 2rem 0; padding: 2rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+        .comp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+        .comp-grid > div { background: var(--card); padding: 0.6rem; text-align: center; color: var(--text); font-size: 0.9rem; }
+        .comp-grid > div:nth-child(3n+1) { text-align: left; font-weight: 600; color: #fff; }
+        .comp-head { background: var(--bg) !important; font-weight: 600; color: var(--pink) !important; }
+        
+        .rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .rec-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; }
+        
+        .smart-box { margin-top: 1.5rem; padding: 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; text-align: center; }
+        
+        footer { margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 1rem; }
+            .model-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-bar">
+        <button class="lang-btn active" data-lang="it">🇮🇹</button>
+        <button class="lang-btn" data-lang="en">🇬🇧</button>
+        <button class="lang-btn" data-lang="de">🇩🇪</button>
+        <button class="lang-btn" data-lang="es">🇪🇸</button>
+        <button class="lang-btn" data-lang="pt-BR">🇧🇷</button>
+        <button class="lang-btn" data-lang="zh-CN">🇨🇳</button>
+        <button class="lang-btn" data-lang="zh-TW">🇹🇼</button>
+    </div>
+
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny">
+                <h2>🦾 Moneypenny</h2>
+                <p data-lang-key="tagline">La tua assistente AI personale</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link" data-lang-key="nav-home">Home</a></li>
+                <li class="nav-item"><a href="capabilities.html" class="nav-link" data-lang-key="nav-cap">Capacità</a></li>
+                <li class="nav-item"><a href="connectors.html" class="nav-link" data-lang-key="nav-conn">Connettori</a></li>
+                <li class="nav-item"><a href="models.html" class="nav-link active" data-lang-key="nav-models">Modelli AI</a></li>
+                <li class="nav-item"><a href="privacy.html" class="nav-link" data-lang-key="nav-privacy">Privacy</a></li>
+            
+                <li class="nav-item"><a href="getting-started.html" class="nav-link">🚀 <span data-lang-key="nav-gs">Guida Rapida</span></a></li>
+                <li class="nav-item"><a href="channels.html" class="nav-link">📡 <span data-lang-key="nav-ch">Canali Chat</span></a></li>
+                <li class="nav-item"><a href="gateway.html" class="nav-link">⚡ Gateway</a></li>
+                <li class="nav-item"><a href="nodes.html" class="nav-link">📱 <span data-lang-key="nav-nodes">Nodi Companion</span></a></li>
+                <li class="nav-item"><a href="troubleshooting.html" class="nav-link">🔧 <span data-lang-key="nav-ts">Risoluzione Problemi</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Sviluppato dal<br><strong style="color:var(--pink);">Team SHAKAZAMBA</strong></p>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <header>
+                <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+                <h1 data-lang-key="title">🧠 Modelli AI</h1>
+                <p class="subtitle" data-lang-key="subtitle">Scegli tra modelli locali al 100% privati e i più potenti modelli cloud del mondo.</p>
+            </header>
+
+            <!-- LOCAL MODELS -->
+            <div class="section-box section-local">
+                <div class="section-header">
+                    <h2>🏠 <span data-lang-key="local-title">Modelli Locali (via Ollama)</span></h2>
+                    <span class="badge badge-green" data-lang-key="local-badge">100% Privato</span>
+                </div>
+                <p data-lang-key="local-intro">Girano completamente sul tuo computer. Zero dati inviati a server esterni. Zero costi. Funzionano anche offline.</p>
+                
+                <h3 data-lang-key="default-title">⭐ Modello preinstallato</h3>
+                <div class="model-grid">
+                    <div class="model-card" style="border-color:#00ff88;">
+                        <div class="model-card-family">Google</div>
+                        <div class="model-card-name">qwen2.5:3b</div>
+                        <div class="model-card-desc" data-lang-key="qwen25-desc">Il modello predefinito di TWIZA Moneypenny. Compatto, veloce e sorprendentemente capace. Preinstallato nella build.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag highlight">DEFAULT</span>
+                            <span class="spec-tag">4B params</span>
+                            <span class="spec-tag">~3 GB</span>
+                            <span class="spec-tag">4 GB RAM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 data-lang-key="available-title">📦 Altri modelli locali installabili</h3>
+                <p data-lang-key="available-desc">Puoi scaricare e installare qualsiasi di questi modelli. Basta dirmi "installa [nome modello]".</p>
+                
+                <div class="model-grid">
+                    <div class="model-card">
+                        <div class="model-card-family">Google</div>
+                        <div class="model-card-name">Gemma 3</div>
+                        <div class="model-card-desc" data-lang-key="gemma-desc">Famiglia di modelli Google. Eccellente qualità, ottimo per italiano e multilingua.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">1B</span>
+                            <span class="spec-tag">4B</span>
+                            <span class="spec-tag">12B</span>
+                            <span class="spec-tag">27B</span>
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-card-family">Alibaba</div>
+                        <div class="model-card-name">Qwen 2.5 / Qwen 3</div>
+                        <div class="model-card-desc" data-lang-key="qwen-desc">Modelli cinesi molto potenti. Ottimi per coding e ragionamento logico. Qwen 3 con thinking mode.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">1.5B</span>
+                            <span class="spec-tag">7B</span>
+                            <span class="spec-tag">14B</span>
+                            <span class="spec-tag">32B</span>
+                            <span class="spec-tag">72B</span>
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-card-family">DeepSeek</div>
+                        <div class="model-card-name">DeepSeek R1</div>
+                        <div class="model-card-desc" data-lang-key="deepseek-desc">Modello di ragionamento profondo. Pensa ad alta voce prima di rispondere. Ottimo per matematica e problemi complessi.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">1.5B</span>
+                            <span class="spec-tag">7B</span>
+                            <span class="spec-tag">14B</span>
+                            <span class="spec-tag">32B</span>
+                            <span class="spec-tag">70B</span>
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-card-family">Mistral AI</div>
+                        <div class="model-card-name">Mistral Small / Nemo</div>
+                        <div class="model-card-desc" data-lang-key="mistral-desc">Modelli francesi di alta qualità. Eccellenti per lingue europee, coding e istruzioni precise.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">7B (Nemo)</span>
+                            <span class="spec-tag">24B (Small)</span>
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-card-family">Meta</div>
+                        <div class="model-card-name">Llama 3.3 / Llama 4</div>
+                        <div class="model-card-desc" data-lang-key="llama-desc">I modelli open di Meta (Facebook). Llama 4 Maverick è il più recente con Mixture-of-Experts.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">8B</span>
+                            <span class="spec-tag">70B</span>
+                            <span class="spec-tag">17Bx128E (Maverick)</span>
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-card-family">Microsoft</div>
+                        <div class="model-card-name">Phi-4</div>
+                        <div class="model-card-desc" data-lang-key="phi-desc">Modello compatto Microsoft. Sorprendentemente potente per le sue dimensioni. Ottimo per task tecnici.</div>
+                        <div class="model-card-specs">
+                            <span class="spec-tag">14B</span>
+                            <span class="spec-tag">~8 GB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <strong data-lang-key="install-how">Come installare:</strong><br>
+                    <span data-lang-key="install-ex1">"Installa deepseek-r1:14b"</span><br>
+                    <span data-lang-key="install-ex2">"Scarica qwen3:32b"</span><br>
+                    <span data-lang-key="install-ex3">"Passa a mistral-small:24b"</span><br>
+                    <span data-lang-key="install-ex4">"Mostrami tutti i modelli installati"</span>
+                </div>
+            </div>
+
+            <!-- CLOUD MODELS -->
+            <div class="section-box section-cloud">
+                <div class="section-header">
+                    <h2>☁️ <span data-lang-key="cloud-title">Modelli Cloud</span></h2>
+                    <span class="badge badge-blue" data-lang-key="cloud-badge">Massima Potenza</span>
+                </div>
+                <p data-lang-key="cloud-intro">Per task che richiedono il massimo dell'intelligenza. I dati vanno solo al provider scelto, mai ad altri.</p>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>🧠 Anthropic Claude</h3>
+                    </div>
+                    <p data-lang-key="claude-desc">I modelli più intelligenti in assoluto. Ragionamento complesso, coding avanzato, analisi dettagliate. La mia prima scelta per task difficili.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">Claude Opus 4</span>
+                        <span class="model-tag">Claude Sonnet 4</span>
+                        <span class="model-tag">Claude Haiku 3.5</span>
+                    </div>
+                    <p><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>🦾 OpenAI</h3>
+                    </div>
+                    <p data-lang-key="openai-desc">GPT-4o, o1, o3-mini, GPT-5. Ottimi per creatività, programmazione e task generici. DALL-E per immagini.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">GPT-4o</span>
+                        <span class="model-tag">GPT-5</span>
+                        <span class="model-tag">o1 / o3-mini</span>
+                        <span class="model-tag">DALL-E 3</span>
+                    </div>
+                    <p><a href="https://platform.openai.com" target="_blank">platform.openai.com</a></p>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>🌟 Google Gemini</h3>
+                    </div>
+                    <p data-lang-key="gemini-desc">Gemini 2.5 Pro e Flash. Eccellenti per analisi dati, ricerca, contesto enorme (1M+ token) e integrazione Google.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">Gemini 2.5 Pro</span>
+                        <span class="model-tag">Gemini 2.5 Flash</span>
+                        <span class="model-tag">Gemini 2.0 Flash</span>
+                    </div>
+                    <p><a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></p>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>⚡ Groq</h3>
+                    </div>
+                    <p data-lang-key="groq-desc">Inferenza ultra-veloce. Risposte quasi istantanee con modelli open-source (Llama, Mixtral). Ideale per chat rapide.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">Llama 3.3 70B</span>
+                        <span class="model-tag">Llama 4 Maverick</span>
+                        <span class="model-tag">Mixtral 8x7B</span>
+                    </div>
+                    <p><a href="https://console.groq.com" target="_blank">console.groq.com</a></p>
+                </div>
+                
+                <div class="code-block">
+                    <strong data-lang-key="config-how">Come configurare:</strong><br>
+                    <span data-lang-key="config-ex1">"Configura Anthropic con questa key: sk-ant-..."</span><br>
+                    <span data-lang-key="config-ex2">"Aggiungi OpenAI: sk-..."</span><br>
+                    <span data-lang-key="config-ex3">"Usa Claude come modello principale"</span>
+                </div>
+            </div>
+
+            <!-- SEARCH / AI AGENTS -->
+            <div class="section-box section-search">
+                <div class="section-header">
+                    <h2>🔍 <span data-lang-key="search-title">AI di Ricerca e Agenti</span></h2>
+                    <span class="badge badge-orange" data-lang-key="search-badge">Ricerca Avanzata</span>
+                </div>
+                <p data-lang-key="search-intro">Provider specializzati in ricerca web, analisi profonda e agenti AI autonomi.</p>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>🔮 Perplexity</h3>
+                    </div>
+                    <p data-lang-key="perplexity-desc">AI di ricerca che naviga il web in tempo reale. Risposte sempre aggiornate con fonti citate. Perfetto per domande fattuali e ricerca.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">Sonar Pro</span>
+                        <span class="model-tag">Sonar</span>
+                    </div>
+                    <p><a href="https://www.perplexity.ai/settings/api" target="_blank">perplexity.ai/settings/api</a></p>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <h3>🤝 Manus</h3>
+                    </div>
+                    <p data-lang-key="manus-desc">Agente AI autonomo. Può navigare il web, scrivere codice, creare documenti e completare task complessi in autonomia.</p>
+                    <div class="provider-models">
+                        <span class="model-tag">Manus Agent</span>
+                    </div>
+                    <p><a href="https://manus.im" target="_blank">manus.im</a></p>
+                </div>
+            </div>
+
+            <!-- COMPARISON -->
+            <div class="comparison">
+                <h2 data-lang-key="comp-title">🔍 Confronto Rapido</h2>
+                <div class="comp-grid">
+                    <div class="comp-head"></div>
+                    <div class="comp-head" data-lang-key="comp-local">Locale</div>
+                    <div class="comp-head" data-lang-key="comp-cloud">Cloud</div>
+                    
+                    <div data-lang-key="comp-privacy">Privacy</div>
+                    <div>🟢 <span data-lang-key="comp-total">Totale</span></div>
+                    <div>🟡 <span data-lang-key="comp-good">Buona*</span></div>
+                    
+                    <div data-lang-key="comp-speed">Velocità</div>
+                    <div>🟢 <span data-lang-key="comp-instant">Istantanea</span></div>
+                    <div>🟡 <span data-lang-key="comp-fast">Veloce</span></div>
+                    
+                    <div data-lang-key="comp-cost">Costo</div>
+                    <div>🟢 <span data-lang-key="comp-free">Gratis</span></div>
+                    <div>🟠 <span data-lang-key="comp-pay">A consumo</span></div>
+                    
+                    <div data-lang-key="comp-power">Potenza</div>
+                    <div>🟡 <span data-lang-key="comp-good">Buona</span></div>
+                    <div>🟢 <span data-lang-key="comp-excellent">Eccellente</span></div>
+                    
+                    <div>Internet</div>
+                    <div>🟢 <span data-lang-key="comp-nonet">Non serve</span></div>
+                    <div>🟠 <span data-lang-key="comp-needed">Necessario</span></div>
+                </div>
+                <p style="text-align:center;color:var(--dim);font-size:0.8rem;margin-top:0.5rem;">
+                    *<span data-lang-key="comp-note">I provider cloud rispettano i loro termini di privacy. I tuoi dati non vengono condivisi con terze parti.</span>
+                </p>
+            </div>
+
+            <!-- RECOMMENDATIONS -->
+            <h2 data-lang-key="rec-title">💡 La mia raccomandazione</h2>
+            <div class="rec-grid">
+                <div class="rec-card">
+                    <h4 data-lang-key="rec-daily">📅 Uso quotidiano</h4>
+                    <p data-lang-key="rec-daily-desc">Gemma 3 4B (preinstallato) copre il 90% delle esigenze: chat, domande, coding base, organizzazione file.</p>
+                </div>
+                <div class="rec-card">
+                    <h4 data-lang-key="rec-complex">🧠 Task complessi</h4>
+                    <p data-lang-key="rec-complex-desc">Claude Sonnet 4 o GPT-4o per analisi profonde, codice complesso, ragionamento avanzato.</p>
+                </div>
+                <div class="rec-card">
+                    <h4 data-lang-key="rec-local-power">🏠 Locale potente</h4>
+                    <p data-lang-key="rec-local-desc">Con una GPU buona, installa DeepSeek R1 14B o Qwen3 32B per avere potenza cloud senza mandare dati fuori.</p>
+                </div>
+                <div class="rec-card">
+                    <h4 data-lang-key="rec-research">🔍 Ricerca</h4>
+                    <p data-lang-key="rec-research-desc">Perplexity per domande fattuali e ricerca web. Sempre aggiornato, sempre con fonti.</p>
+                </div>
+            </div>
+            
+            <div class="smart-box">
+                <h4 data-lang-key="smart-title">🎯 Cambio intelligente</h4>
+                <p data-lang-key="smart-desc">Una volta configurati, scelgo automaticamente il modello migliore per ogni task. Tu non devi pensarci!</p>
+            </div>
+            
+            <footer>
+                <p>TWIZA Moneypenny — <span data-lang-key="footer">Sviluppato dal Team SHAKAZAMBA</span></p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const T = {
+            it: {
+                tagline:'La tua assistente AI personale', 'nav-home':'Home', 'nav-cap':'Capacità', 'nav-conn':'Connettori', 'nav-models':'Modelli AI', 'nav-privacy':'Privacy', 'nav-docs':'Documentazione', 'nav-gs':'Guida Rapida', 'nav-ch':'Canali Chat', 'nav-nodes':'Nodi Companion', 'nav-ts':'Risoluzione Problemi',
+                back:'Torna alla Home', title:'🧠 Modelli AI', subtitle:'Scegli tra modelli locali al 100% privati e i più potenti modelli cloud del mondo.',
+                'local-title':'Modelli Locali (via Ollama)', 'local-badge':'100% Privato', 'local-intro':'Girano completamente sul tuo computer. Zero dati inviati a server esterni. Zero costi. Funzionano anche offline.',
+                'default-title':'⭐ Modello preinstallato',
+                'qwen25-desc':'Il modello predefinito di TWIZA Moneypenny. Compatto, veloce e sorprendentemente capace. Preinstallato nella build.',
+                'available-title':'📦 Altri modelli locali installabili', 'available-desc':'Puoi scaricare e installare qualsiasi di questi modelli. Basta dirmi "installa [nome modello]".',
+                'gemma-desc':'Famiglia di modelli Google. Eccellente qualità, ottimo per italiano e multilingua.',
+                'qwen-desc':'Modelli cinesi molto potenti. Ottimi per coding e ragionamento logico. Qwen 3 con thinking mode.',
+                'deepseek-desc':'Modello di ragionamento profondo. Pensa ad alta voce prima di rispondere. Ottimo per matematica e problemi complessi.',
+                'mistral-desc':'Modelli francesi di alta qualità. Eccellenti per lingue europee, coding e istruzioni precise.',
+                'llama-desc':'I modelli open di Meta (Facebook). Llama 4 Maverick è il più recente con Mixture-of-Experts.',
+                'phi-desc':'Modello compatto Microsoft. Sorprendentemente potente per le sue dimensioni. Ottimo per task tecnici.',
+                'install-how':'Come installare:', 'install-ex1':'"Installa deepseek-r1:14b"', 'install-ex2':'"Scarica qwen3:32b"', 'install-ex3':'"Passa a mistral-small:24b"', 'install-ex4':'"Mostrami tutti i modelli installati"',
+                'cloud-title':'Modelli Cloud', 'cloud-badge':'Massima Potenza', 'cloud-intro':'Per task che richiedono il massimo dell\'intelligenza. I dati vanno solo al provider scelto, mai ad altri.',
+                'claude-desc':'I modelli più intelligenti in assoluto. Ragionamento complesso, coding avanzato, analisi dettagliate. La mia prima scelta per task difficili.',
+                'openai-desc':'GPT-4o, o1, o3-mini, GPT-5. Ottimi per creatività, programmazione e task generici. DALL-E per immagini.',
+                'gemini-desc':'Gemini 2.5 Pro e Flash. Eccellenti per analisi dati, ricerca, contesto enorme (1M+ token) e integrazione Google.',
+                'groq-desc':'Inferenza ultra-veloce. Risposte quasi istantanee con modelli open-source (Llama, Mixtral). Ideale per chat rapide.',
+                'config-how':'Come configurare:', 'config-ex1':'"Configura Anthropic con questa key: sk-ant-..."', 'config-ex2':'"Aggiungi OpenAI: sk-..."', 'config-ex3':'"Usa Claude come modello principale"',
+                'search-title':'AI di Ricerca e Agenti', 'search-badge':'Ricerca Avanzata', 'search-intro':'Provider specializzati in ricerca web, analisi profonda e agenti AI autonomi.',
+                'perplexity-desc':'AI di ricerca che naviga il web in tempo reale. Risposte sempre aggiornate con fonti citate. Perfetto per domande fattuali e ricerca.',
+                'manus-desc':'Agente AI autonomo. Può navigare il web, scrivere codice, creare documenti e completare task complessi in autonomia.',
+                'comp-title':'🔍 Confronto Rapido', 'comp-local':'Locale', 'comp-cloud':'Cloud', 'comp-privacy':'Privacy', 'comp-total':'Totale', 'comp-good':'Buona', 'comp-speed':'Velocità', 'comp-instant':'Istantanea', 'comp-fast':'Veloce', 'comp-cost':'Costo', 'comp-free':'Gratis', 'comp-pay':'A consumo', 'comp-power':'Potenza', 'comp-excellent':'Eccellente', 'comp-nonet':'Non serve', 'comp-needed':'Necessario', 'comp-note':'I provider cloud rispettano i loro termini di privacy. I tuoi dati non vengono condivisi con terze parti.',
+                'rec-title':'💡 La mia raccomandazione', 'rec-daily':'📅 Uso quotidiano', 'rec-daily-desc':'Gemma 3 4B (preinstallato) copre il 90% delle esigenze: chat, domande, coding base, organizzazione file.', 'rec-complex':'🧠 Task complessi', 'rec-complex-desc':'Claude Sonnet 4 o GPT-4o per analisi profonde, codice complesso, ragionamento avanzato.', 'rec-local-power':'🏠 Locale potente', 'rec-local-desc':'Con una GPU buona, installa DeepSeek R1 14B o Qwen3 32B per avere potenza cloud senza mandare dati fuori.', 'rec-research':'🔍 Ricerca', 'rec-research-desc':'Perplexity per domande fattuali e ricerca web. Sempre aggiornato, sempre con fonti.',
+                'smart-title':'🎯 Cambio intelligente', 'smart-desc':'Una volta configurati, scelgo automaticamente il modello migliore per ogni task. Tu non devi pensarci!',
+                footer:'Sviluppato dal Team SHAKAZAMBA'
+            },
+            en: {
+                tagline:'Your personal AI assistant', 'nav-home':'Home', 'nav-cap':'Capabilities', 'nav-conn':'Connectors', 'nav-models':'AI Models', 'nav-privacy':'Privacy', 'nav-docs':'Documentation', 'nav-gs':'Quick Start', 'nav-ch':'Chat Channels', 'nav-nodes':'Companion Nodes', 'nav-ts':'Troubleshooting',
+                back:'Back to Home', title:'🧠 AI Models', subtitle:'Choose between 100% private local models and the world\'s most powerful cloud models.',
+                'local-title':'Local Models (via Ollama)', 'local-badge':'100% Private', 'local-intro':'Run entirely on your computer. Zero data sent to external servers. Zero cost. Work offline too.',
+                'default-title':'⭐ Pre-installed model',
+                'qwen25-desc':'TWIZA Moneypenny\'s default model. Compact, fast, and surprisingly capable. Pre-installed in the build.',
+                'available-title':'📦 Other installable local models', 'available-desc':'You can download and install any of these models. Just tell me "install [model name]".',
+                'gemma-desc':'Google model family. Excellent quality, great for Italian and multilingual tasks.',
+                'qwen-desc':'Very powerful Chinese models. Great for coding and logical reasoning. Qwen 3 with thinking mode.',
+                'deepseek-desc':'Deep reasoning model. Thinks out loud before answering. Great for math and complex problems.',
+                'mistral-desc':'High-quality French models. Excellent for European languages, coding and precise instructions.',
+                'llama-desc':'Meta\'s (Facebook) open models. Llama 4 Maverick is the newest with Mixture-of-Experts.',
+                'phi-desc':'Microsoft compact model. Surprisingly powerful for its size. Great for technical tasks.',
+                'install-how':'How to install:', 'install-ex1':'"Install deepseek-r1:14b"', 'install-ex2':'"Download qwen3:32b"', 'install-ex3':'"Switch to mistral-small:24b"', 'install-ex4':'"Show me all installed models"',
+                'cloud-title':'Cloud Models', 'cloud-badge':'Maximum Power', 'cloud-intro':'For tasks requiring maximum intelligence. Data goes only to the chosen provider, never to others.',
+                'claude-desc':'The most intelligent models available. Complex reasoning, advanced coding, detailed analysis. My first choice for hard tasks.',
+                'openai-desc':'GPT-4o, o1, o3-mini, GPT-5. Great for creativity, programming and generic tasks. DALL-E for images.',
+                'gemini-desc':'Gemini 2.5 Pro and Flash. Excellent for data analysis, research, huge context (1M+ tokens) and Google integration.',
+                'groq-desc':'Ultra-fast inference. Near-instant responses with open-source models (Llama, Mixtral). Ideal for quick chats.',
+                'config-how':'How to configure:', 'config-ex1':'"Configure Anthropic with this key: sk-ant-..."', 'config-ex2':'"Add OpenAI: sk-..."', 'config-ex3':'"Use Claude as main model"',
+                'search-title':'Search AI & Agents', 'search-badge':'Advanced Search', 'search-intro':'Providers specialized in web search, deep analysis and autonomous AI agents.',
+                'perplexity-desc':'Search AI that browses the web in real time. Always up-to-date answers with cited sources. Perfect for factual questions and research.',
+                'manus-desc':'Autonomous AI agent. Can browse the web, write code, create documents and complete complex tasks independently.',
+                'comp-title':'🔍 Quick Comparison', 'comp-local':'Local', 'comp-cloud':'Cloud', 'comp-privacy':'Privacy', 'comp-total':'Total', 'comp-good':'Good', 'comp-speed':'Speed', 'comp-instant':'Instant', 'comp-fast':'Fast', 'comp-cost':'Cost', 'comp-free':'Free', 'comp-pay':'Pay per use', 'comp-power':'Power', 'comp-excellent':'Excellent', 'comp-nonet':'Not required', 'comp-needed':'Required', 'comp-note':'Cloud providers respect their privacy terms. Your data is not shared with third parties.',
+                'rec-title':'💡 My recommendation', 'rec-daily':'📅 Daily use', 'rec-daily-desc':'Gemma 3 4B (pre-installed) covers 90% of needs: chat, questions, basic coding, file management.', 'rec-complex':'🧠 Complex tasks', 'rec-complex-desc':'Claude Sonnet 4 or GPT-4o for deep analysis, complex code, advanced reasoning.', 'rec-local-power':'🏠 Powerful local', 'rec-local-desc':'With a good GPU, install DeepSeek R1 14B or Qwen3 32B for cloud-level power without sending data out.', 'rec-research':'🔍 Research', 'rec-research-desc':'Perplexity for factual questions and web research. Always updated, always with sources.',
+                'smart-title':'🎯 Smart switching', 'smart-desc':'Once configured, I automatically choose the best model for each task. You don\'t have to think about it!',
+                footer:'Developed by Team SHAKAZAMBA'
+            },
+            de: {
+                tagline:'Ihre persönliche KI-Assistentin', 'nav-home':'Start', 'nav-cap':'Fähigkeiten', 'nav-conn':'Konnektoren', 'nav-models':'KI-Modelle', 'nav-privacy':'Datenschutz', 'nav-docs':'Dokumentation', 'nav-gs':'Schnellstart', 'nav-ch':'Chat-Kanäle', 'nav-nodes':'Companion-Knoten', 'nav-ts':'Fehlerbehebung',
+                back:'Zurück zur Startseite', title:'🧠 KI-Modelle', subtitle:'Wählen Sie zwischen 100% privaten lokalen Modellen und den leistungsstärksten Cloud-Modellen der Welt.',
+                'local-title':'Lokale Modelle (via Ollama)', 'local-badge':'100% Privat', 'local-intro':'Laufen vollständig auf Ihrem Computer. Keine Daten an externe Server. Keine Kosten. Funktionieren auch offline.',
+                'default-title':'⭐ Vorinstalliertes Modell', 'qwen25-desc':'Das Standardmodell von TWIZA Moneypenny. Kompakt, schnell und überraschend leistungsfähig.',
+                'available-title':'📦 Weitere installierbare Modelle', 'available-desc':'Sie können jedes dieser Modelle herunterladen. Sagen Sie einfach "installiere [Modellname]".',
+                'cloud-title':'Cloud-Modelle', 'cloud-badge':'Maximale Leistung', 'cloud-intro':'Für Aufgaben, die maximale Intelligenz erfordern.',
+                'search-title':'Such-KI & Agenten', 'search-badge':'Erweiterte Suche', 'search-intro':'Anbieter spezialisiert auf Websuche, Tiefenanalyse und autonome KI-Agenten.',
+                'comp-title':'🔍 Schnellvergleich', 'comp-local':'Lokal', 'comp-cloud':'Cloud',
+                'rec-title':'💡 Meine Empfehlung', footer:'Entwickelt vom Team SHAKAZAMBA'
+            },
+            es: {
+                tagline:'Tu asistente AI personal', 'nav-home':'Inicio', 'nav-cap':'Capacidades', 'nav-conn':'Conectores', 'nav-models':'Modelos AI', 'nav-privacy':'Privacidad', 'nav-docs':'Documentación', 'nav-gs':'Inicio Rápido', 'nav-ch':'Canales Chat', 'nav-nodes':'Nodos Companion', 'nav-ts':'Solución de Problemas',
+                back:'Volver al inicio', title:'🧠 Modelos AI', subtitle:'Elige entre modelos locales 100% privados y los modelos cloud más potentes del mundo.',
+                'local-title':'Modelos Locales (via Ollama)', 'local-badge':'100% Privado', 'local-intro':'Funcionan completamente en tu ordenador. Cero datos enviados a servidores externos. Cero costes. Funcionan offline.',
+                'default-title':'⭐ Modelo preinstalado', 'qwen25-desc':'El modelo predeterminado de TWIZA Moneypenny. Compacto, rápido y sorprendentemente capaz.',
+                'available-title':'📦 Otros modelos locales instalables', 'available-desc':'Puedes descargar e instalar cualquiera de estos modelos. Solo dime "instala [nombre]".',
+                'cloud-title':'Modelos Cloud', 'cloud-badge':'Máxima Potencia', 'cloud-intro':'Para tareas que requieren máxima inteligencia.',
+                'search-title':'AI de Búsqueda y Agentes', 'search-badge':'Búsqueda Avanzada', 'search-intro':'Proveedores especializados en búsqueda web, análisis profundo y agentes AI autónomos.',
+                'comp-title':'🔍 Comparación Rápida', 'comp-local':'Local', 'comp-cloud':'Cloud',
+                'rec-title':'💡 Mi recomendación', footer:'Desarrollado por Team SHAKAZAMBA'
+            },
+            'pt-BR': {
+                tagline:'Sua assistente AI pessoal', 'nav-home':'Início', 'nav-cap':'Capacidades', 'nav-conn':'Conectores', 'nav-models':'Modelos AI', 'nav-privacy':'Privacidade', 'nav-docs':'Documentação', 'nav-gs':'Início Rápido', 'nav-ch':'Canais Chat', 'nav-nodes':'Nós Companion', 'nav-ts':'Solução de Problemas',
+                back:'Voltar ao início', title:'🧠 Modelos AI', subtitle:'Escolha entre modelos locais 100% privados e os modelos cloud mais poderosos do mundo.',
+                'local-title':'Modelos Locais (via Ollama)', 'local-badge':'100% Privado', 'local-intro':'Rodam completamente no seu computador. Zero dados enviados a servidores externos. Zero custos. Funcionam offline.',
+                'default-title':'⭐ Modelo pré-instalado', 'qwen25-desc':'O modelo padrão do TWIZA Moneypenny. Compacto, rápido e surpreendentemente capaz.',
+                'cloud-title':'Modelos Cloud', 'cloud-badge':'Máxima Potência',
+                'search-title':'AI de Pesquisa e Agentes', 'search-badge':'Pesquisa Avançada',
+                'comp-title':'🔍 Comparação Rápida', 'comp-local':'Local', 'comp-cloud':'Cloud',
+                'rec-title':'💡 Minha recomendação', footer:'Desenvolvido pelo Team SHAKAZAMBA'
+            },
+            'zh-CN': {
+                tagline:'您的个人AI助手', 'nav-home':'首页', 'nav-cap':'功能', 'nav-conn':'连接器', 'nav-models':'AI模型', 'nav-privacy':'隐私', 'nav-docs':'文档', 'nav-gs':'快速入门', 'nav-ch':'聊天频道', 'nav-nodes':'Companion节点', 'nav-ts':'故障排除',
+                back:'返回首页', title:'🧠 AI模型', subtitle:'在100%私密的本地模型和世界上最强大的云模型之间选择。',
+                'local-title':'本地模型（通过Ollama）', 'local-badge':'100%私密', 'local-intro':'完全在您的电脑上运行。零数据发送到外部服务器。零费用。离线也能工作。',
+                'default-title':'⭐ 预装模型', 'qwen25-desc':'TWIZA Moneypenny的默认模型。紧凑、快速且令人惊讶地强大。',
+                'cloud-title':'云模型', 'cloud-badge':'最大算力',
+                'search-title':'搜索AI和智能体', 'search-badge':'高级搜索',
+                'comp-title':'🔍 快速对比', 'comp-local':'本地', 'comp-cloud':'云端',
+                'rec-title':'💡 我的推荐', footer:'由Team SHAKAZAMBA开发'
+            },
+            'zh-TW': {
+                tagline:'您的個人AI助手', 'nav-home':'首頁', 'nav-cap':'功能', 'nav-conn':'連接器', 'nav-models':'AI模型', 'nav-privacy':'隱私', 'nav-docs':'文件', 'nav-gs':'快速入門', 'nav-ch':'聊天頻道', 'nav-nodes':'Companion節點', 'nav-ts':'疑難排解',
+                back:'返回首頁', title:'🧠 AI模型', subtitle:'在100%私密的本地模型和世界上最強大的雲端模型之間選擇。',
+                'local-title':'本地模型（透過Ollama）', 'local-badge':'100%私密', 'local-intro':'完全在您的電腦上運行。零數據發送到外部伺服器。零費用。離線也能工作。',
+                'default-title':'⭐ 預裝模型', 'qwen25-desc':'TWIZA Moneypenny的預設模型。緊湊、快速且令人驚訝地強大。',
+                'cloud-title':'雲端模型', 'cloud-badge':'最大算力',
+                'search-title':'搜尋AI和智能體', 'search-badge':'進階搜尋',
+                'comp-title':'🔍 快速對比', 'comp-local':'本地', 'comp-cloud':'雲端',
+                'rec-title':'💡 我的推薦', footer:'由Team SHAKAZAMBA開發'
+            }
+        };
+
+        let lang = 'it';
+        const bl = navigator.language || 'it';
+        if (bl.startsWith('zh-TW') || bl.startsWith('zh-Hant')) lang = 'zh-TW';
+        else if (bl.startsWith('zh')) lang = 'zh-CN';
+        else if (bl.startsWith('pt')) lang = 'pt-BR';
+        else if (bl.startsWith('de')) lang = 'de';
+        else if (bl.startsWith('es')) lang = 'es';
+        else if (bl.startsWith('en')) lang = 'en';
+
+        function setLang(l) {
+            lang = l;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const k = el.dataset.langKey;
+                if (T[l] && T[l][k]) el.textContent = T[l][k];
+            });
+            localStorage.setItem('moneypenny-lang', l);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('moneypenny-lang');
+            if (saved && T[saved]) lang = saved;
+            setLang(lang);
+            document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+        });
+    </script>
+</body>
+</html>

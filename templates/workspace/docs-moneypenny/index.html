@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWIZA Moneypenny - Documentazione</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        :root {
+            --moneypenny-pink: #FF0080;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --border-color: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #808080;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Titillium Web', system-ui, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container { display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--moneypenny-pink);
+            margin: 0 auto 0.8rem;
+            display: block;
+            object-fit: cover;
+        }
+        
+        .logo h1 {
+            color: var(--moneypenny-pink);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo p { color: var(--text-tertiary); font-size: 0.85rem; }
+        
+        .nav-menu { list-style: none; }
+        .nav-item { margin-bottom: 0.5rem; }
+        
+        .nav-link {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: var(--moneypenny-pink);
+            color: white;
+        }
+        
+        .nav-section-title {
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2rem 3rem;
+            max-width: 900px;
+        }
+        
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .lang-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .lang-btn.active {
+            background: var(--moneypenny-pink);
+            color: white;
+            border-color: var(--moneypenny-pink);
+        }
+        
+        h1, h2, h3 { color: var(--moneypenny-pink); margin-bottom: 1rem; }
+        h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        h2 { font-size: 1.8rem; margin-top: 2rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        
+        .intro-section {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .intro-avatar {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--moneypenny-pink);
+            margin: 0 auto 1.5rem;
+            display: block;
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.3);
+        }
+        
+        .intro-section h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .intro-section p { font-size: 1.2rem; color: var(--text-secondary); }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--moneypenny-pink);
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .feature-title { color: var(--text-primary); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .feature-desc { color: var(--text-tertiary); font-size: 0.9rem; }
+        
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .doc-card {
+            display: block;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .doc-card:hover {
+            border-color: var(--moneypenny-pink);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .doc-card-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+        .doc-card-title { color: var(--text-primary); font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .doc-card-desc { color: var(--text-tertiary); font-size: 0.85rem; margin: 0; }
+        
+        a { color: var(--moneypenny-pink); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s; position: fixed; z-index: 100; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 1rem; }
+            .menu-toggle { display: block !important; }
+        }
+        
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+    
+    <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="it">🇮🇹</button>
+        <button class="lang-btn" data-lang="en">🇬🇧</button>
+        <button class="lang-btn" data-lang="de">🇩🇪</button>
+        <button class="lang-btn" data-lang="es">🇪🇸</button>
+        <button class="lang-btn" data-lang="pt-BR">🇧🇷</button>
+        <button class="lang-btn" data-lang="zh-CN">🇨🇳</button>
+        <button class="lang-btn" data-lang="zh-TW">🇹🇼</button>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny" class="logo-avatar">
+                <h1>🦾 Moneypenny</h1>
+                <p data-lang-key="tagline">La tua assistente AI personale</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active" data-lang-key="nav-home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="capabilities.html" class="nav-link" data-lang-key="nav-capabilities">Capacità</a>
+                </li>
+                <li class="nav-item">
+                    <a href="connectors.html" class="nav-link" data-lang-key="nav-connectors">Connettori</a>
+                </li>
+                <li class="nav-item">
+                    <a href="models.html" class="nav-link" data-lang-key="nav-models">Modelli AI</a>
+                </li>
+                <li class="nav-item">
+                    <a href="privacy.html" class="nav-link" data-lang-key="nav-privacy">Privacy</a>
+                </li>
+            </ul>
+            
+            <div style="border-top:1px solid var(--border-color);margin-top:1.5rem;padding-top:1.5rem;">
+                <p class="nav-section-title" data-lang-key="nav-docs-heading">Documentazione</p>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="getting-started.html" class="nav-link" style="font-size:0.85rem;">🚀 <span data-lang-key="nav-getting-started">Guida Rapida</span></a></li>
+                    <li class="nav-item"><a href="channels.html" class="nav-link" style="font-size:0.85rem;">📡 <span data-lang-key="nav-channels">Canali Chat</span></a></li>
+                    <li class="nav-item"><a href="gateway.html" class="nav-link" style="font-size:0.85rem;">⚡ <span data-lang-key="nav-gateway">Gateway</span></a></li>
+                    <li class="nav-item"><a href="nodes.html" class="nav-link" style="font-size:0.85rem;">📱 <span data-lang-key="nav-nodes">Nodi Companion</span></a></li>
+                    <li class="nav-item"><a href="troubleshooting.html" class="nav-link" style="font-size:0.85rem;">🔧 <span data-lang-key="nav-troubleshooting">Risoluzione Problemi</span></a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer">
+                <p>Sviluppato dal<br><strong style="color:var(--moneypenny-pink);">Team SHAKAZAMBA</strong></p>
+            </div>
+        </nav>
+        
+        <main class="main-content">
+            <div class="intro-section">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny" class="intro-avatar">
+                <h1 data-lang-key="home-title">Benvenuta in TWIZA Moneypenny</h1>
+                <p data-lang-key="home-subtitle">La tua assistente AI personale, potente e rispettosa della privacy</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-title" data-lang-key="feature-chat-title">Chat Naturale</div>
+                    <div class="feature-desc" data-lang-key="feature-chat-desc">Parla con me in italiano, inglese o qualsiasi lingua. Capisco il contesto e ricordo le nostre conversazioni.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title" data-lang-key="feature-privacy-title">Privacy Assoluta</div>
+                    <div class="feature-desc" data-lang-key="feature-privacy-desc">Tutto funziona localmente. I tuoi dati non lasciano mai il tuo computer, a meno che tu non lo decida.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-title" data-lang-key="feature-models-title">Multi-Modello</div>
+                    <div class="feature-desc" data-lang-key="feature-models-desc">Gemma, Qwen, DeepSeek, Mistral, Llama in locale. Claude, GPT, Gemini, Perplexity in cloud. Tu scegli.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title" data-lang-key="feature-everywhere-title">Ovunque Tu Sia</div>
+                    <div class="feature-desc" data-lang-key="feature-everywhere-desc">Collegati da WhatsApp, Telegram, Discord, Signal o dal browser. 33 connettori disponibili.</div>
+                </div>
+            </div>
+            
+            <h2 data-lang-key="docs-title">📚 Documentazione</h2>
+            <p data-lang-key="docs-subtitle">Esplora le guide per ottenere il massimo da TWIZA Moneypenny.</p>
+            
+            <div class="docs-grid">
+                <a href="getting-started.html" class="doc-card">
+                    <div class="doc-card-icon">🚀</div>
+                    <div class="doc-card-title" data-lang-key="doc-gs-title">Guida Rapida</div>
+                    <p class="doc-card-desc" data-lang-key="doc-gs-desc">Primi passi: installazione, configurazione, primo avvio.</p>
+                </a>
+                <a href="channels.html" class="doc-card">
+                    <div class="doc-card-icon">📡</div>
+                    <div class="doc-card-title" data-lang-key="doc-ch-title">Canali Chat</div>
+                    <p class="doc-card-desc" data-lang-key="doc-ch-desc">Tutti i 20+ canali supportati: WhatsApp, Telegram, Discord e altri.</p>
+                </a>
+                <a href="connectors.html" class="doc-card">
+                    <div class="doc-card-icon">🔌</div>
+                    <div class="doc-card-title" data-lang-key="doc-conn-title">33 Connettori</div>
+                    <p class="doc-card-desc" data-lang-key="doc-conn-desc">Messaggistica, email, produttività, social, DevOps, IoT e voce.</p>
+                </a>
+                <a href="models.html" class="doc-card">
+                    <div class="doc-card-icon">🧠</div>
+                    <div class="doc-card-title" data-lang-key="doc-mod-title">Modelli AI</div>
+                    <p class="doc-card-desc" data-lang-key="doc-mod-desc">Modelli locali e cloud: Gemma, Qwen, DeepSeek, Claude, GPT e altri.</p>
+                </a>
+                <a href="gateway.html" class="doc-card">
+                    <div class="doc-card-icon">⚡</div>
+                    <div class="doc-card-title" data-lang-key="doc-gw-title">Gateway</div>
+                    <p class="doc-card-desc" data-lang-key="doc-gw-desc">Architettura, comandi, provider AI, sicurezza e strumenti.</p>
+                </a>
+                <a href="nodes.html" class="doc-card">
+                    <div class="doc-card-icon">📱</div>
+                    <div class="doc-card-title" data-lang-key="doc-nodes-title">Nodi Companion</div>
+                    <p class="doc-card-desc" data-lang-key="doc-nodes-desc">Collega iPhone, Android, Mac come dispositivi companion.</p>
+                </a>
+                <a href="capabilities.html" class="doc-card">
+                    <div class="doc-card-icon">⚙️</div>
+                    <div class="doc-card-title" data-lang-key="doc-cap-title">Capacità</div>
+                    <p class="doc-card-desc" data-lang-key="doc-cap-desc">Tutto ciò che posso fare: ricerca, automazione, coding, analisi.</p>
+                </a>
+                <a href="troubleshooting.html" class="doc-card">
+                    <div class="doc-card-icon">🔧</div>
+                    <div class="doc-card-title" data-lang-key="doc-ts-title">Risoluzione Problemi</div>
+                    <p class="doc-card-desc" data-lang-key="doc-ts-desc">Soluzioni ai problemi più comuni.</p>
+                </a>
+                <a href="privacy.html" class="doc-card">
+                    <div class="doc-card-icon">🔒</div>
+                    <div class="doc-card-title" data-lang-key="doc-priv-title">Privacy e Sicurezza</div>
+                    <p class="doc-card-desc" data-lang-key="doc-priv-desc">Come proteggiamo i tuoi dati e la tua privacy.</p>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const translations = {
+            it: {
+                tagline: 'La tua assistente AI personale',
+                'nav-home': 'Home', 'nav-capabilities': 'Capacità', 'nav-connectors': 'Connettori',
+                'nav-models': 'Modelli AI', 'nav-privacy': 'Privacy',
+                'nav-docs-heading': 'Documentazione',
+                'nav-getting-started': 'Guida Rapida', 'nav-channels': 'Canali Chat',
+                'nav-gateway': 'Gateway', 'nav-nodes': 'Nodi Companion', 'nav-troubleshooting': 'Risoluzione Problemi',
+                'home-title': 'Benvenuta in TWIZA Moneypenny',
+                'home-subtitle': 'La tua assistente AI personale, potente e rispettosa della privacy',
+                'feature-chat-title': 'Chat Naturale',
+                'feature-chat-desc': 'Parla con me in italiano, inglese o qualsiasi lingua. Capisco il contesto e ricordo le nostre conversazioni.',
+                'feature-privacy-title': 'Privacy Assoluta',
+                'feature-privacy-desc': 'Tutto funziona localmente. I tuoi dati non lasciano mai il tuo computer, a meno che tu non lo decida.',
+                'feature-models-title': 'Multi-Modello',
+                'feature-models-desc': 'Gemma, Qwen, DeepSeek, Mistral, Llama in locale. Claude, GPT, Gemini, Perplexity in cloud. Tu scegli.',
+                'feature-everywhere-title': 'Ovunque Tu Sia',
+                'feature-everywhere-desc': 'Collegati da WhatsApp, Telegram, Discord, Signal o dal browser. 33 connettori disponibili.',
+                'docs-title': '📚 Documentazione',
+                'docs-subtitle': 'Esplora le guide per ottenere il massimo da TWIZA Moneypenny.',
+                'doc-gs-title': 'Guida Rapida', 'doc-gs-desc': 'Primi passi: installazione, configurazione, primo avvio.',
+                'doc-ch-title': 'Canali Chat', 'doc-ch-desc': 'Tutti i 20+ canali supportati: WhatsApp, Telegram, Discord e altri.',
+                'doc-conn-title': '33 Connettori', 'doc-conn-desc': 'Messaggistica, email, produttività, social, DevOps, IoT e voce.',
+                'doc-mod-title': 'Modelli AI', 'doc-mod-desc': 'Modelli locali e cloud: Gemma, Qwen, DeepSeek, Claude, GPT e altri.',
+                'doc-gw-title': 'Gateway', 'doc-gw-desc': 'Architettura, comandi, provider AI, sicurezza e strumenti.',
+                'doc-nodes-title': 'Nodi Companion', 'doc-nodes-desc': 'Collega iPhone, Android, Mac come dispositivi companion.',
+                'doc-cap-title': 'Capacità', 'doc-cap-desc': 'Tutto ciò che posso fare: ricerca, automazione, coding, analisi.',
+                'doc-ts-title': 'Risoluzione Problemi', 'doc-ts-desc': 'Soluzioni ai problemi più comuni.',
+                'doc-priv-title': 'Privacy e Sicurezza', 'doc-priv-desc': 'Come proteggiamo i tuoi dati e la tua privacy.'
+            },
+            en: {
+                tagline: 'Your personal AI assistant',
+                'nav-home': 'Home', 'nav-capabilities': 'Capabilities', 'nav-connectors': 'Connectors',
+                'nav-models': 'AI Models', 'nav-privacy': 'Privacy',
+                'nav-docs-heading': 'Documentation',
+                'nav-getting-started': 'Quick Start', 'nav-channels': 'Chat Channels',
+                'nav-gateway': 'Gateway', 'nav-nodes': 'Companion Nodes', 'nav-troubleshooting': 'Troubleshooting',
+                'home-title': 'Welcome to TWIZA Moneypenny',
+                'home-subtitle': 'Your personal AI assistant, powerful and privacy-focused',
+                'feature-chat-title': 'Natural Chat',
+                'feature-chat-desc': 'Talk to me in any language. I understand context and remember our conversations.',
+                'feature-privacy-title': 'Absolute Privacy',
+                'feature-privacy-desc': 'Everything runs locally. Your data never leaves your computer unless you decide otherwise.',
+                'feature-models-title': 'Multi-Model',
+                'feature-models-desc': 'Gemma, Qwen, DeepSeek, Mistral, Llama locally. Claude, GPT, Gemini, Perplexity in cloud. You choose.',
+                'feature-everywhere-title': 'Wherever You Are',
+                'feature-everywhere-desc': 'Connect from WhatsApp, Telegram, Discord, Signal or browser. 33 connectors available.',
+                'docs-title': '📚 Documentation',
+                'docs-subtitle': 'Explore the guides to get the most out of TWIZA Moneypenny.',
+                'doc-gs-title': 'Quick Start', 'doc-gs-desc': 'First steps: installation, configuration, first launch.',
+                'doc-ch-title': 'Chat Channels', 'doc-ch-desc': 'All 20+ supported channels: WhatsApp, Telegram, Discord and more.',
+                'doc-conn-title': '33 Connectors', 'doc-conn-desc': 'Messaging, email, productivity, social, DevOps, IoT and voice.',
+                'doc-mod-title': 'AI Models', 'doc-mod-desc': 'Local and cloud models: Gemma, Qwen, DeepSeek, Claude, GPT and more.',
+                'doc-gw-title': 'Gateway', 'doc-gw-desc': 'Architecture, commands, AI providers, security and tools.',
+                'doc-nodes-title': 'Companion Nodes', 'doc-nodes-desc': 'Connect iPhone, Android, Mac as companion devices.',
+                'doc-cap-title': 'Capabilities', 'doc-cap-desc': 'Everything I can do: research, automation, coding, analysis.',
+                'doc-ts-title': 'Troubleshooting', 'doc-ts-desc': 'Solutions to common problems.',
+                'doc-priv-title': 'Privacy & Security', 'doc-priv-desc': 'How we protect your data and privacy.'
+            },
+            de: {
+                tagline: 'Ihre persönliche KI-Assistentin',
+                'nav-home': 'Start', 'nav-capabilities': 'Fähigkeiten', 'nav-connectors': 'Konnektoren',
+                'nav-models': 'KI-Modelle', 'nav-privacy': 'Datenschutz',
+                'nav-docs-heading': 'Dokumentation',
+                'nav-getting-started': 'Schnellstart', 'nav-channels': 'Chat-Kanäle',
+                'nav-gateway': 'Gateway', 'nav-nodes': 'Companion-Knoten', 'nav-troubleshooting': 'Fehlerbehebung',
+                'home-title': 'Willkommen bei TWIZA Moneypenny',
+                'home-subtitle': 'Ihre persönliche KI-Assistentin, leistungsstark und datenschutzfreundlich',
+                'feature-chat-title': 'Natürlicher Chat',
+                'feature-chat-desc': 'Sprechen Sie mit mir in jeder Sprache. Ich verstehe den Kontext und erinnere mich an unsere Gespräche.',
+                'feature-privacy-title': 'Absoluter Datenschutz',
+                'feature-privacy-desc': 'Alles läuft lokal. Ihre Daten verlassen nie Ihren Computer, es sei denn, Sie entscheiden anders.',
+                'feature-models-title': 'Multi-Modell',
+                'feature-models-desc': 'Gemma, Qwen, DeepSeek, Mistral, Llama lokal. Claude, GPT, Gemini, Perplexity in der Cloud. Sie wählen.',
+                'feature-everywhere-title': 'Überall verfügbar',
+                'feature-everywhere-desc': 'Verbinden Sie sich über WhatsApp, Telegram, Discord, Signal oder Browser. 33 Konnektoren verfügbar.',
+                'docs-title': '📚 Dokumentation',
+                'docs-subtitle': 'Entdecken Sie die Anleitungen, um das Beste aus TWIZA Moneypenny herauszuholen.',
+                'doc-gs-title': 'Schnellstart', 'doc-gs-desc': 'Erste Schritte: Installation, Konfiguration, erster Start.',
+                'doc-ch-title': 'Chat-Kanäle', 'doc-ch-desc': 'Alle 20+ unterstützten Kanäle: WhatsApp, Telegram, Discord und mehr.',
+                'doc-conn-title': '33 Konnektoren', 'doc-conn-desc': 'Messaging, E-Mail, Produktivität, Social, DevOps, IoT und Sprache.',
+                'doc-mod-title': 'KI-Modelle', 'doc-mod-desc': 'Lokale und Cloud-Modelle: Gemma, Qwen, DeepSeek, Claude, GPT und mehr.',
+                'doc-gw-title': 'Gateway', 'doc-gw-desc': 'Architektur, Befehle, KI-Anbieter, Sicherheit und Tools.',
+                'doc-nodes-title': 'Companion-Knoten', 'doc-nodes-desc': 'Verbinden Sie iPhone, Android, Mac als Companion-Geräte.',
+                'doc-cap-title': 'Fähigkeiten', 'doc-cap-desc': 'Alles, was ich kann: Recherche, Automatisierung, Coding, Analyse.',
+                'doc-ts-title': 'Fehlerbehebung', 'doc-ts-desc': 'Lösungen für häufige Probleme.',
+                'doc-priv-title': 'Datenschutz & Sicherheit', 'doc-priv-desc': 'Wie wir Ihre Daten und Privatsphäre schützen.'
+            },
+            es: {
+                tagline: 'Tu asistente AI personal',
+                'nav-home': 'Inicio', 'nav-capabilities': 'Capacidades', 'nav-connectors': 'Conectores',
+                'nav-models': 'Modelos AI', 'nav-privacy': 'Privacidad',
+                'nav-docs-heading': 'Documentación',
+                'nav-getting-started': 'Inicio Rápido', 'nav-channels': 'Canales de Chat',
+                'nav-gateway': 'Gateway', 'nav-nodes': 'Nodos Companion', 'nav-troubleshooting': 'Solución de Problemas',
+                'home-title': 'Bienvenido a TWIZA Moneypenny',
+                'home-subtitle': 'Tu asistente AI personal, potente y respetuosa con la privacidad',
+                'feature-chat-title': 'Chat Natural',
+                'feature-chat-desc': 'Habla conmigo en cualquier idioma. Entiendo el contexto y recuerdo nuestras conversaciones.',
+                'feature-privacy-title': 'Privacidad Absoluta',
+                'feature-privacy-desc': 'Todo funciona localmente. Tus datos nunca salen de tu ordenador, a menos que tú lo decidas.',
+                'feature-models-title': 'Multi-Modelo',
+                'feature-models-desc': 'Gemma, Qwen, DeepSeek, Mistral, Llama en local. Claude, GPT, Gemini, Perplexity en la nube. Tú eliges.',
+                'feature-everywhere-title': 'Donde Estés',
+                'feature-everywhere-desc': 'Conéctate desde WhatsApp, Telegram, Discord, Signal o navegador. 33 conectores disponibles.',
+                'docs-title': '📚 Documentación',
+                'docs-subtitle': 'Explora las guías para aprovechar al máximo TWIZA Moneypenny.',
+                'doc-gs-title': 'Inicio Rápido', 'doc-gs-desc': 'Primeros pasos: instalación, configuración, primer inicio.',
+                'doc-ch-title': 'Canales de Chat', 'doc-ch-desc': 'Los 20+ canales soportados: WhatsApp, Telegram, Discord y más.',
+                'doc-conn-title': '33 Conectores', 'doc-conn-desc': 'Mensajería, email, productividad, social, DevOps, IoT y voz.',
+                'doc-mod-title': 'Modelos AI', 'doc-mod-desc': 'Modelos locales y en la nube: Gemma, Qwen, DeepSeek, Claude, GPT y más.',
+                'doc-gw-title': 'Gateway', 'doc-gw-desc': 'Arquitectura, comandos, proveedores AI, seguridad y herramientas.',
+                'doc-nodes-title': 'Nodos Companion', 'doc-nodes-desc': 'Conecta iPhone, Android, Mac como dispositivos companion.',
+                'doc-cap-title': 'Capacidades', 'doc-cap-desc': 'Todo lo que puedo hacer: investigación, automatización, coding, análisis.',
+                'doc-ts-title': 'Solución de Problemas', 'doc-ts-desc': 'Soluciones a problemas comunes.',
+                'doc-priv-title': 'Privacidad y Seguridad', 'doc-priv-desc': 'Cómo protegemos tus datos y tu privacidad.'
+            },
+            'pt-BR': {
+                tagline: 'Sua assistente AI pessoal',
+                'nav-home': 'Início', 'nav-capabilities': 'Capacidades', 'nav-connectors': 'Conectores',
+                'nav-models': 'Modelos AI', 'nav-privacy': 'Privacidade',
+                'nav-docs-heading': 'Documentação',
+                'nav-getting-started': 'Início Rápido', 'nav-channels': 'Canais de Chat',
+                'nav-gateway': 'Gateway', 'nav-nodes': 'Nós Companion', 'nav-troubleshooting': 'Solução de Problemas',
+                'home-title': 'Bem-vindo ao TWIZA Moneypenny',
+                'home-subtitle': 'Sua assistente AI pessoal, poderosa e focada em privacidade',
+                'feature-chat-title': 'Chat Natural',
+                'feature-chat-desc': 'Fale comigo em qualquer idioma. Eu entendo o contexto e lembro das nossas conversas.',
+                'feature-privacy-title': 'Privacidade Absoluta',
+                'feature-privacy-desc': 'Tudo roda localmente. Seus dados nunca saem do seu computador, a menos que você decida.',
+                'feature-models-title': 'Multi-Modelo',
+                'feature-models-desc': 'Gemma, Qwen, DeepSeek, Mistral, Llama local. Claude, GPT, Gemini, Perplexity na nuvem. Você escolhe.',
+                'feature-everywhere-title': 'Onde Você Estiver',
+                'feature-everywhere-desc': 'Conecte-se pelo WhatsApp, Telegram, Discord, Signal ou navegador. 33 conectores disponíveis.',
+                'docs-title': '📚 Documentação',
+                'docs-subtitle': 'Explore os guias para aproveitar ao máximo o TWIZA Moneypenny.',
+                'doc-gs-title': 'Início Rápido', 'doc-gs-desc': 'Primeiros passos: instalação, configuração, primeiro início.',
+                'doc-ch-title': 'Canais de Chat', 'doc-ch-desc': 'Todos os 20+ canais suportados: WhatsApp, Telegram, Discord e mais.',
+                'doc-conn-title': '33 Conectores', 'doc-conn-desc': 'Mensagens, email, produtividade, social, DevOps, IoT e voz.',
+                'doc-mod-title': 'Modelos AI', 'doc-mod-desc': 'Modelos locais e na nuvem: Gemma, Qwen, DeepSeek, Claude, GPT e mais.',
+                'doc-gw-title': 'Gateway', 'doc-gw-desc': 'Arquitetura, comandos, provedores AI, segurança e ferramentas.',
+                'doc-nodes-title': 'Nós Companion', 'doc-nodes-desc': 'Conecte iPhone, Android, Mac como dispositivos companion.',
+                'doc-cap-title': 'Capacidades', 'doc-cap-desc': 'Tudo que posso fazer: pesquisa, automação, coding, análise.',
+                'doc-ts-title': 'Solução de Problemas', 'doc-ts-desc': 'Soluções para problemas comuns.',
+                'doc-priv-title': 'Privacidade e Segurança', 'doc-priv-desc': 'Como protegemos seus dados e privacidade.'
+            },
+            'zh-CN': {
+                tagline: '您的个人AI助手',
+                'nav-home': '首页', 'nav-capabilities': '功能', 'nav-connectors': '连接器',
+                'nav-models': 'AI模型', 'nav-privacy': '隐私',
+                'nav-docs-heading': '文档',
+                'nav-getting-started': '快速入门', 'nav-channels': '聊天频道',
+                'nav-gateway': '网关', 'nav-nodes': 'Companion节点', 'nav-troubleshooting': '故障排除',
+                'home-title': '欢迎使用 TWIZA Moneypenny',
+                'home-subtitle': '您的个人AI助手，强大且注重隐私',
+                'feature-chat-title': '自然对话',
+                'feature-chat-desc': '用任何语言与我交谈。我理解上下文并记住我们的对话。',
+                'feature-privacy-title': '绝对隐私',
+                'feature-privacy-desc': '一切本地运行。除非您决定，否则您的数据永远不会离开您的电脑。',
+                'feature-models-title': '多模型',
+                'feature-models-desc': 'Gemma、Qwen、DeepSeek、Mistral、Llama本地运行。Claude、GPT、Gemini、Perplexity云端可用。您来选择。',
+                'feature-everywhere-title': '随时随地',
+                'feature-everywhere-desc': '通过WhatsApp、Telegram、Discord、Signal或浏览器连接。33个连接器可用。',
+                'docs-title': '📚 文档',
+                'docs-subtitle': '探索指南，充分利用TWIZA Moneypenny。',
+                'doc-gs-title': '快速入门', 'doc-gs-desc': '第一步：安装、配置、首次启动。',
+                'doc-ch-title': '聊天频道', 'doc-ch-desc': '所有20+支持的频道：WhatsApp、Telegram、Discord等。',
+                'doc-conn-title': '33个连接器', 'doc-conn-desc': '消息、邮件、生产力、社交、DevOps、IoT和语音。',
+                'doc-mod-title': 'AI模型', 'doc-mod-desc': '本地和云端模型：Gemma、Qwen、DeepSeek、Claude、GPT等。',
+                'doc-gw-title': '网关', 'doc-gw-desc': '架构、命令、AI提供商、安全和工具。',
+                'doc-nodes-title': 'Companion节点', 'doc-nodes-desc': '连接iPhone、Android、Mac作为companion设备。',
+                'doc-cap-title': '功能', 'doc-cap-desc': '我能做的一切：研究、自动化、编程、分析。',
+                'doc-ts-title': '故障排除', 'doc-ts-desc': '常见问题的解决方案。',
+                'doc-priv-title': '隐私与安全', 'doc-priv-desc': '我们如何保护您的数据和隐私。'
+            },
+            'zh-TW': {
+                tagline: '您的個人AI助手',
+                'nav-home': '首頁', 'nav-capabilities': '功能', 'nav-connectors': '連接器',
+                'nav-models': 'AI模型', 'nav-privacy': '隱私',
+                'nav-docs-heading': '文件',
+                'nav-getting-started': '快速入門', 'nav-channels': '聊天頻道',
+                'nav-gateway': '閘道', 'nav-nodes': 'Companion節點', 'nav-troubleshooting': '疑難排解',
+                'home-title': '歡迎使用 TWIZA Moneypenny',
+                'home-subtitle': '您的個人AI助手，強大且注重隱私',
+                'feature-chat-title': '自然對話',
+                'feature-chat-desc': '用任何語言與我交談。我理解上下文並記住我們的對話。',
+                'feature-privacy-title': '絕對隱私',
+                'feature-privacy-desc': '一切本地運行。除非您決定，否則您的數據永遠不會離開您的電腦。',
+                'feature-models-title': '多模型',
+                'feature-models-desc': 'Gemma、Qwen、DeepSeek、Mistral、Llama本地運行。Claude、GPT、Gemini、Perplexity雲端可用。您來選擇。',
+                'feature-everywhere-title': '隨時隨地',
+                'feature-everywhere-desc': '透過WhatsApp、Telegram、Discord、Signal或瀏覽器連接。33個連接器可用。',
+                'docs-title': '📚 文件',
+                'docs-subtitle': '探索指南，充分利用TWIZA Moneypenny。',
+                'doc-gs-title': '快速入門', 'doc-gs-desc': '第一步：安裝、設定、首次啟動。',
+                'doc-ch-title': '聊天頻道', 'doc-ch-desc': '所有20+支持的頻道：WhatsApp、Telegram、Discord等。',
+                'doc-conn-title': '33個連接器', 'doc-conn-desc': '訊息、郵件、生產力、社交、DevOps、IoT和語音。',
+                'doc-mod-title': 'AI模型', 'doc-mod-desc': '本地和雲端模型：Gemma、Qwen、DeepSeek、Claude、GPT等。',
+                'doc-gw-title': '閘道', 'doc-gw-desc': '架構、命令、AI提供商、安全和工具。',
+                'doc-nodes-title': 'Companion節點', 'doc-nodes-desc': '連接iPhone、Android、Mac作為companion裝置。',
+                'doc-cap-title': '功能', 'doc-cap-desc': '我能做的一切：研究、自動化、程式設計、分析。',
+                'doc-ts-title': '疑難排解', 'doc-ts-desc': '常見問題的解決方案。',
+                'doc-priv-title': '隱私與安全', 'doc-priv-desc': '我們如何保護您的數據和隱私。'
+            }
+        };
+
+        // Detect language from browser
+        let currentLang = 'it';
+        const browserLang = navigator.language || 'it';
+        if (browserLang.startsWith('zh-TW') || browserLang.startsWith('zh-Hant')) currentLang = 'zh-TW';
+        else if (browserLang.startsWith('zh')) currentLang = 'zh-CN';
+        else if (browserLang.startsWith('pt')) currentLang = 'pt-BR';
+        else if (browserLang.startsWith('de')) currentLang = 'de';
+        else if (browserLang.startsWith('es')) currentLang = 'es';
+        else if (browserLang.startsWith('en')) currentLang = 'en';
+        else if (browserLang.startsWith('it')) currentLang = 'it';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.dataset.langKey;
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            localStorage.setItem('moneypenny-lang', lang);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check saved language preference
+            const saved = localStorage.getItem('moneypenny-lang');
+            if (saved && translations[saved]) currentLang = saved;
+            
+            switchLanguage(currentLang);
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
+            });
+        });
+    </script>
+</body>
+</html>

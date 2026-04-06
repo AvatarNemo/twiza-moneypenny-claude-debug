@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy e Sicurezza - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --moneypenny-pink: #FF0080; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border-color: #2a2a2a; --text-primary: #fff; --text-secondary: #b0b0b0; --text-tertiary: #808080; }
+        .page-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card-bg); border-right: 1px solid var(--border-color); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: cover; }
+        .sidebar-logo h2 { color: var(--pink); font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--text-tertiary); font-size: 0.8rem; }
+        .nav-menu { list-style: none; } .nav-item { margin-bottom: 0.3rem; }
+        .nav-link { display: block; color: var(--text-secondary); text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { background: var(--pink); color: #fff; }
+        .nav-section { color: var(--text-tertiary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem; }
+        .sidebar-footer { margin-top: auto; text-align: center; color: var(--text-tertiary); font-size: 0.75rem; padding-top: 1rem; }
+        .page-content { margin-left: 260px; flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        h1, h2, h3 { color: var(--pink); margin-bottom: 1rem; }
+        p { color: var(--text-secondary); margin-bottom: 0.8rem; }
+        a { color: var(--pink); text-decoration: none; } a:hover { text-decoration: underline; }
+        .code-block { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.8rem; margin: 0.8rem 0; font-family: monospace; color: var(--text-secondary); font-size: 0.85rem; }
+        .highlight { color: var(--pink); font-weight: 600; }
+        .back-link { color: var(--pink); text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .sidebar { display: none; } .page-content { margin-left: 0; padding: 1rem; } }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny">
+                <h2>🦾 Moneypenny</h2>
+                <p>La tua assistente AI personale</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="capabilities.html" class="nav-link">Capacità</a></li>
+                <li class="nav-item"><a href="connectors.html" class="nav-link">Connettori</a></li>
+                <li class="nav-item"><a href="models.html" class="nav-link">Modelli AI</a></li>
+                <li class="nav-item"><a href="privacy.html" class="nav-link active">Privacy</a></li>
+            
+                <li class="nav-item"><a href="getting-started.html" class="nav-link">🚀 Guida Rapida</a></li>
+                <li class="nav-item"><a href="channels.html" class="nav-link">📡 Canali Chat</a></li>
+                <li class="nav-item"><a href="gateway.html" class="nav-link">⚡ Gateway</a></li>
+                <li class="nav-item"><a href="nodes.html" class="nav-link">📱 Nodi Companion</a></li>
+                <li class="nav-item"><a href="troubleshooting.html" class="nav-link">🔧 Risoluzione Problemi</a></li>
+            </ul>
+            <div class="sidebar-footer"><p>Sviluppato dal<br><strong style="color:var(--pink);">Team SHAKAZAMBA</strong></p></div>
+        </nav>
+        <main class="page-content">
+            <a href="index.html" class="back-link">← Torna alla Home</a>
+<h1 data-lang-key="privacy-title">Privacy e Sicurezza</h1>
+
+<div class="privacy-hero">
+    <h2 data-lang-key="privacy-hero">🔒 La tua privacy è sacra</h2>
+    <p data-lang-key="privacy-subtitle">TWIZA Moneypenny è progettata con la privacy al centro. I tuoi dati restano tuoi, sempre.</p>
+</div>
+
+<div class="principle-section">
+    <h2 data-lang-key="principles-title">🛡️ I Nostri Principi</h2>
+    
+    <div class="principle-grid">
+        <div class="principle-card">
+            <div class="principle-icon">🏠</div>
+            <h3 data-lang-key="local-first">Local-First</h3>
+            <p data-lang-key="local-first-desc">Tutto funziona sul tuo computer. Nessun server esterno necessario per l'uso base.</p>
+        </div>
+        
+        <div class="principle-card">
+            <div class="principle-icon">🎛️</div>
+            <h3 data-lang-key="you-control">Tu Controlli</h3>
+            <p data-lang-key="you-control-desc">Decidi tu se e quando condividere dati con servizi esterni. Ogni scelta è nelle tue mani.</p>
+        </div>
+        
+        <div class="principle-card">
+            <div class="principle-icon">🔍</div>
+            <h3 data-lang-key="transparent">Trasparente</h3>
+            <p data-lang-key="transparent-desc">Ti diciamo sempre esattamente cosa facciamo con i tuoi dati. Niente scatole nere.</p>
+        </div>
+        
+        <div class="principle-card">
+            <div class="principle-icon">🚫</div>
+            <h3 data-lang-key="no-tracking">Zero Tracking</h3>
+            <p data-lang-key="no-tracking-desc">Non raccogliamo telemetria, non abbiamo analytics, non tracciamo il tuo utilizzo.</p>
+        </div>
+    </div>
+</div>
+
+<div class="data-section">
+    <h2 data-lang-key="data-title">📊 I Tuoi Dati</h2>
+    
+    <div class="data-category">
+        <h3 class="data-local">🔒 <span data-lang-key="data-local-title">Sempre Locali</span></h3>
+        <ul class="data-list">
+            <li data-lang-key="data-conversations">Le nostre conversazioni</li>
+            <li data-lang-key="data-memory">I miei ricordi su di te (MEMORY.md)</li>
+            <li data-lang-key="data-files">I file che elaboro</li>
+            <li data-lang-key="data-config">Configurazioni e impostazioni</li>
+            <li data-lang-key="data-history">Cronologia comandi</li>
+            <li data-lang-key="data-projects">I tuoi progetti e lavori</li>
+        </ul>
+        <p class="data-note" data-lang-key="data-local-note">Questi dati non lasciano mai il tuo computer a meno che tu non lo richieda esplicitamente.</p>
+    </div>
+    
+    <div class="data-category">
+        <h3 class="data-cloud">☁️ <span data-lang-key="data-cloud-title">Solo se Scegli Cloud</span></h3>
+        <ul class="data-list">
+            <li data-lang-key="data-cloud-messages">Solo il messaggio corrente (per ottenere risposta)</li>
+            <li data-lang-key="data-cloud-context">Contesto essenziale quando necessario</li>
+        </ul>
+        <p class="data-note" data-lang-key="data-cloud-note">Solo quando usi modelli cloud (Anthropic, OpenAI, ecc.). Il provider riceve solo quello che serve per rispondere.</p>
+    </div>
+    
+    <div class="data-category">
+        <h3 class="data-never">🚫 <span data-lang-key="data-never-title">Mai Condiviso</span></h3>
+        <ul class="data-list">
+            <li data-lang-key="data-never-keys">Le tue API key (restano sul tuo PC)</li>
+            <li data-lang-key="data-never-passwords">Password e credenziali</li>
+            <li data-lang-key="data-never-personal">File personali senza permesso</li>
+            <li data-lang-key="data-never-logs">Log e diagnostici completi</li>
+            <li data-lang-key="data-never-metadata">Metadata delle tue attività</li>
+        </ul>
+        <p class="data-note critical" data-lang-key="data-never-note">Questi dati non escono mai dal tuo computer. Punto.</p>
+    </div>
+</div>
+
+<div class="cloud-section">
+    <h2 data-lang-key="cloud-privacy-title">☁️ Privacy con Modelli Cloud</h2>
+    
+    <div class="cloud-info">
+        <p data-lang-key="cloud-info-desc">Quando scegli di usare modelli cloud (opzionale), ecco cosa succede:</p>
+    </div>
+    
+    <div class="cloud-providers-privacy">
+        <div class="provider-privacy-card">
+            <h3>🧠 Anthropic Claude</h3>
+            <div class="privacy-features">
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="anthropic-no-training">Non usa i tuoi dati per training</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="anthropic-no-store">Non conserva conversazioni</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="anthropic-gdpr">Conformità GDPR/Privacy</span>
+                </div>
+            </div>
+            <p class="provider-note" data-lang-key="anthropic-note">Politica privacy molto rispettosa. Dati processati solo per rispondere.</p>
+        </div>
+        
+        <div class="provider-privacy-card">
+            <h3>🦾 OpenAI GPT</h3>
+            <div class="privacy-features">
+                <div class="privacy-feature warning">
+                    <span class="privacy-icon">⚠️</span>
+                    <span data-lang-key="openai-training">Potrebbe usare dati per miglioramenti*</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="openai-delete">Puoi richiedere cancellazione</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="openai-api">API più private della chat web</span>
+                </div>
+            </div>
+            <p class="provider-note" data-lang-key="openai-note">*Puoi disattivare il training nelle impostazioni del tuo account OpenAI.</p>
+        </div>
+        
+        <div class="provider-privacy-card">
+            <h3>🌟 Google Gemini</h3>
+            <div class="privacy-features">
+                <div class="privacy-feature warning">
+                    <span class="privacy-icon">⚠️</span>
+                    <span data-lang-key="google-integration">Integrato con ecosistema Google</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="google-controls">Controlli privacy granulari</span>
+                </div>
+                <div class="privacy-feature good">
+                    <span class="privacy-icon">✅</span>
+                    <span data-lang-key="google-transparency">Report trasparenza disponibili</span>
+                </div>
+            </div>
+            <p class="provider-note" data-lang-key="google-note">Rispetta le tue impostazioni Google esistenti.</p>
+        </div>
+    </div>
+</div>
+
+<div class="security-section">
+    <h2 data-lang-key="security-title">🛡️ Sicurezza Tecnica</h2>
+    
+    <div class="security-grid">
+        <div class="security-card">
+            <h3 data-lang-key="local-storage">💾 Storage Locale</h3>
+            <ul>
+                <li data-lang-key="local-storage-1">Dati crittografati nel tuo profilo utente</li>
+                <li data-lang-key="local-storage-2">API key protette da Windows DPAPI</li>
+                <li data-lang-key="local-storage-3">Accesso solo al tuo account Windows</li>
+            </ul>
+        </div>
+        
+        <div class="security-card">
+            <h3 data-lang-key="network-security">🌐 Sicurezza di Rete</h3>
+            <ul>
+                <li data-lang-key="network-security-1">Comunicazioni sempre HTTPS/TLS</li>
+                <li data-lang-key="network-security-2">Certificati SSL verificati</li>
+                <li data-lang-key="network-security-3">Nessun proxy o man-in-the-middle</li>
+            </ul>
+        </div>
+        
+        <div class="security-card">
+            <h3 data-lang-key="process-isolation">🏗️ Isolamento Processi</h3>
+            <ul>
+                <li data-lang-key="process-isolation-1">Sandbox WSL2 per AI locale</li>
+                <li data-lang-key="process-isolation-2">Electron con security abilitata</li>
+                <li data-lang-key="process-isolation-3">Permessi minimi necessari</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="control-section">
+    <h2 data-lang-key="control-title">🎛️ I Tuoi Controlli</h2>
+    
+    <div class="control-list">
+        <div class="control-item">
+            <h4 data-lang-key="control-data">📊 Controllo Dati</h4>
+            <p data-lang-key="control-data-desc">Vedi, modifica o elimina tutti i dati memorizzati. Accesso completo ai tuoi file di configurazione e memoria.</p>
+            <div class="control-commands">
+                <code>"Mostrami i miei dati"</code>
+                <code>"Elimina la mia cronologia"</code>
+                <code>"Reset totale"</code>
+            </div>
+        </div>
+        
+        <div class="control-item">
+            <h4 data-lang-key="control-providers">☁️ Gestione Provider</h4>
+            <p data-lang-key="control-providers-desc">Aggiungi, rimuovi o cambia provider cloud in qualsiasi momento. Revoca accessi istantaneamente.</p>
+            <div class="control-commands">
+                <code>"Rimuovi OpenAI"</code>
+                <code>"Usa solo modelli locali"</code>
+                <code>"Mostra provider attivi"</code>
+            </div>
+        </div>
+        
+        <div class="control-item">
+            <h4 data-lang-key="control-connections">🔗 Connessioni Esterne</h4>
+            <p data-lang-key="control-connections-desc">Gestisci WhatsApp, Telegram, Discord. Disconnetti o riconnetti quando vuoi.</p>
+            <div class="control-commands">
+                <code>"Disconnetti WhatsApp"</code>
+                <code>"Lista connessioni attive"</code>
+                <code>"Mode privacy totale"</code>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="comparison-section">
+    <h2 data-lang-key="vs-others-title">🆚 Vs Altri Assistenti AI</h2>
+    
+    <div class="comparison-table">
+        <div class="comparison-header">
+            <div></div>
+            <div>TWIZA Moneypenny</div>
+            <div>ChatGPT/Claude Web</div>
+            <div>Google Assistant</div>
+            <div>Alexa/Siri</div>
+        </div>
+        
+        <div class="comparison-row">
+            <div class="comparison-label" data-lang-key="vs-data-local">Dati Locali</div>
+            <div class="comparison-value excellent">🟢 <span data-lang-key="yes-by-default">Sì (default)</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+        </div>
+        
+        <div class="comparison-row">
+            <div class="comparison-label" data-lang-key="vs-no-tracking">No Tracking</div>
+            <div class="comparison-value excellent">🟢 <span data-lang-key="guaranteed">Garantito</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="extensive">Estensivo</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="extensive">Estensivo</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="extensive">Estensivo</span></div>
+        </div>
+        
+        <div class="comparison-row">
+            <div class="comparison-label" data-lang-key="vs-cloud-optional">Cloud Opzionale</div>
+            <div class="comparison-value excellent">🟢 <span data-lang-key="your-choice">Tua scelta</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="required">Obbligatorio</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="required">Obbligatorio</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="required">Obbligatorio</span></div>
+        </div>
+        
+        <div class="comparison-row">
+            <div class="comparison-label" data-lang-key="vs-open-source">Open Source</div>
+            <div class="comparison-value good">🟡 <span data-lang-key="partially">Parzialmente</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+            <div class="comparison-value bad">🔴 <span data-lang-key="no">No</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="faq-section">
+    <h2 data-lang-key="faq-title">❓ Domande Frequenti</h2>
+    
+    <div class="faq-grid">
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q1">Posso usare TWIZA Moneypenny completamente offline?</h4>
+            <p data-lang-key="faq-a1">Sì! Il modello locale funziona senza internet. Serve connessione solo per browsing web e modelli cloud opzionali.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q2">Le mie API key sono al sicuro?</h4>
+            <p data-lang-key="faq-a2">Assolutamente. Sono crittografate localmente con Windows DPAPI. Solo il tuo account può accedervi.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q3">Cosa vede il provider cloud?</h4>
+            <p data-lang-key="faq-a3">Solo il messaggio che invii e il contesto minimo necessario. Mai file, cronologia completa o dati personali.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q4">Posso eliminare tutto in qualsiasi momento?</h4>
+            <p data-lang-key="faq-a4">Certo. Tutti i dati sono nella cartella utente. Puoi eliminarli o fare reset completo quando vuoi.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q5">C'è telemetria nascosta?</h4>
+            <p data-lang-key="faq-a5">Zero. Niente analytics, niente crash reports automatici, niente tracking. Il tuo utilizzo resta privato.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4 data-lang-key="faq-q6">E se SHAKAZAMBA chiude?</h4>
+            <p data-lang-key="faq-a6">I tuoi dati restano tuoi. OpenClaw è open source, puoi continuare a usarlo indipendentemente.</p>
+        </div>
+    </div>
+</div>
+
+<div class="commitment-section">
+    <h2 data-lang-key="commitment-title">🤝 Il Nostro Impegno</h2>
+    <div class="commitment-content">
+        <p data-lang-key="commitment-text">TWIZA Moneypenny è costruita per essere <strong>tua</strong>. Non siamo un servizio che controlli — sei tu che controlli il servizio. La tua privacy non è un prodotto da vendere, ma un diritto da rispettare.</p>
+        <div class="commitment-pledge">
+            <p data-lang-key="commitment-pledge"><em>"Non raccoglieremo mai i tuoi dati per profitto. Non ti tracceremo mai. Non venderemo mai niente che ti riguardi. Punto."</em></p>
+            <p class="signature">— Il Team SHAKAZAMBA</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.privacy-hero {
+    text-align: center;
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 0, 128, 0.15) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 3rem;
+}
+
+.privacy-hero h2 {
+    color: var(--moneypenny-pink);
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.privacy-hero p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.principle-section {
+    margin: 3rem 0;
+}
+
+.principle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.principle-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.principle-card:hover {
+    border-color: var(--moneypenny-pink);
+    transform: translateY(-2px);
+}
+
+.principle-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.principle-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.principle-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.data-section {
+    margin: 3rem 0;
+}
+
+.data-category {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid;
+}
+
+.data-category:nth-child(2) {
+    border-color: #00ff88;
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.data-category:nth-child(3) {
+    border-color: #ffaa00;
+    background: rgba(255, 170, 0, 0.05);
+}
+
+.data-category:nth-child(4) {
+    border-color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+}
+
+.data-local {
+    color: #00ff88;
+}
+
+.data-cloud {
+    color: #ffaa00;
+}
+
+.data-never {
+    color: #ff4444;
+}
+
+.data-list {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.data-list li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.data-note {
+    margin: 1rem 0 0 0;
+    font-style: italic;
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+.data-note.critical {
+    color: #ff4444;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.cloud-section {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.cloud-providers-privacy {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.provider-privacy-card {
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.provider-privacy-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.privacy-features {
+    margin: 1rem 0;
+}
+
+.privacy-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+}
+
+.privacy-feature.good {
+    color: #00ff88;
+}
+
+.privacy-feature.warning {
+    color: #ffaa00;
+}
+
+.provider-note {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-top: 1rem;
+}
+
+.security-section {
+    margin: 3rem 0;
+}
+
+.security-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.security-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.security-card h3 {
+    color: var(--moneypenny-pink);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.security-card ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.security-card li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.control-section {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 0, 128, 0.1) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.control-list {
+    margin: 2rem 0;
+}
+
+.control-item {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.control-item h4 {
+    color: var(--moneypenny-pink);
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+}
+
+.control-item p {
+    margin: 0 0 1rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.control-commands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.control-commands code {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--moneypenny-pink);
+}
+
+.comparison-section {
+    margin: 3rem 0;
+}
+
+.comparison-table {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 2rem 0;
+    font-size: 0.85rem;
+}
+
+.comparison-header,
+.comparison-row {
+    display: contents;
+}
+
+.comparison-header > div {
+    background: var(--dark-bg);
+    padding: 0.75rem 0.5rem;
+    font-weight: 600;
+    color: var(--moneypenny-pink);
+    text-align: center;
+}
+
+.comparison-header > div:first-child {
+    text-align: left;
+}
+
+.comparison-row > div {
+    background: var(--card-bg);
+    padding: 0.75rem 0.5rem;
+    color: var(--text-secondary);
+}
+
+.comparison-label {
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    text-align: left;
+}
+
+.comparison-value {
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.faq-section {
+    margin: 3rem 0;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.faq-item h4 {
+    color: var(--moneypenny-pink);
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+}
+
+.faq-item p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.commitment-section {
+    margin: 3rem 0;
+    padding: 3rem;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, rgba(255, 0, 128, 0.15) 100%);
+    border: 2px solid var(--moneypenny-pink);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.commitment-content p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 2rem auto;
+}
+
+.commitment-pledge {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.commitment-pledge p:first-child {
+    font-size: 1.2rem;
+    color: var(--moneypenny-pink);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.signature {
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+    margin: 0 !important;
+}
+</style>
+
+
+<div class="shakazamba-privacy-link" style="margin-top:3rem;padding:2rem;text-align:center;border-top:2px solid #FF0080;">
+    <p data-lang-key="shaka-privacy-intro" style="color:#ccc;margin-bottom:1rem;">Per la privacy policy completa di SHAKAZAMBA:</p>
+    <a href="https://shakazamba.com/privacy-policy/" target="_blank" rel="noopener noreferrer" 
+       style="display:inline-block;background:#FF0080;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1.1rem;transition:background 0.2s;">
+        🔗 <span data-lang-key="shaka-privacy-link">Privacy Policy SHAKAZAMBA</span>
+    </a>
+    <p style="color:#666;margin-top:0.8rem;font-size:0.85rem;" data-lang-key="shaka-privacy-note">Si apre in una nuova finestra su shakazamba.com</p>
+</div>
+
+<script>
+// Add translations for privacy page
+if (typeof translations !== 'undefined') {
+    Object.assign(translations.it, {
+        'privacy-title': 'Privacy e Sicurezza',
+        'privacy-hero': '🔒 La tua privacy è sacra',
+        'privacy-subtitle': 'TWIZA Moneypenny è progettata con la privacy al centro. I tuoi dati restano tuoi, sempre.',
+        'principles-title': '🛡️ I Nostri Principi',
+        'local-first': 'Local-First',
+        'local-first-desc': 'Tutto funziona sul tuo computer. Nessun server esterno necessario per l\'uso base.',
+        'you-control': 'Tu Controlli',
+        'you-control-desc': 'Decidi tu se e quando condividere dati con servizi esterni. Ogni scelta è nelle tue mani.',
+        'transparent': 'Trasparente',
+        'transparent-desc': 'Ti diciamo sempre esattamente cosa facciamo con i tuoi dati. Niente scatole nere.',
+        'no-tracking': 'Zero Tracking',
+        'no-tracking-desc': 'Non raccogliamo telemetria, non abbiamo analytics, non tracciamo il tuo utilizzo.',
+        'data-title': '📊 I Tuoi Dati',
+        'data-local-title': 'Sempre Locali',
+        'data-conversations': 'Le nostre conversazioni',
+        'data-memory': 'I miei ricordi su di te (MEMORY.md)',
+        'data-files': 'I file che elaboro',
+        'data-config': 'Configurazioni e impostazioni',
+        'data-history': 'Cronologia comandi',
+        'data-projects': 'I tuoi progetti e lavori',
+        'data-local-note': 'Questi dati non lasciano mai il tuo computer a meno che tu non lo richieda esplicitamente.',
+        'data-cloud-title': 'Solo se Scegli Cloud',
+        'data-cloud-messages': 'Solo il messaggio corrente (per ottenere risposta)',
+        'data-cloud-context': 'Contesto essenziale quando necessario',
+        'data-cloud-note': 'Solo quando usi modelli cloud (Anthropic, OpenAI, ecc.). Il provider riceve solo quello che serve per rispondere.',
+        'data-never-title': 'Mai Condiviso',
+        'data-never-keys': 'Le tue API key (restano sul tuo PC)',
+        'data-never-passwords': 'Password e credenziali',
+        'data-never-personal': 'File personali senza permesso',
+        'data-never-logs': 'Log e diagnostici completi',
+        'data-never-metadata': 'Metadata delle tue attività',
+        'data-never-note': 'Questi dati non escono mai dal tuo computer. Punto.',
+        'cloud-privacy-title': '☁️ Privacy con Modelli Cloud',
+        'cloud-info-desc': 'Quando scegli di usare modelli cloud (opzionale), ecco cosa succede:',
+        'anthropic-no-training': 'Non usa i tuoi dati per training',
+        'anthropic-no-store': 'Non conserva conversazioni',
+        'anthropic-gdpr': 'Conformità GDPR/Privacy',
+        'anthropic-note': 'Politica privacy molto rispettosa. Dati processati solo per rispondere.',
+        'openai-training': 'Potrebbe usare dati per miglioramenti*',
+        'openai-delete': 'Puoi richiedere cancellazione',
+        'openai-api': 'API più private della chat web',
+        'openai-note': '*Puoi disattivare il training nelle impostazioni del tuo account OpenAI.',
+        'google-integration': 'Integrato con ecosistema Google',
+        'google-controls': 'Controlli privacy granulari',
+        'google-transparency': 'Report trasparenza disponibili',
+        'google-note': 'Rispetta le tue impostazioni Google esistenti.',
+        'security-title': '🛡️ Sicurezza Tecnica',
+        'local-storage': '💾 Storage Locale',
+        'local-storage-1': 'Dati crittografati nel tuo profilo utente',
+        'local-storage-2': 'API key protette da Windows DPAPI',
+        'local-storage-3': 'Accesso solo al tuo account Windows',
+        'network-security': '🌐 Sicurezza di Rete',
+        'network-security-1': 'Comunicazioni sempre HTTPS/TLS',
+        'network-security-2': 'Certificati SSL verificati',
+        'network-security-3': 'Nessun proxy o man-in-the-middle',
+        'process-isolation': '🏗️ Isolamento Processi',
+        'process-isolation-1': 'Sandbox WSL2 per AI locale',
+        'process-isolation-2': 'Electron con security abilitata',
+        'process-isolation-3': 'Permessi minimi necessari',
+        'control-title': '🎛️ I Tuoi Controlli',
+        'control-data': '📊 Controllo Dati',
+        'control-data-desc': 'Vedi, modifica o elimina tutti i dati memorizzati. Accesso completo ai tuoi file di configurazione e memoria.',
+        'control-providers': '☁️ Gestione Provider',
+        'control-providers-desc': 'Aggiungi, rimuovi o cambia provider cloud in qualsiasi momento. Revoca accessi istantaneamente.',
+        'control-connections': '🔗 Connessioni Esterne',
+        'control-connections-desc': 'Gestisci WhatsApp, Telegram, Discord. Disconnetti o riconnetti quando vuoi.',
+        'vs-others-title': '🆚 Vs Altri Assistenti AI',
+        'vs-data-local': 'Dati Locali',
+        'vs-no-tracking': 'No Tracking',
+        'vs-cloud-optional': 'Cloud Opzionale',
+        'vs-open-source': 'Open Source',
+        'yes-by-default': 'Sì (default)',
+        'no': 'No',
+        'guaranteed': 'Garantito',
+        'extensive': 'Estensivo',
+        'your-choice': 'Tua scelta',
+        'required': 'Obbligatorio',
+        'partially': 'Parzialmente',
+        'faq-title': '❓ Domande Frequenti',
+        'faq-q1': 'Posso usare TWIZA Moneypenny completamente offline?',
+        'faq-a1': 'Sì! Il modello locale funziona senza internet. Serve connessione solo per browsing web e modelli cloud opzionali.',
+        'faq-q2': 'Le mie API key sono al sicuro?',
+        'faq-a2': 'Assolutamente. Sono crittografate localmente con Windows DPAPI. Solo il tuo account può accedervi.',
+        'faq-q3': 'Cosa vede il provider cloud?',
+        'faq-a3': 'Solo il messaggio che invii e il contesto minimo necessario. Mai file, cronologia completa o dati personali.',
+        'faq-q4': 'Posso eliminare tutto in qualsiasi momento?',
+        'faq-a4': 'Certo. Tutti i dati sono nella cartella utente. Puoi eliminarli o fare reset completo quando vuoi.',
+        'faq-q5': 'C\'è telemetria nascosta?',
+        'faq-a5': 'Zero. Niente analytics, niente crash reports automatici, niente tracking. Il tuo utilizzo resta privato.',
+        'faq-q6': 'E se SHAKAZAMBA chiude?',
+        'faq-a6': 'I tuoi dati restano tuoi. OpenClaw è open source, puoi continuare a usarlo indipendentemente.',
+        'commitment-title': '🤝 Il Nostro Impegno',
+        'shaka-privacy-intro': 'Per la privacy policy completa di SHAKAZAMBA:',
+        'shaka-privacy-link': 'Privacy Policy SHAKAZAMBA',
+        'shaka-privacy-note': 'Si apre in una nuova finestra su shakazamba.com',
+        'commitment-text': 'TWIZA Moneypenny è costruita per essere tua. Non siamo un servizio che controlli — sei tu che controlli il servizio. La tua privacy non è un prodotto da vendere, ma un diritto da rispettare.',
+        'commitment-pledge': '"Non raccoglieremo mai i tuoi dati per profitto. Non ti tracceremo mai. Non venderemo mai niente che ti riguardi. Punto."'
+    });
+    
+    Object.assign(translations.en, {
+        'privacy-title': 'Privacy & Security',
+        'privacy-hero': '🔒 Your privacy is sacred',
+        'privacy-subtitle': 'TWIZA Moneypenny is designed with privacy at the center. Your data remains yours, always.',
+        'principles-title': '🛡️ Our Principles',
+        'local-first': 'Local-First',
+        'local-first-desc': 'Everything runs on your computer. No external servers needed for basic use.',
+        'you-control': 'You Control',
+        'you-control-desc': 'You decide if and when to share data with external services. Every choice is in your hands.',
+        'transparent': 'Transparent',
+        'transparent-desc': 'We always tell you exactly what we do with your data. No black boxes.',
+        'no-tracking': 'Zero Tracking',
+        'no-tracking-desc': 'We don\'t collect telemetry, don\'t have analytics, don\'t track your usage.',
+        'data-title': '📊 Your Data',
+        'data-local-title': 'Always Local',
+        'data-conversations': 'Our conversations',
+        'data-memory': 'My memories about you (MEMORY.md)',
+        'data-files': 'Files I process',
+        'data-config': 'Configurations and settings',
+        'data-history': 'Command history',
+        'data-projects': 'Your projects and work',
+        'data-local-note': 'This data never leaves your computer unless you explicitly request it.',
+        'data-cloud-title': 'Only if You Choose Cloud',
+        'data-cloud-messages': 'Only the current message (to get response)',
+        'data-cloud-context': 'Essential context when needed',
+        'data-cloud-note': 'Only when using cloud models (Anthropic, OpenAI, etc.). Provider receives only what\'s needed to respond.',
+        'data-never-title': 'Never Shared',
+        'data-never-keys': 'Your API keys (stay on your PC)',
+        'data-never-passwords': 'Passwords and credentials',
+        'data-never-personal': 'Personal files without permission',
+        'data-never-logs': 'Complete logs and diagnostics',
+        'data-never-metadata': 'Your activity metadata',
+        'data-never-note': 'This data never leaves your computer. Period.',
+        'cloud-privacy-title': '☁️ Privacy with Cloud Models',
+        'cloud-info-desc': 'When you choose to use cloud models (optional), here\'s what happens:',
+        'anthropic-no-training': 'Doesn\'t use your data for training',
+        'anthropic-no-store': 'Doesn\'t store conversations',
+        'anthropic-gdpr': 'GDPR/Privacy compliance',
+        'anthropic-note': 'Very respectful privacy policy. Data processed only to respond.',
+        'openai-training': 'Might use data for improvements*',
+        'openai-delete': 'You can request deletion',
+        'openai-api': 'API more private than web chat',
+        'openai-note': '*You can disable training in your OpenAI account settings.',
+        'google-integration': 'Integrated with Google ecosystem',
+        'google-controls': 'Granular privacy controls',
+        'google-transparency': 'Transparency reports available',
+        'google-note': 'Respects your existing Google settings.',
+        'security-title': '🛡️ Technical Security',
+        'local-storage': '💾 Local Storage',
+        'local-storage-1': 'Data encrypted in your user profile',
+        'local-storage-2': 'API keys protected by Windows DPAPI',
+        'local-storage-3': 'Access only to your Windows account',
+        'network-security': '🌐 Network Security',
+        'network-security-1': 'Communications always HTTPS/TLS',
+        'network-security-2': 'SSL certificates verified',
+        'network-security-3': 'No proxy or man-in-the-middle',
+        'process-isolation': '🏗️ Process Isolation',
+        'process-isolation-1': 'WSL2 sandbox for local AI',
+        'process-isolation-2': 'Electron with security enabled',
+        'process-isolation-3': 'Minimum necessary permissions',
+        'control-title': '🎛️ Your Controls',
+        'control-data': '📊 Data Control',
+        'control-data-desc': 'View, edit, or delete all stored data. Complete access to your configuration and memory files.',
+        'control-providers': '☁️ Provider Management',
+        'control-providers-desc': 'Add, remove, or change cloud providers at any time. Revoke access instantly.',
+        'control-connections': '🔗 External Connections',
+        'control-connections-desc': 'Manage WhatsApp, Telegram, Discord. Disconnect or reconnect whenever you want.',
+        'vs-others-title': '🆚 Vs Other AI Assistants',
+        'vs-data-local': 'Local Data',
+        'vs-no-tracking': 'No Tracking',
+        'vs-cloud-optional': 'Optional Cloud',
+        'vs-open-source': 'Open Source',
+        'yes-by-default': 'Yes (default)',
+        'no': 'No',
+        'guaranteed': 'Guaranteed',
+        'extensive': 'Extensive',
+        'your-choice': 'Your choice',
+        'required': 'Required',
+        'partially': 'Partially',
+        'faq-title': '❓ Frequently Asked Questions',
+        'faq-q1': 'Can I use TWIZA Moneypenny completely offline?',
+        'faq-a1': 'Yes! The local model works without internet. Connection needed only for web browsing and optional cloud models.',
+        'faq-q2': 'Are my API keys safe?',
+        'faq-a2': 'Absolutely. They\'re encrypted locally with Windows DPAPI. Only your account can access them.',
+        'faq-q3': 'What does the cloud provider see?',
+        'faq-a3': 'Only the message you send and minimum necessary context. Never files, complete history, or personal data.',
+        'faq-q4': 'Can I delete everything at any time?',
+        'faq-a4': 'Of course. All data is in the user folder. You can delete it or do complete reset whenever you want.',
+        'faq-q5': 'Is there hidden telemetry?',
+        'faq-a5': 'Zero. No analytics, no automatic crash reports, no tracking. Your usage stays private.',
+        'faq-q6': 'What if SHAKAZAMBA shuts down?',
+        'faq-a6': 'Your data remains yours. OpenClaw is open source, you can continue using it independently.',
+        'commitment-title': '🤝 Our Commitment',
+        'shaka-privacy-intro': 'For the full SHAKAZAMBA privacy policy:',
+        'shaka-privacy-link': 'SHAKAZAMBA Privacy Policy',
+        'shaka-privacy-note': 'Opens in a new window on shakazamba.com',
+        'commitment-text': 'TWIZA Moneypenny is built to be yours. We\'re not a service you control — you control the service. Your privacy is not a product to sell, but a right to respect.',
+        'commitment-pledge': '"We will never collect your data for profit. We will never track you. We will never sell anything about you. Period."'
+    });
+}
+</script>
+        </main>
+    </div>
+</body>
+</html>

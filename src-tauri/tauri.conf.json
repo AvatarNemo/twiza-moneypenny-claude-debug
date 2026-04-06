@@ -1,0 +1,80 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicobistolfi/tauri/dev/core/tauri-config-schema/schema.json",
+  "productName": "TWIZA Moneypenny",
+  "version": "0.1.0",
+  "identifier": "com.twiza.moneypenny",
+  "build": {
+    "frontendDist": "../src",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "wizard",
+        "title": "TWIZA Moneypenny \u2014 Setup",
+        "url": "wizard/index.html",
+        "width": 960,
+        "height": 680,
+        "resizable": true,
+        "center": true,
+        "decorations": false,
+        "transparent": false,
+        "visible": false
+      }
+    ],
+    "trayIcon": {
+      "iconPath": "icons/tray-icon.png",
+      "iconAsTemplate": false,
+      "tooltip": "TWIZA Moneypenny"
+    },
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis",
+      "msi"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/icon.ico"
+    ],
+    "resources": [
+      "../workspace-template/**/*",
+      "../scripts/**/*"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "nsis": {
+        "installMode": "both",
+        "displayLanguageSelector": false,
+        "installerIcon": "icons/icon.ico",
+        "languages": [
+          "English",
+          "Italian"
+        ],
+        "startMenuFolder": "TWIZA",
+        "headerImage": null,
+        "sidebarImage": null
+      }
+    },
+    "publisher": "TWIZA by SHAKAZAMBA",
+    "copyright": "Copyright \u00a9 2026 TWIZA by SHAKAZAMBA",
+    "category": "Utility",
+    "shortDescription": "Your Personal AI Agent for Windows",
+    "longDescription": "TWIZA Moneypenny \u2014 One-click installer for your personal AI agent. Multi-channel chat, local models, privacy-first. ...more than an agent!"
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  }
+}

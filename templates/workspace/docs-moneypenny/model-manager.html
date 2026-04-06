@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Modelli AI - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --bg: #0a0a0a; --card: #1a1a1a; --border: #2a2a2a; --text: #b0b0b0; --dim: #808080; --green: #00ff88; --red: #ff4444; --blue: #6495ed; --orange: #ffa500; }
+
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card); border-right: 1px solid var(--border); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .sidebar-logo img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: cover; }
+        .sidebar-logo h2 { color: var(--pink); font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--dim); font-size: 0.8rem; }
+        .nav-menu { list-style: none; } .nav-item { margin-bottom: 0.3rem; }
+        .nav-link { display: block; color: var(--text); text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { background: var(--pink); color: #fff; }
+        .nav-section { color: var(--dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem; }
+        .sidebar-footer { margin-top: auto; text-align: center; color: var(--dim); font-size: 0.75rem; padding-top: 1rem; }
+        
+        .content { margin-left: 260px; flex: 1; padding: 2rem 3rem; max-width: 960px; }
+        
+        header { padding: 1rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+        .back-link { color: var(--pink); text-decoration: none; font-weight: 600; }
+        h1 { font-size: 2.2rem; color: var(--pink); margin: 0.5rem 0; }
+        .subtitle { color: var(--text); font-size: 1.1rem; }
+        h2 { color: var(--pink); font-size: 1.3rem; margin: 1.5rem 0 1rem; }
+        h3 { color: #fff; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: var(--text); margin-bottom: 0.8rem; }
+        a { color: var(--pink); }
+
+        /* Status bar */
+        .status-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; flex: 1; min-width: 200px; }
+        .status-label { color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+        .status-value { font-size: 1.2rem; font-weight: 600; }
+        .status-value.connected { color: var(--green); }
+        .status-value.disconnected { color: var(--red); }
+
+        /* Sections */
+        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+        .badge { padding: 0.2rem 0.6rem; border-radius: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-green { background: var(--green); color: #000; }
+        .badge-blue { background: var(--blue); color: #fff; }
+        .badge-orange { background: var(--orange); color: #000; }
+
+        /* Model selector */
+        .model-select-row { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+        select, input[type="text"], input[type="password"] {
+            background: var(--bg); border: 1px solid var(--border); color: #fff; padding: 0.6rem 1rem;
+            border-radius: 6px; font-family: inherit; font-size: 0.9rem; min-width: 200px; outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus, input:focus { border-color: var(--pink); }
+        
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-pink { background: var(--pink); color: #fff; }
+        .btn-pink:hover { background: #e00070; }
+        .btn-pink:disabled { background: #555; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { border-color: var(--pink); color: var(--pink); }
+        .btn-green { background: var(--green); color: #000; }
+        .btn-green:hover { background: #00cc6e; }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-red:hover { background: #cc3333; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+        /* Model grid */
+        .model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+        .model-item { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
+        .model-item:hover { border-color: var(--pink); }
+        .model-item.active { border-color: var(--green); }
+        .model-name { font-weight: 600; color: #fff; font-size: 0.95rem; }
+        .model-size { color: var(--dim); font-size: 0.8rem; }
+        .model-tag { display: inline-block; background: var(--card); border: 1px solid var(--border); padding: 0.15rem 0.4rem; border-radius: 10px; font-size: 0.65rem; color: var(--text); margin-left: 0.3rem; }
+        .model-tag.default { border-color: var(--green); color: var(--green); }
+
+        /* Provider cards */
+        .provider-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+        .provider-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; }
+        .provider-card h4 { color: #fff; margin-bottom: 0.5rem; }
+        .provider-status { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-green { background: var(--green); }
+        .dot-red { background: var(--red); }
+        .dot-gray { background: var(--dim); }
+        .key-input-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .key-input-row input { flex: 1; }
+
+        /* Install section */
+        .install-row { display: flex; gap: 0.5rem; margin: 0.5rem 0; align-items: center; }
+        .install-row input { flex: 1; }
+        
+        /* Log/output */
+        .output-box { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem; margin-top: 0.8rem; font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--text); max-height: 200px; overflow-y: auto; white-space: pre-wrap; display: none; }
+        .output-box.visible { display: block; }
+
+        /* Toast */
+        .toast { position: fixed; top: 1rem; right: 1rem; background: var(--green); color: #000; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; z-index: 9999; display: none; animation: fadeIn 0.3s; }
+        .toast.error { background: var(--red); color: #fff; }
+        .toast.visible { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) { .sidebar { display: none; } .content { margin-left: 0; padding: 1rem; } }
+        
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--dim); border-top-color: var(--pink); border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-left: 0.5rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .info-box { background: rgba(100,149,237,0.1); border: 1px solid var(--blue); border-radius: 8px; padding: 1rem; margin: 1rem 0; color: var(--text); font-size: 0.9rem; }
+        .warning-box { background: rgba(255,165,0,0.1); border: 1px solid var(--orange); border-radius: 8px; padding: 1rem; margin: 1rem 0; color: var(--text); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast"></div>
+    
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny">
+                <h2>🦾 Moneypenny</h2>
+                <p>La tua assistente AI personale</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="capabilities.html" class="nav-link">Capacità</a></li>
+                <li class="nav-item"><a href="connectors.html" class="nav-link">Connettori</a></li>
+                <li class="nav-item"><a href="models.html" class="nav-link">Modelli AI</a></li>
+                <li class="nav-item"><a href="privacy.html" class="nav-link">Privacy</a></li>
+            </ul>
+            <p class="nav-section">Gestione</p>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="model-manager.html" class="nav-link active" style="font-size:0.8rem;">🧠 Gestione Modelli</a></li>
+            </ul>
+            <p class="nav-section">Documentazione</p>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="getting-started.html" class="nav-link" style="font-size:0.8rem;">🚀 Guida Rapida</a></li>
+                <li class="nav-item"><a href="channels.html" class="nav-link" style="font-size:0.8rem;">📡 Canali Chat</a></li>
+                <li class="nav-item"><a href="gateway.html" class="nav-link" style="font-size:0.8rem;">⚡ Gateway</a></li>
+                <li class="nav-item"><a href="nodes.html" class="nav-link" style="font-size:0.8rem;">📱 Nodi Companion</a></li>
+                <li class="nav-item"><a href="troubleshooting.html" class="nav-link" style="font-size:0.8rem;">🔧 Risoluzione Problemi</a></li>
+            </ul>
+            <div class="sidebar-footer"><p>Sviluppato dal<br><strong style="color:var(--pink);">Team SHAKAZAMBA</strong></p></div>
+        </nav>
+        
+        <main class="content">
+            <header>
+                <a href="/" class="back-link">← Torna alla Chat</a> · <a href="index.html" class="back-link">Docs Home</a>
+                <h1>🧠 Gestione Modelli AI</h1>
+                <p class="subtitle">Installa, configura e cambia i tuoi modelli AI con un click.</p>
+            </header>
+
+            <!-- STATUS -->
+            <div class="status-bar">
+                <div class="status-card">
+                    <div class="status-label">Ollama</div>
+                    <div id="ollama-status" class="status-value disconnected">Verifica...</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Modello Attivo</div>
+                    <div id="active-model" class="status-value" style="color:var(--pink);">—</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Modelli Installati</div>
+                    <div id="models-count" class="status-value" style="color:#fff;">—</div>
+                </div>
+            </div>
+
+            <!-- ACTIVE MODEL SELECTOR -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="margin:0;">⚡ Cambio Rapido Modello</h2>
+                </div>
+                <p>Seleziona il modello da usare come predefinito. Il cambio è immediato.</p>
+                <div class="model-select-row">
+                    <select id="model-selector" style="flex:1; max-width:400px;">
+                        <option value="">Caricamento...</option>
+                    </select>
+                    <button class="btn btn-pink" id="btn-apply-model">Applica</button>
+                </div>
+            </div>
+
+            <!-- INSTALLED MODELS -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="margin:0;">📦 Modelli Locali Installati</h2>
+                    <button class="btn btn-outline btn-sm" id="btn-refresh">🔄 Aggiorna</button>
+                </div>
+                <div id="installed-models" class="model-grid">
+                    <p style="color:var(--dim);">Caricamento...</p>
+                </div>
+            </div>
+
+            <!-- INSTALL NEW MODEL -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="margin:0;">⬇️ Installa Nuovo Modello</h2>
+                    <span class="badge badge-green">Ollama</span>
+                </div>
+                <p>Inserisci il nome del modello Ollama da scaricare (es. <code>deepseek-r1:14b</code>, <code>qwen3:32b</code>).</p>
+                
+                <div class="install-row">
+                    <input type="text" id="install-model-name" placeholder="es. deepseek-r1:14b, mistral-small:24b, gemma3:12b" style="flex:1;">
+                    <button class="btn btn-green" id="btn-install">⬇️ Installa</button>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Modelli consigliati:</strong><br>
+                    <code>gemma3:4b</code> (3GB, veloce) · <code>gemma3:12b</code> (8GB, potente) · <code>qwen3:14b</code> (9GB, ragionamento) · <code>deepseek-r1:14b</code> (9GB, pensiero profondo) · <code>mistral-small:24b</code> (14GB, preciso) · <code>llama3.3:70b</code> (40GB, massima potenza)
+                </div>
+                
+                <div id="install-output" class="output-box"></div>
+            </div>
+
+            <!-- REMOVE MODEL -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="margin:0;">🗑️ Rimuovi Modello</h2>
+                </div>
+                <p>Seleziona un modello installato da rimuovere per liberare spazio disco.</p>
+                <div class="model-select-row">
+                    <select id="remove-selector" style="flex:1; max-width:400px;">
+                        <option value="">Seleziona modello...</option>
+                    </select>
+                    <button class="btn btn-red btn-sm" id="btn-remove">🗑️ Rimuovi</button>
+                </div>
+            </div>
+
+            <!-- CLOUD PROVIDERS -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="margin:0;">☁️ Provider Cloud</h2>
+                    <span class="badge badge-blue">API Key</span>
+                </div>
+                <p>Configura le API key per i provider cloud. Le chiavi vengono salvate localmente nel file di configurazione.</p>
+                
+                <div class="warning-box">
+                    ⚠️ <strong>Importante:</strong> Le API key vengono salvate nel file <code>openclaw.json</code> sul tuo computer. Non vengono MAI inviate altrove.
+                </div>
+                
+                <div class="provider-grid" id="providers-grid">
+                    <!-- Anthropic -->
+                    <div class="provider-card">
+                        <h4>🧠 Anthropic (Claude)</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-anthropic"></span>
+                            <span id="status-anthropic" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-anthropic" placeholder="sk-ant-api03-...">
+                            <button class="btn btn-pink btn-sm" data-save-key="anthropic">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://console.anthropic.com" target="_blank">Ottieni API key →</a></p>
+                    </div>
+
+                    <!-- OpenAI -->
+                    <div class="provider-card">
+                        <h4>🤖 OpenAI</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-openai"></span>
+                            <span id="status-openai" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-openai" placeholder="sk-proj-...">
+                            <button class="btn btn-pink btn-sm" data-save-key="openai">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://platform.openai.com/api-keys" target="_blank">Ottieni API key →</a></p>
+                    </div>
+
+                    <!-- Google Gemini -->
+                    <div class="provider-card">
+                        <h4>🌟 Google Gemini</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-gemini"></span>
+                            <span id="status-gemini" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-gemini" placeholder="AIzaSy...">
+                            <button class="btn btn-pink btn-sm" data-save-key="gemini">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://aistudio.google.com/apikey" target="_blank">Ottieni API key →</a></p>
+                    </div>
+
+                    <!-- Groq -->
+                    <div class="provider-card">
+                        <h4>⚡ Groq</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-groq"></span>
+                            <span id="status-groq" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-groq" placeholder="gsk_...">
+                            <button class="btn btn-pink btn-sm" data-save-key="groq">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://console.groq.com/keys" target="_blank">Ottieni API key →</a></p>
+                    </div>
+
+                    <!-- Perplexity -->
+                    <div class="provider-card">
+                        <h4>🔮 Perplexity</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-perplexity"></span>
+                            <span id="status-perplexity" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-perplexity" placeholder="pplx-...">
+                            <button class="btn btn-pink btn-sm" data-save-key="perplexity">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://www.perplexity.ai/settings/api" target="_blank">Ottieni API key →</a></p>
+                    </div>
+
+                    <!-- ElevenLabs -->
+                    <div class="provider-card">
+                        <h4>🔊 ElevenLabs TTS</h4>
+                        <div class="provider-status">
+                            <span class="dot" id="dot-elevenlabs"></span>
+                            <span id="status-elevenlabs" style="font-size:0.85rem; color:var(--dim);">Verifica...</span>
+                        </div>
+                        <div class="key-input-row">
+                            <input type="password" id="key-elevenlabs" placeholder="API key ElevenLabs">
+                            <button class="btn btn-pink btn-sm" data-save-key="elevenlabs">Salva</button>
+                        </div>
+                        <p style="font-size:0.75rem; margin-top:0.3rem;"><a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">Ottieni API key →</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <footer style="margin-top:3rem; padding:2rem 0; border-top:1px solid var(--border); text-align:center; color:var(--dim); font-size:0.8rem;">
+                <p>TWIZA Moneypenny — Sviluppato dal Team SHAKAZAMBA</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="model-manager.js"></script>
+</body>
+</html>

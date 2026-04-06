@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Modelli AI - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --bg: #0a0a0a; --card: #1a1a1a; --border: #2a2a2a; --text: #b0b0b0; --dim: #808080; --green: #00ff88; --red: #ff4444; --blue: #6495ed; --orange: #ffa500; }
+
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card); border-right: 1px solid var(--border); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 2rem; }
+        .sidebar-logo h2 { color: var(--pink); font-weight: 700; font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--dim); font-size: 0.8rem; }
+        .sidebar nav { flex: 1; }
+        .sidebar nav a { display: block; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; margin-bottom: 0.3rem; transition: all 0.2s; font-size: 0.9rem; }
+        .sidebar nav a:hover { background: rgba(255,0,128,0.08); color: #fff; }
+        .sidebar nav a.active { background: rgba(255,0,128,0.15); color: var(--pink); font-weight: 600; }
+        .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .sidebar-footer a { display: block; padding: 0.5rem 0; color: var(--dim); text-decoration: none; font-size: 0.85rem; }
+        .sidebar-footer a:hover { color: var(--pink); }
+
+        main { margin-left: 260px; padding: 2rem 3rem; flex: 1; max-width: 960px; }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h1 span { color: var(--pink); }
+        .subtitle { color: var(--dim); margin-bottom: 2rem; font-size: 0.95rem; }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .card h3 { font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600; }
+
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .status-item { text-align: center; }
+        .status-label { font-size: 0.75rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; }
+        .status-value { font-size: 1.1rem; font-weight: 600; margin-top: 0.3rem; }
+        .connected { color: var(--green); }
+        .disconnected { color: var(--red); }
+
+        .model-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem; }
+        .model-name { font-weight: 600; font-size: 0.95rem; }
+        .model-size { font-size: 0.8rem; color: var(--dim); }
+        .model-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-left: 0.5rem; vertical-align: middle; }
+        .model-tag.default { border: 1px solid var(--green); color: var(--green); }
+
+        .btn { padding: 0.5rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+        .btn-pink { background: var(--pink); color: #fff; }
+        .btn-pink:hover { background: #e0006f; }
+        .btn-pink:disabled { background: #555; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { border-color: var(--pink); color: var(--pink); }
+        .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-red:hover { background: #cc3333; }
+
+        select, input[type="text"], input[type="password"] { background: #111; border: 1px solid var(--border); color: #fff; padding: 0.5rem 0.8rem; border-radius: 6px; font-family: inherit; font-size: 0.9rem; width: 100%; }
+        select:focus, input:focus { border-color: var(--pink); outline: none; }
+
+        .output-box { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.8rem; white-space: pre-wrap; max-height: 300px; overflow-y: auto; display: none; margin-top: 1rem; color: var(--green); }
+        .output-box.visible { display: block; }
+
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--card); border: 1px solid var(--green); color: var(--green); padding: 0.8rem 1.5rem; border-radius: 8px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; }
+        .toast.visible { opacity: 1; }
+        .toast.error { border-color: var(--red); color: var(--red); }
+
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 0.5rem; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .help-box { background: rgba(255,165,0,0.08); border: 1px solid rgba(255,165,0,0.25); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1rem; display: none; }
+        .help-box h4 { color: var(--orange); margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .help-box p, .help-box code { font-size: 0.85rem; color: var(--text); }
+        .help-box code { background: #111; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; }
+
+        .suggestion-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+        .suggestion-chips button { background: rgba(255,0,128,0.1); border: 1px solid rgba(255,0,128,0.3); color: var(--pink); padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.8rem; transition: all 0.2s; }
+        .suggestion-chips button:hover { background: rgba(255,0,128,0.2); border-color: var(--pink); }
+
+        .provider-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.8rem; }
+        .provider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .key-input-row { display: flex; gap: 0.5rem; align-items: center; }
+        .key-input-row input { flex: 1; }
+
+        .model-select-row { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.8rem; }
+        .model-select-row select { flex: 1; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            main { margin-left: 0; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <h2>🦾 MONEYPENNY</h2>
+                <p>Gestione Modelli AI</p>
+            </div>
+            <div class="sidebar-footer" style="margin-top:0; padding-top:0; border-top:none; display:flex; flex-direction:column; gap:0.6rem;">
+                <button class="btn btn-pink" style="width:100%; justify-content:center;" onclick="try{window.close()}catch(e){window.location.href='/' }">← Torna alla Chat</button>
+                <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="window.open('/docs-moneypenny/index.html','_twiza_docs','width=1100,height=800')">📚 Apri Documentazione</button>
+            </div>
+        </aside>
+
+        <main>
+            <h1>🧠 Gestione <span>Modelli AI</span></h1>
+            <p class="subtitle">Configura provider, API key e modelli locali — tutto salvato nel gateway</p>
+
+            <!-- Status -->
+            <div class="card">
+                <h3>📊 Stato Sistema</h3>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-label">Gateway</div>
+                        <div id="gw-status" class="status-value disconnected">Verifica...</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Ollama</div>
+                        <div id="ollama-status" class="status-value disconnected">Verifica...</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Modelli Locali</div>
+                        <div id="models-count" class="status-value">—</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Spazio Occupato</div>
+                        <div id="total-size" class="status-value">—</div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <span style="font-size:0.85rem; color:var(--dim);">Modello attivo: </span>
+                        <strong id="current-model" style="font-size:0.95rem;">—</strong>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btn-refresh">🔄 Aggiorna</button>
+                </div>
+                <!-- Help if Ollama offline -->
+                <div id="ollama-help" class="help-box">
+                    <h4>⚠️ Ollama non risponde</h4>
+                    <p>Ollama dovrebbe avviarsi automaticamente con TWIZA. Se non funziona:</p>
+                    <p style="margin-top:0.5rem;">
+                        1. Apri un terminale WSL (<code>wsl -d TWIZA</code>)<br>
+                        2. Avvia manualmente: <code>OLLAMA_HOST=0.0.0.0:11434 OLLAMA_ORIGINS=* ollama serve &</code><br>
+                        3. Clicca 🔄 Aggiorna qui sopra
+                    </p>
+                </div>
+            </div>
+
+            <!-- Active Model Selection -->
+            <div class="card">
+                <h3>🎯 Modello Attivo</h3>
+                <p style="font-size:0.85rem; color:var(--text); margin-bottom:0.8rem;">
+                    Scegli quale modello AI usare per le conversazioni. La modifica è immediata.
+                </p>
+                <div class="model-select-row">
+                    <select id="active-model-select">
+                        <option value="">Caricamento...</option>
+                    </select>
+                    <button class="btn btn-pink btn-sm" onclick="setActiveModelFromSelect()">✅ Applica</button>
+                </div>
+            </div>
+
+            <!-- Provider API Keys -->
+            <div class="card">
+                <h3>🔑 Provider Cloud (API Key)</h3>
+                <p style="font-size:0.85rem; color:var(--text); margin-bottom:1rem;">
+                    Le API key vengono salvate direttamente nella configurazione del gateway.
+                    Non servono se usi solo modelli locali Ollama.
+                </p>
+                <div id="provider-cards">
+                    <p style="color:var(--dim);">Connessione al gateway...</p>
+                </div>
+            </div>
+
+            <!-- Installed Models -->
+            <div class="card">
+                <h3>📦 Modelli Locali (Ollama)</h3>
+                <div id="installed-models">
+                    <p style="color:var(--dim);">Caricamento...</p>
+                </div>
+            </div>
+
+            <!-- Install Model -->
+            <div class="card">
+                <h3>⬇️ Installa Nuovo Modello</h3>
+                <p style="font-size:0.85rem; color:var(--text); margin-bottom:1rem;">
+                    Inserisci il nome del modello da <a href="https://ollama.com/library" target="_blank" style="color:var(--pink);">Ollama Library</a>.
+                    I modelli vengono scaricati ed eseguiti localmente.
+                </p>
+                <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                    <input type="text" id="install-model-name" placeholder="es. qwen2.5:3b, llama3.2:3b, mistral:7b" style="flex:1; min-width:200px;">
+                    <button class="btn btn-pink" id="btn-install">⬇️ Installa</button>
+                    <button class="btn btn-red btn-sm" id="btn-cancel" style="display:none;" onclick="cancelInstall()">⛔ Annulla</button>
+                </div>
+                <div class="suggestion-chips">
+                    <span style="color:var(--dim); font-size:0.8rem; line-height:2;">Suggeriti:</span>
+                    <button onclick="document.getElementById('install-model-name').value='qwen2.5:3b'">qwen2.5:3b (2GB)</button>
+                    <button onclick="document.getElementById('install-model-name').value='llama3.2:3b'">llama3.2:3b (2GB)</button>
+                    <button onclick="document.getElementById('install-model-name').value='mistral:7b'">mistral:7b (4GB)</button>
+                    <button onclick="document.getElementById('install-model-name').value='qwen2.5:7b'">qwen2.5:7b (4.7GB)</button>
+                    <button onclick="document.getElementById('install-model-name').value='qwen2.5:3b'">qwen2.5:3b (2GB)</button>
+                </div>
+                <div id="install-output" class="output-box"></div>
+            </div>
+
+            <!-- Remove Model -->
+            <div class="card">
+                <h3>🗑️ Rimuovi Modello</h3>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <select id="remove-selector" style="flex:1;">
+                        <option value="">— Seleziona modello da rimuovere —</option>
+                    </select>
+                    <button class="btn btn-red btn-sm" id="btn-remove">🗑️ Rimuovi</button>
+                </div>
+            </div>
+
+            <footer style="margin-top:3rem; padding:2rem 0; border-top:1px solid var(--border); text-align:center; color:var(--dim); font-size:0.8rem;">
+                <p>TWIZA Moneypenny — Sviluppato dal Team SHAKAZAMBA</p>
+            </footer>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="model-manager.js"></script>
+</body>
+</html>

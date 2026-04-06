@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida Introduttiva - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #FF0080;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #ff3399;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FF0080;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: #FF0080;
+            border-color: #FF0080;
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .steps-container {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step-card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 2rem;
+            border-left: 4px solid #FF0080;
+        }
+
+        .step-number {
+            background: #FF0080;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FF0080;
+        }
+
+        .step-content {
+            color: #cccccc;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            color: #00ff00;
+            overflow-x: auto;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #ffc107;
+        }
+
+        .success {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #28a745;
+        }
+
+        .info {
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid #FF0080;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #FF0080;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid #333;
+            margin-top: auto;
+            color: #666;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .step-card {
+                padding: 1.5rem;
+            }
+        }
+
+        [data-lang]:not([data-lang="it"]) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Torna alla Home</a>
+            
+            <h1 data-lang-key="title">Guida Introduttiva</h1>
+            <p class="subtitle" data-lang-key="subtitle">Inizia subito con TWIZA Moneypenny</p>
+            
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="switchLanguage('it')">IT</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="switchLanguage('de')">DE</button>
+                <button class="lang-btn" onclick="switchLanguage('es')">ES</button>
+                <button class="lang-btn" onclick="switchLanguage('pt-br')">PT-BR</button>
+                <button class="lang-btn" onclick="switchLanguage('zh-cn')">中文</button>
+                <button class="lang-btn" onclick="switchLanguage('zh-tw')">繁體</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="info">
+                <p data-lang-key="intro-info">TWIZA Moneypenny è la versione preconfigurata di OpenClaw con tutte le impostazioni ottimizzate per il massimo delle performance.</p>
+            </div>
+
+            <div class="steps-container">
+                <!-- Step 1: Node.js Installation -->
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h2 class="step-title" data-lang-key="step1-title">Installa Node.js</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step1-content">TWIZA Moneypenny richiede Node.js versione 24 o superiore (minimo 22.14+). Scarica l'ultima versione LTS dal sito ufficiale.</p>
+                        
+                        <div class="code-block">
+                            <div data-lang-key="step1-verify"># Verifica la versione installata</div>
+                            node --version
+                        </div>
+                        
+                        <div class="warning">
+                            <strong data-lang-key="warning-title">⚠️ Importante:</strong>
+                            <span data-lang-key="step1-warning">Assicurati di avere almeno Node.js v22.14+ per evitare problemi di compatibilità.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: OpenClaw Installation -->
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h2 class="step-title" data-lang-key="step2-title">Installa OpenClaw</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step2-content">Installa OpenClaw usando il nostro script di installazione automatica. Funziona su macOS, Linux e Windows.</p>
+                        
+                        <h3 data-lang-key="macos-linux">macOS e Linux:</h3>
+                        <div class="code-block">
+                            curl -fsSL https://openclaw.ai/install.sh | bash
+                        </div>
+                        
+                        <h3 data-lang-key="windows">Windows (PowerShell come Amministratore):</h3>
+                        <div class="code-block">
+                            iex ((New-Object System.Net.WebClient).DownloadString('https://openclaw.ai/install.ps1'))
+                        </div>
+                        
+                        <div class="info">
+                            <strong data-lang-key="info-title">💡 Suggerimento:</strong>
+                            <span data-lang-key="step2-info">L'installazione richiede alcuni minuti. Al termine, riapri il terminale per aggiornare il PATH.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Onboarding -->
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h2 class="step-title" data-lang-key="step3-title">Configurazione Iniziale</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step3-content">Esegui il processo di onboarding per configurare TWIZA Moneypenny con tutte le impostazioni ottimali.</p>
+                        
+                        <div class="code-block">
+                            openclaw onboard --install-daemon
+                        </div>
+                        
+                        <p data-lang-key="step3-details">Questo comando:</p>
+                        <ul data-lang-key="step3-list">
+                            <li>Configura il daemon del Gateway</li>
+                            <li>Imposta i modelli AI predefiniti</li>
+                            <li>Configura i canali di comunicazione</li>
+                            <li>Ottimizza le performance del sistema</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 4: Verify Installation -->
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h2 class="step-title" data-lang-key="step4-title">Verifica l'Installazione</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step4-content">Controlla che il Gateway sia attivo e funzionante.</p>
+                        
+                        <div class="code-block">
+                            openclaw gateway status
+                        </div>
+                        
+                        <div class="success">
+                            <strong data-lang-key="success-title">✅ Output atteso:</strong>
+                            <span data-lang-key="step4-success">Gateway running on http://localhost:18789</span>
+                        </div>
+                        
+                        <p data-lang-key="step4-troubleshoot">Se il Gateway non è attivo, avvialo manualmente:</p>
+                        <div class="code-block">
+                            openclaw gateway start
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Dashboard Access -->
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h2 class="step-title" data-lang-key="step5-title">Accedi al Dashboard</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step5-content">Apri il dashboard web di TWIZA Moneypenny per iniziare a configurare i tuoi canali e impostazioni.</p>
+                        
+                        <div class="code-block">
+                            openclaw dashboard
+                        </div>
+                        
+                        <p data-lang-key="step5-browser">Questo aprirà automaticamente il browser su http://localhost:18789</p>
+                        
+                        <div class="info">
+                            <strong data-lang-key="info-title">💡 Suggerimento:</strong>
+                            <span data-lang-key="step5-bookmark">Aggiungi il dashboard ai preferiti per accesso rapido.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: First Message -->
+                <div class="step-card">
+                    <div class="step-number">6</div>
+                    <h2 class="step-title" data-lang-key="step6-title">Primo Messaggio</h2>
+                    <div class="step-content">
+                        <p data-lang-key="step6-content">Invia il tuo primo messaggio nella webchat per testare che tutto funzioni correttamente.</p>
+                        
+                        <p data-lang-key="step6-webchat">Nel dashboard, clicca su "WebChat" nella barra laterale e prova a inviare:</p>
+                        
+                        <div class="code-block">
+                            Ciao Moneypenny! Come stai?
+                        </div>
+                        
+                        <div class="success">
+                            <strong data-lang-key="success-title">✅ Congratulazioni!</strong>
+                            <span data-lang-key="step6-success">TWIZA Moneypenny è ora attivo e pronto all'uso!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <h3 data-lang-key="next-steps">Prossimi Passi:</h3>
+                <ul data-lang-key="next-steps-list">
+                    <li>Configura i tuoi canali preferiti (WhatsApp, Telegram, Discord...)</li>
+                    <li>Personalizza i modelli AI e le impostazioni</li>
+                    <li>Esplora le skill e i plugin disponibili</li>
+                    <li>Leggi la documentazione completa per funzionalità avanzate</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p class="footer-text" data-lang-key="footer">Sviluppato con 🦾 dal Team SHAKAZAMBA</p>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            'it': {
+                'title': 'Guida Introduttiva',
+                'subtitle': 'Inizia subito con TWIZA Moneypenny',
+                'intro-info': 'TWIZA Moneypenny è la versione preconfigurata di OpenClaw con tutte le impostazioni ottimizzate per il massimo delle performance.',
+                'step1-title': 'Installa Node.js',
+                'step1-content': 'TWIZA Moneypenny richiede Node.js versione 24 o superiore (minimo 22.14+). Scarica l\'ultima versione LTS dal sito ufficiale.',
+                'step1-verify': '# Verifica la versione installata',
+                'warning-title': '⚠️ Importante:',
+                'step1-warning': 'Assicurati di avere almeno Node.js v22.14+ per evitare problemi di compatibilità.',
+                'step2-title': 'Installa OpenClaw',
+                'step2-content': 'Installa OpenClaw usando il nostro script di installazione automatica. Funziona su macOS, Linux e Windows.',
+                'macos-linux': 'macOS e Linux:',
+                'windows': 'Windows (PowerShell come Amministratore):',
+                'info-title': '💡 Suggerimento:',
+                'step2-info': 'L\'installazione richiede alcuni minuti. Al termine, riapri il terminale per aggiornare il PATH.',
+                'footer': 'Sviluppato con 🦾 dal Team SHAKAZAMBA'
+            },
+            'en': {
+                'title': 'Getting Started',
+                'subtitle': 'Get up and running with TWIZA Moneypenny',
+                'intro-info': 'TWIZA Moneypenny is the pre-configured version of OpenClaw with all settings optimized for maximum performance.',
+                'step1-title': 'Install Node.js',
+                'step1-content': 'TWIZA Moneypenny requires Node.js version 24 or higher (minimum 22.14+). Download the latest LTS version from the official website.',
+                'step1-verify': '# Check installed version',
+                'warning-title': '⚠️ Important:',
+                'step1-warning': 'Make sure you have at least Node.js v22.14+ to avoid compatibility issues.',
+                'step2-title': 'Install OpenClaw',
+                'step2-content': 'Install OpenClaw using our automatic installation script. Works on macOS, Linux and Windows.',
+                'macos-linux': 'macOS and Linux:',
+                'windows': 'Windows (PowerShell as Administrator):',
+                'info-title': '💡 Tip:',
+                'step2-info': 'Installation takes a few minutes. When finished, reopen the terminal to update PATH.',
+                'footer': 'Developed with 🦾 by Team SHAKAZAMBA'
+            },
+            'de': {
+                'title': 'Erste Schritte',
+                'subtitle': 'Starten Sie mit TWIZA Moneypenny durch',
+                'intro-info': 'TWIZA Moneypenny ist die vorkonfigurierte Version von OpenClaw mit allen für maximale Leistung optimierten Einstellungen.',
+                'step1-title': 'Node.js installieren',
+                'step1-content': 'TWIZA Moneypenny benötigt Node.js Version 24 oder höher (mindestens 22.14+). Laden Sie die neueste LTS-Version von der offiziellen Website herunter.',
+                'step1-verify': '# Installierte Version prüfen',
+                'warning-title': '⚠️ Wichtig:',
+                'step1-warning': 'Stellen Sie sicher, dass Sie mindestens Node.js v22.14+ haben, um Kompatibilitätsprobleme zu vermeiden.',
+                'footer': 'Entwickelt mit 🦾 vom Team SHAKAZAMBA'
+            }
+        };
+
+        function switchLanguage(lang) {
+            // Hide all elements
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show elements for selected language
+            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
+                el.style.display = 'block';
+            });
+
+            // Update content with translations
+            if (translations[lang]) {
+                Object.keys(translations[lang]).forEach(key => {
+                    const elements = document.querySelectorAll(`[data-lang-key="${key}"]`);
+                    elements.forEach(el => {
+                        if (el.tagName === 'UL' || el.tagName === 'OL') {
+                            // Handle lists
+                            if (Array.isArray(translations[lang][key])) {
+                                el.innerHTML = translations[lang][key].map(item => `<li>${item}</li>`).join('');
+                            }
+                        } else {
+                            el.textContent = translations[lang][key];
+                        }
+                    });
+                });
+            }
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

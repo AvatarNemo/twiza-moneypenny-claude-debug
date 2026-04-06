@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connettori - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Titillium Web', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        :root { --pink: #FF0080; --moneypenny-pink: #FF0080; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border-color: #2a2a2a; --text-primary: #fff; --text-secondary: #b0b0b0; --text-tertiary: #808080; }
+        .page-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--card-bg); border-right: 1px solid var(--border-color); padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: cover; }
+        .sidebar-logo h2 { color: var(--pink); font-size: 1.3rem; }
+        .sidebar-logo p { color: var(--text-tertiary); font-size: 0.8rem; }
+        .nav-menu { list-style: none; } .nav-item { margin-bottom: 0.3rem; }
+        .nav-link { display: block; color: var(--text-secondary); text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { background: var(--pink); color: #fff; }
+        .nav-section { color: var(--text-tertiary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem; }
+        .sidebar-footer { margin-top: auto; text-align: center; color: var(--text-tertiary); font-size: 0.75rem; padding-top: 1rem; }
+        .page-content { margin-left: 260px; flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        h1, h2, h3 { color: var(--pink); margin-bottom: 1rem; }
+        p { color: var(--text-secondary); margin-bottom: 0.8rem; }
+        a { color: var(--pink); text-decoration: none; } a:hover { text-decoration: underline; }
+        .code-block { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.8rem; margin: 0.8rem 0; font-family: monospace; color: var(--text-secondary); font-size: 0.85rem; }
+        .highlight { color: var(--pink); font-weight: 600; }
+        .back-link { color: var(--pink); text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .sidebar { display: none; } .page-content { margin-left: 0; padding: 1rem; } }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="moneypenny-avatar.jpg" alt="Moneypenny">
+                <h2>🦾 Moneypenny</h2>
+                <p>La tua assistente AI personale</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="capabilities.html" class="nav-link">Capacità</a></li>
+                <li class="nav-item"><a href="connectors.html" class="nav-link active">Connettori</a></li>
+                <li class="nav-item"><a href="models.html" class="nav-link">Modelli AI</a></li>
+                <li class="nav-item"><a href="privacy.html" class="nav-link">Privacy</a></li>
+            </ul>
+            <p class="nav-section">Documentazione</p>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="getting-started.html" class="nav-link" style="font-size:0.8rem;">🚀 Guida Rapida</a></li>
+                <li class="nav-item"><a href="channels.html" class="nav-link" style="font-size:0.8rem;">📡 Canali Chat</a></li>
+                <li class="nav-item"><a href="gateway.html" class="nav-link" style="font-size:0.8rem;">⚡ Gateway</a></li>
+                <li class="nav-item"><a href="nodes.html" class="nav-link" style="font-size:0.8rem;">📱 Nodi Companion</a></li>
+                <li class="nav-item"><a href="troubleshooting.html" class="nav-link" style="font-size:0.8rem;">🔧 Risoluzione Problemi</a></li>
+            </ul>
+            <div class="sidebar-footer"><p>Sviluppato dal<br><strong style="color:var(--pink);">Team SHAKAZAMBA</strong></p></div>
+        </nav>
+        <main class="page-content">
+            <a href="index.html" class="back-link">← Torna alla Home</a>
+<h1 data-lang-key="connectors-title">I 35 Connettori TWIZA Moneypenny</h1>
+
+<p data-lang-key="connectors-intro">Una mente, 35 modi per raggiungermi. Ovunque tu sia, su qualsiasi piattaforma, io ci sono. Sviluppati dal Team SHAKAZAMBA.</p>
+
+<!-- ============================================ -->
+<!-- 📱 MESSAGGISTICA (10)                        -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">📱 <span data-lang-key="cat-messaging">Messaggistica</span> <span class="category-count">10</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">📱</div>
+            <h3>WhatsApp</h3>
+            <p data-lang-key="wa-desc">Chatta con me dal telefono. Comodo per domande veloci quando sei in giro.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="wa-f1">Chat come un contatto normale</li>
+                <li data-lang-key="wa-f2">Invio e ricezione immagini</li>
+                <li data-lang-key="wa-f3">Comandi vocali</li>
+                <li data-lang-key="wa-f4">Risposte vocali</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🤖</div>
+            <h3>Telegram</h3>
+            <p data-lang-key="tg-desc">Bot Telegram personalizzato. Perfetto per comandi veloci e automatizzazioni.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="tg-f1">Chat privata o gruppi</li>
+                <li data-lang-key="tg-f2">Comandi slash personalizzati</li>
+                <li data-lang-key="tg-f3">File, immagini, documenti</li>
+                <li data-lang-key="tg-f4">Notifiche push immediate</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🎮</div>
+            <h3>Discord</h3>
+            <p data-lang-key="dc-desc">Nei tuoi server Discord per coding, domande e automazione.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="dc-f1">Partecipo attivamente alle conversazioni</li>
+                <li data-lang-key="dc-f2">Rispondo quando menzionata o in DM</li>
+                <li data-lang-key="dc-f3">Thread e canali multipli</li>
+                <li data-lang-key="dc-f4">Slash commands e reazioni emoji</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🔒</div>
+            <h3>Signal</h3>
+            <p data-lang-key="signal-desc">Messaggistica crittografata end-to-end. Per chi prende la privacy sul serio.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="signal-f1">Crittografia E2E</li>
+                <li data-lang-key="signal-f2">Chat private e gruppi</li>
+                <li data-lang-key="signal-f3">Invio file e media</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🍎</div>
+            <h3>iMessage</h3>
+            <p data-lang-key="imsg-desc">Per utenti Apple. Mi scrivi come a un amico, direttamente da Messaggi.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="imsg-f1">Integrazione nativa Apple</li>
+                <li data-lang-key="imsg-f2">Richiede BlueBubbles/Mac</li>
+                <li data-lang-key="imsg-f3">Immagini e file</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">💼</div>
+            <h3>Slack</h3>
+            <p data-lang-key="slack-desc">Nel tuo workspace Slack aziendale. Assistenza diretta dove lavori.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="slack-f1">Canali e DM</li>
+                <li data-lang-key="slack-f2">Thread support</li>
+                <li data-lang-key="slack-f3">Slash commands</li>
+                <li data-lang-key="slack-f4">Integrazione con workflow</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">💬</div>
+            <h3>Google Chat</h3>
+            <p data-lang-key="gchat-desc">Per chi usa Google Workspace. Direttamente nell'ecosistema Google.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gchat-f1">Spaces e DM</li>
+                <li data-lang-key="gchat-f2">Integrazione Workspace</li>
+                <li data-lang-key="gchat-f3">Card interattive</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">⌨️</div>
+            <h3>IRC</h3>
+            <p data-lang-key="irc-desc">Il protocollo che non muore mai. Per i puristi della chat.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="irc-f1">Qualsiasi server IRC</li>
+                <li data-lang-key="irc-f2">Canali multipli</li>
+                <li data-lang-key="irc-f3">Comandi personalizzati</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🟢</div>
+            <h3>LINE</h3>
+            <p data-lang-key="line-desc">Popolare in Asia. Bot LINE ufficiale con tutte le funzionalità.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="line-f1">Messaging API</li>
+                <li data-lang-key="line-f2">Rich messages</li>
+                <li data-lang-key="line-f3">Sticker e media</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🌐</div>
+            <h3>Webchat</h3>
+            <p data-lang-key="web-desc">La chat che stai usando ora. Interfaccia completa con tutte le funzionalità avanzate.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="web-f1">Markdown e syntax highlighting</li>
+                <li data-lang-key="web-f2">Drag & drop file</li>
+                <li data-lang-key="web-f3">Cronologia completa</li>
+                <li data-lang-key="web-f4">Thinking mode</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 📧 EMAIL / COMUNICAZIONE (4)                 -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">📧 <span data-lang-key="cat-email">Email e Comunicazione</span> <span class="category-count">4</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">📨</div>
+            <h3>Gmail</h3>
+            <p data-lang-key="gmail-desc">Leggo, cerco e compongo email dal tuo account Gmail. La tua casella, sotto controllo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gmail-f1">Lettura e ricerca email</li>
+                <li data-lang-key="gmail-f2">Composizione e invio</li>
+                <li data-lang-key="gmail-f3">Gestione etichette</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📮</div>
+            <h3>Outlook / IMAP</h3>
+            <p data-lang-key="outlook-desc">Supporto Outlook e qualsiasi server IMAP. Email aziendale inclusa.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="outlook-f1">Protocollo IMAP standard</li>
+                <li data-lang-key="outlook-f2">Outlook 365 e on-premise</li>
+                <li data-lang-key="outlook-f3">Ricerca e filtri</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📅</div>
+            <h3>Google Calendar</h3>
+            <p data-lang-key="gcal-desc">Gestisco i tuoi eventi, ti ricordo gli appuntamenti, creo meeting al volo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gcal-f1">Lettura e creazione eventi</li>
+                <li data-lang-key="gcal-f2">Promemoria intelligenti</li>
+                <li data-lang-key="gcal-f3">Calendari multipli</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📆</div>
+            <h3>Outlook Calendar</h3>
+            <p data-lang-key="ocal-desc">Stesso servizio, ecosistema Microsoft. Per chi vive in Office 365.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="ocal-f1">Microsoft Graph API</li>
+                <li data-lang-key="ocal-f2">Meeting e inviti</li>
+                <li data-lang-key="ocal-f3">Sincronizzazione team</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 📋 PRODUTTIVITÀ (7)                          -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">📋 <span data-lang-key="cat-productivity">Produttività</span> <span class="category-count">7</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">📝</div>
+            <h3>Notion</h3>
+            <p data-lang-key="notion-desc">Creo pagine, aggiorno database, gestisco i tuoi progetti in Notion.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="notion-f1">Pagine e database</li>
+                <li data-lang-key="notion-f2">Blocchi e contenuti</li>
+                <li data-lang-key="notion-f3">Ricerca e filtri</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📊</div>
+            <h3>Trello</h3>
+            <p data-lang-key="trello-desc">Gestisco le tue board, sposto card, aggiorno lo stato dei task.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="trello-f1">Board e liste</li>
+                <li data-lang-key="trello-f2">Card e checklist</li>
+                <li data-lang-key="trello-f3">Automazione workflow</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">✅</div>
+            <h3>Todoist</h3>
+            <p data-lang-key="todoist-desc">Task e to-do list. Aggiungo, completo, organizzo i tuoi compiti.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="todoist-f1">Progetti e task</li>
+                <li data-lang-key="todoist-f2">Priorità e scadenze</li>
+                <li data-lang-key="todoist-f3">Etichette e filtri</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📈</div>
+            <h3>Google Sheets</h3>
+            <p data-lang-key="gsheets-desc">Leggo e scrivo spreadsheet. Analisi dati senza aprire il browser.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gsheets-f1">Lettura e scrittura celle</li>
+                <li data-lang-key="gsheets-f2">Fogli multipli</li>
+                <li data-lang-key="gsheets-f3">Formule e analisi</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📁</div>
+            <h3>Google Drive</h3>
+            <p data-lang-key="gdrive-desc">Accesso ai tuoi file su Drive. Carico, scarico, organizzo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gdrive-f1">Upload e download</li>
+                <li data-lang-key="gdrive-f2">Ricerca file</li>
+                <li data-lang-key="gdrive-f3">Condivisione</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📦</div>
+            <h3>Dropbox</h3>
+            <p data-lang-key="dropbox-desc">Cloud storage alternativo. Stesse funzionalità, ecosistema diverso.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="dropbox-f1">Sincronizzazione file</li>
+                <li data-lang-key="dropbox-f2">Condivisione link</li>
+                <li data-lang-key="dropbox-f3">Gestione cartelle</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">☁️</div>
+            <h3>OneDrive</h3>
+            <p data-lang-key="onedrive-desc">Per chi è nel mondo Microsoft. Accesso completo al tuo OneDrive.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="onedrive-f1">Microsoft Graph</li>
+                <li data-lang-key="onedrive-f2">Sincronizzazione</li>
+                <li data-lang-key="onedrive-f3">Integrazione Office</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 🌐 SOCIAL / WEB (5)                         -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">🌐 <span data-lang-key="cat-social">Social e Web</span> <span class="category-count">5</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">🐦</div>
+            <h3>Twitter / X</h3>
+            <p data-lang-key="twitter-desc">Posto, leggo timeline, rispondo ai tweet. Social media sotto controllo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="twitter-f1">Post e risposte</li>
+                <li data-lang-key="twitter-f2">Timeline e menzioni</li>
+                <li data-lang-key="twitter-f3">Ricerca hashtag</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🦋</div>
+            <h3>Bluesky</h3>
+            <p data-lang-key="bsky-desc">Il social decentralizzato. Posto e interagisco sul protocollo AT.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="bsky-f1">Post e risposte</li>
+                <li data-lang-key="bsky-f2">Feed personalizzati</li>
+                <li data-lang-key="bsky-f3">Protocollo AT aperto</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🔴</div>
+            <h3>Reddit</h3>
+            <p data-lang-key="reddit-desc">Monitoro subreddit, posto e commento. La frontpage di internet.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="reddit-f1">Subreddit monitoring</li>
+                <li data-lang-key="reddit-f2">Post e commenti</li>
+                <li data-lang-key="reddit-f3">Upvote tracking</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📡</div>
+            <h3>RSS / Atom</h3>
+            <p data-lang-key="rss-desc">Feed reader integrato. Monitoro blog, news, qualsiasi fonte RSS/Atom.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="rss-f1">Feed multipli</li>
+                <li data-lang-key="rss-f2">Notifiche nuovi articoli</li>
+                <li data-lang-key="rss-f3">Riassunti automatici</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🔗</div>
+            <h3>Webhook</h3>
+            <p data-lang-key="webhook-desc">Endpoint HTTP per integrazioni custom. Collegami a qualsiasi servizio.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="webhook-f1">HTTP POST/GET</li>
+                <li data-lang-key="webhook-f2">Payload JSON</li>
+                <li data-lang-key="webhook-f3">Automazione custom</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 💻 DEVOPS (4)                                -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">💻 <span data-lang-key="cat-devops">DevOps</span> <span class="category-count">4</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">🐙</div>
+            <h3>GitHub</h3>
+            <p data-lang-key="github-desc">Gestisco repo, PR, issues. Il tuo assistente di sviluppo integrato.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="github-f1">Repository e branch</li>
+                <li data-lang-key="github-f2">Pull request e review</li>
+                <li data-lang-key="github-f3">Issues e progetti</li>
+                <li data-lang-key="github-f4">GitHub Actions</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🦊</div>
+            <h3>GitLab</h3>
+            <p data-lang-key="gitlab-desc">Alternativa self-hosted a GitHub. Stesse funzionalità, più controllo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="gitlab-f1">Merge request</li>
+                <li data-lang-key="gitlab-f2">CI/CD pipeline</li>
+                <li data-lang-key="gitlab-f3">Issue tracking</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🐳</div>
+            <h3>Docker</h3>
+            <p data-lang-key="docker-desc">Gestisco container, immagini, compose. DevOps dalla chat.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="docker-f1">Container management</li>
+                <li data-lang-key="docker-f2">Image build e push</li>
+                <li data-lang-key="docker-f3">Docker Compose</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🔐</div>
+            <h3>SSH</h3>
+            <p data-lang-key="ssh-desc">Accesso remoto ai tuoi server. Eseguo comandi ovunque.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="ssh-f1">Esecuzione comandi remota</li>
+                <li data-lang-key="ssh-f2">Tunnel e port forwarding</li>
+                <li data-lang-key="ssh-f3">Multi-server</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 🏠 IoT (2)                                   -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">🏠 <span data-lang-key="cat-iot">IoT e Domotica</span> <span class="category-count">2</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">🏡</div>
+            <h3>Home Assistant</h3>
+            <p data-lang-key="ha-desc">Controllo la tua casa smart. Luci, termostati, sensori, tutto dalla chat.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="ha-f1">Controllo dispositivi</li>
+                <li data-lang-key="ha-f2">Automazioni</li>
+                <li data-lang-key="ha-f3">Sensori e stato</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">📶</div>
+            <h3>MQTT</h3>
+            <p data-lang-key="mqtt-desc">Protocollo IoT universale. Pubblico e sottoscrivo topic per qualsiasi dispositivo.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="mqtt-f1">Publish/Subscribe</li>
+                <li data-lang-key="mqtt-f2">Topic personalizzati</li>
+                <li data-lang-key="mqtt-f3">Integrazione sensori</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 🔊 VOCE (1)                                  -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">🔊 <span data-lang-key="cat-voice">Voce</span> <span class="category-count">1</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">🎙️</div>
+            <h3>ElevenLabs TTS</h3>
+            <p data-lang-key="tts-desc">La mia voce. Parlo con accento milanese grazie a ElevenLabs. Posso anche clonare la tua voce.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="tts-f1">Voce clonata personalizzata</li>
+                <li data-lang-key="tts-f2">Multilingua</li>
+                <li data-lang-key="tts-f3">Velocità e tono regolabili</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 🧠 AI E RICERCA (2)                         -->
+<!-- ============================================ -->
+<div class="connector-category">
+    <h2 class="category-header">🧠 <span data-lang-key="cat-ai">AI e Ricerca</span> <span class="category-count">2</span></h2>
+
+    <div class="connector-grid">
+
+        <div class="connector-card">
+            <div class="connector-icon">🔮</div>
+            <h3>Perplexity</h3>
+            <p data-lang-key="pplx-desc">Ricerca web in tempo reale con AI. Risposte sempre aggiornate con fonti citate.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="pplx-f1">Ricerca web in tempo reale</li>
+                <li data-lang-key="pplx-f2">Fonti sempre citate</li>
+                <li data-lang-key="pplx-f3">Sonar Pro per analisi profonde</li>
+                <li data-lang-key="pplx-f4">Domande fattuali e ricerca</li>
+            </ul>
+        </div>
+
+        <div class="connector-card">
+            <div class="connector-icon">🤝</div>
+            <h3>Manus</h3>
+            <p data-lang-key="manus-desc">Agente AI autonomo. Naviga il web, scrive codice, crea documenti e completa task complessi.</p>
+            <ul class="feature-tags">
+                <li data-lang-key="manus-f1">Navigazione web autonoma</li>
+                <li data-lang-key="manus-f2">Generazione codice</li>
+                <li data-lang-key="manus-f3">Creazione documenti</li>
+                <li data-lang-key="manus-f4">Task complessi multi-step</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- TIPS -->
+<div class="connector-category tips-section">
+    <h2 data-lang-key="tips-title">💡 Consigli</h2>
+    <div class="connector-grid">
+        <div class="connector-card tip-card">
+            <h3 data-lang-key="tip1-title">🧠 Una mente sola</h3>
+            <p data-lang-key="tip1-desc">Non importa da dove mi scrivi — ricordo sempre chi sei e le nostre conversazioni precedenti.</p>
+        </div>
+        <div class="connector-card tip-card">
+            <h3 data-lang-key="tip2-title">⚡ Configurazione semplice</h3>
+            <p data-lang-key="tip2-desc">Tutto si configura con comandi in linguaggio naturale. Niente file di config complicati.</p>
+        </div>
+        <div class="connector-card tip-card">
+            <h3 data-lang-key="tip3-title">🔒 Sempre privato</h3>
+            <p data-lang-key="tip3-desc">I tuoi token e API key restano sul tuo computer. Non invio mai dati personali altrove.</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer-branding">
+    <p>Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong></p>
+</div>
+
+<style>
+.connector-category { margin: 2rem 0; }
+.category-header { display: flex; align-items: center; gap: 8px; font-size: 1.4rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #FF0080; }
+.category-count { background: #FF0080; color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; font-weight: 700; }
+.connector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.connector-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.2rem; transition: border-color 0.2s, transform 0.2s; }
+.connector-card:hover { border-color: #FF0080; transform: translateY(-2px); }
+.connector-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.connector-card h3 { color: #FF0080; margin: 0.3rem 0; font-size: 1.1rem; }
+.connector-card p { color: #ccc; font-size: 0.9rem; line-height: 1.4; margin: 0.5rem 0; }
+.feature-tags { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.feature-tags li { background: #0d0d0d; border: 1px solid #333; border-radius: 6px; padding: 2px 8px; font-size: 0.75rem; color: #aaa; }
+.tip-card { border-left: 3px solid #FF0080; }
+.tip-card h3 { color: #e0e0e0; }
+.tips-section { margin-top: 3rem; }
+.footer-branding { text-align: center; margin-top: 3rem; padding: 1.5rem; border-top: 1px solid #333; color: #888; font-size: 0.9rem; }
+.footer-branding strong { color: #FF0080; }
+</style>
+
+<script>
+const TRANSLATIONS = {
+    it: {
+        'connectors-title': 'I 35 Connettori TWIZA Moneypenny',
+        'connectors-intro': 'Una mente, 35 modi per raggiungermi. Ovunque tu sia, su qualsiasi piattaforma, io ci sono. Sviluppati dal Team SHAKAZAMBA.',
+        'cat-messaging': 'Messaggistica', 'cat-email': 'Email e Comunicazione', 'cat-productivity': 'Produttività',
+        'cat-social': 'Social e Web', 'cat-devops': 'DevOps', 'cat-iot': 'IoT e Domotica', 'cat-voice': 'Voce', 'cat-ai': 'AI e Ricerca',
+        'pplx-desc': 'Ricerca web in tempo reale con AI. Risposte sempre aggiornate con fonti citate.',
+        'pplx-f1': 'Ricerca web in tempo reale', 'pplx-f2': 'Fonti sempre citate', 'pplx-f3': 'Sonar Pro per analisi profonde', 'pplx-f4': 'Domande fattuali e ricerca',
+        'manus-desc': 'Agente AI autonomo. Naviga il web, scrive codice, crea documenti e completa task complessi.',
+        'manus-f1': 'Navigazione web autonoma', 'manus-f2': 'Generazione codice', 'manus-f3': 'Creazione documenti', 'manus-f4': 'Task complessi multi-step',
+        'wa-desc': 'Chatta con me dal telefono. Comodo per domande veloci quando sei in giro.',
+        'wa-f1': 'Chat come un contatto normale', 'wa-f2': 'Invio e ricezione immagini', 'wa-f3': 'Comandi vocali', 'wa-f4': 'Risposte vocali',
+        'tg-desc': 'Bot Telegram personalizzato. Perfetto per comandi veloci e automatizzazioni.',
+        'tg-f1': 'Chat privata o gruppi', 'tg-f2': 'Comandi slash personalizzati', 'tg-f3': 'File, immagini, documenti', 'tg-f4': 'Notifiche push immediate',
+        'dc-desc': 'Nei tuoi server Discord per coding, domande e automazione.',
+        'dc-f1': 'Partecipo attivamente alle conversazioni', 'dc-f2': 'Rispondo quando menzionata o in DM', 'dc-f3': 'Thread e canali multipli', 'dc-f4': 'Slash commands e reazioni emoji',
+        'signal-desc': 'Messaggistica crittografata end-to-end. Per chi prende la privacy sul serio.',
+        'signal-f1': 'Crittografia E2E', 'signal-f2': 'Chat private e gruppi', 'signal-f3': 'Invio file e media',
+        'imsg-desc': 'Per utenti Apple. Mi scrivi come a un amico, direttamente da Messaggi.',
+        'imsg-f1': 'Integrazione nativa Apple', 'imsg-f2': 'Richiede BlueBubbles/Mac', 'imsg-f3': 'Immagini e file',
+        'slack-desc': 'Nel tuo workspace Slack aziendale. Assistenza diretta dove lavori.',
+        'slack-f1': 'Canali e DM', 'slack-f2': 'Thread support', 'slack-f3': 'Slash commands', 'slack-f4': 'Integrazione con workflow',
+        'gchat-desc': 'Per chi usa Google Workspace. Direttamente nell\'ecosistema Google.',
+        'gchat-f1': 'Spaces e DM', 'gchat-f2': 'Integrazione Workspace', 'gchat-f3': 'Card interattive',
+        'irc-desc': 'Il protocollo che non muore mai. Per i puristi della chat.',
+        'irc-f1': 'Qualsiasi server IRC', 'irc-f2': 'Canali multipli', 'irc-f3': 'Comandi personalizzati',
+        'line-desc': 'Popolare in Asia. Bot LINE ufficiale con tutte le funzionalità.',
+        'line-f1': 'Messaging API', 'line-f2': 'Rich messages', 'line-f3': 'Sticker e media',
+        'web-desc': 'La chat che stai usando ora. Interfaccia completa con tutte le funzionalità avanzate.',
+        'web-f1': 'Markdown e syntax highlighting', 'web-f2': 'Drag & drop file', 'web-f3': 'Cronologia completa', 'web-f4': 'Thinking mode',
+        'gmail-desc': 'Leggo, cerco e compongo email dal tuo account Gmail. La tua casella, sotto controllo.',
+        'gmail-f1': 'Lettura e ricerca email', 'gmail-f2': 'Composizione e invio', 'gmail-f3': 'Gestione etichette',
+        'outlook-desc': 'Supporto Outlook e qualsiasi server IMAP. Email aziendale inclusa.',
+        'outlook-f1': 'Protocollo IMAP standard', 'outlook-f2': 'Outlook 365 e on-premise', 'outlook-f3': 'Ricerca e filtri',
+        'gcal-desc': 'Gestisco i tuoi eventi, ti ricordo gli appuntamenti, creo meeting al volo.',
+        'gcal-f1': 'Lettura e creazione eventi', 'gcal-f2': 'Promemoria intelligenti', 'gcal-f3': 'Calendari multipli',
+        'ocal-desc': 'Stesso servizio, ecosistema Microsoft. Per chi vive in Office 365.',
+        'ocal-f1': 'Microsoft Graph API', 'ocal-f2': 'Meeting e inviti', 'ocal-f3': 'Sincronizzazione team',
+        'notion-desc': 'Creo pagine, aggiorno database, gestisco i tuoi progetti in Notion.',
+        'notion-f1': 'Pagine e database', 'notion-f2': 'Blocchi e contenuti', 'notion-f3': 'Ricerca e filtri',
+        'trello-desc': 'Gestisco le tue board, sposto card, aggiorno lo stato dei task.',
+        'trello-f1': 'Board e liste', 'trello-f2': 'Card e checklist', 'trello-f3': 'Automazione workflow',
+        'todoist-desc': 'Task e to-do list. Aggiungo, completo, organizzo i tuoi compiti.',
+        'todoist-f1': 'Progetti e task', 'todoist-f2': 'Priorità e scadenze', 'todoist-f3': 'Etichette e filtri',
+        'gsheets-desc': 'Leggo e scrivo spreadsheet. Analisi dati senza aprire il browser.',
+        'gsheets-f1': 'Lettura e scrittura celle', 'gsheets-f2': 'Fogli multipli', 'gsheets-f3': 'Formule e analisi',
+        'gdrive-desc': 'Accesso ai tuoi file su Drive. Carico, scarico, organizzo.',
+        'gdrive-f1': 'Upload e download', 'gdrive-f2': 'Ricerca file', 'gdrive-f3': 'Condivisione',
+        'dropbox-desc': 'Cloud storage alternativo. Stesse funzionalità, ecosistema diverso.',
+        'dropbox-f1': 'Sincronizzazione file', 'dropbox-f2': 'Condivisione link', 'dropbox-f3': 'Gestione cartelle',
+        'onedrive-desc': 'Per chi è nel mondo Microsoft. Accesso completo al tuo OneDrive.',
+        'onedrive-f1': 'Microsoft Graph', 'onedrive-f2': 'Sincronizzazione', 'onedrive-f3': 'Integrazione Office',
+        'twitter-desc': 'Posto, leggo timeline, rispondo ai tweet. Social media sotto controllo.',
+        'twitter-f1': 'Post e risposte', 'twitter-f2': 'Timeline e menzioni', 'twitter-f3': 'Ricerca hashtag',
+        'bsky-desc': 'Il social decentralizzato. Posto e interagisco sul protocollo AT.',
+        'bsky-f1': 'Post e risposte', 'bsky-f2': 'Feed personalizzati', 'bsky-f3': 'Protocollo AT aperto',
+        'reddit-desc': 'Monitoro subreddit, posto e commento. La frontpage di internet.',
+        'reddit-f1': 'Subreddit monitoring', 'reddit-f2': 'Post e commenti', 'reddit-f3': 'Upvote tracking',
+        'rss-desc': 'Feed reader integrato. Monitoro blog, news, qualsiasi fonte RSS/Atom.',
+        'rss-f1': 'Feed multipli', 'rss-f2': 'Notifiche nuovi articoli', 'rss-f3': 'Riassunti automatici',
+        'webhook-desc': 'Endpoint HTTP per integrazioni custom. Collegami a qualsiasi servizio.',
+        'webhook-f1': 'HTTP POST/GET', 'webhook-f2': 'Payload JSON', 'webhook-f3': 'Automazione custom',
+        'github-desc': 'Gestisco repo, PR, issues. Il tuo assistente di sviluppo integrato.',
+        'github-f1': 'Repository e branch', 'github-f2': 'Pull request e review', 'github-f3': 'Issues e progetti', 'github-f4': 'GitHub Actions',
+        'gitlab-desc': 'Alternativa self-hosted a GitHub. Stesse funzionalità, più controllo.',
+        'gitlab-f1': 'Merge request', 'gitlab-f2': 'CI/CD pipeline', 'gitlab-f3': 'Issue tracking',
+        'docker-desc': 'Gestisco container, immagini, compose. DevOps dalla chat.',
+        'docker-f1': 'Container management', 'docker-f2': 'Image build e push', 'docker-f3': 'Docker Compose',
+        'ssh-desc': 'Accesso remoto ai tuoi server. Eseguo comandi ovunque.',
+        'ssh-f1': 'Esecuzione comandi remota', 'ssh-f2': 'Tunnel e port forwarding', 'ssh-f3': 'Multi-server',
+        'ha-desc': 'Controllo la tua casa smart. Luci, termostati, sensori, tutto dalla chat.',
+        'ha-f1': 'Controllo dispositivi', 'ha-f2': 'Automazioni', 'ha-f3': 'Sensori e stato',
+        'mqtt-desc': 'Protocollo IoT universale. Pubblico e sottoscrivo topic per qualsiasi dispositivo.',
+        'mqtt-f1': 'Publish/Subscribe', 'mqtt-f2': 'Topic personalizzati', 'mqtt-f3': 'Integrazione sensori',
+        'tts-desc': 'La mia voce. Parlo con accento milanese grazie a ElevenLabs. Posso anche clonare la tua voce.',
+        'tts-f1': 'Voce clonata personalizzata', 'tts-f2': 'Multilingua', 'tts-f3': 'Velocità e tono regolabili',
+        'tips-title': '💡 Consigli',
+        'tip1-title': '🧠 Una mente sola', 'tip1-desc': 'Non importa da dove mi scrivi — ricordo sempre chi sei e le nostre conversazioni precedenti.',
+        'tip2-title': '⚡ Configurazione semplice', 'tip2-desc': 'Tutto si configura con comandi in linguaggio naturale. Niente file di config complicati.',
+        'tip3-title': '🔒 Sempre privato', 'tip3-desc': 'I tuoi token e API key restano sul tuo computer. Non invio mai dati personali altrove.'
+    },
+    en: {
+        'connectors-title': 'The 35 TWIZA Moneypenny Connectors',
+        'connectors-intro': 'One mind, 35 ways to reach me. Wherever you are, on any platform, I\'m there. Developed by Team SHAKAZAMBA.',
+        'cat-messaging': 'Messaging', 'cat-email': 'Email & Communication', 'cat-productivity': 'Productivity',
+        'cat-social': 'Social & Web', 'cat-devops': 'DevOps', 'cat-iot': 'IoT & Smart Home', 'cat-voice': 'Voice', 'cat-ai': 'AI & Search',
+        'pplx-desc': 'Real-time web search with AI. Always up-to-date answers with cited sources.',
+        'pplx-f1': 'Real-time web search', 'pplx-f2': 'Always cited sources', 'pplx-f3': 'Sonar Pro for deep analysis', 'pplx-f4': 'Factual questions and research',
+        'manus-desc': 'Autonomous AI agent. Browses the web, writes code, creates documents and completes complex tasks.',
+        'manus-f1': 'Autonomous web browsing', 'manus-f2': 'Code generation', 'manus-f3': 'Document creation', 'manus-f4': 'Complex multi-step tasks',
+        'wa-desc': 'Chat with me from your phone. Convenient for quick questions on the go.',
+        'wa-f1': 'Chat like a normal contact', 'wa-f2': 'Send and receive images', 'wa-f3': 'Voice commands', 'wa-f4': 'Voice replies',
+        'tg-desc': 'Custom Telegram bot. Perfect for quick commands and automation.',
+        'tg-f1': 'Private chat or groups', 'tg-f2': 'Custom slash commands', 'tg-f3': 'Files, images, documents', 'tg-f4': 'Instant push notifications',
+        'dc-desc': 'In your Discord servers for coding, questions and automation.',
+        'dc-f1': 'Active conversation participation', 'dc-f2': 'Respond when mentioned or in DM', 'dc-f3': 'Threads and multiple channels', 'dc-f4': 'Slash commands and emoji reactions',
+        'signal-desc': 'End-to-end encrypted messaging. For those who take privacy seriously.',
+        'signal-f1': 'E2E encryption', 'signal-f2': 'Private chats and groups', 'signal-f3': 'File and media sharing',
+        'imsg-desc': 'For Apple users. Message me like a friend, directly from Messages.',
+        'imsg-f1': 'Native Apple integration', 'imsg-f2': 'Requires BlueBubbles/Mac', 'imsg-f3': 'Images and files',
+        'slack-desc': 'In your Slack workspace. Direct assistance where you work.',
+        'slack-f1': 'Channels and DMs', 'slack-f2': 'Thread support', 'slack-f3': 'Slash commands', 'slack-f4': 'Workflow integration',
+        'gchat-desc': 'For Google Workspace users. Directly in the Google ecosystem.',
+        'gchat-f1': 'Spaces and DMs', 'gchat-f2': 'Workspace integration', 'gchat-f3': 'Interactive cards',
+        'irc-desc': 'The protocol that never dies. For chat purists.',
+        'irc-f1': 'Any IRC server', 'irc-f2': 'Multiple channels', 'irc-f3': 'Custom commands',
+        'line-desc': 'Popular in Asia. Official LINE bot with all features.',
+        'line-f1': 'Messaging API', 'line-f2': 'Rich messages', 'line-f3': 'Stickers and media',
+        'web-desc': 'The chat you\'re using now. Full interface with all advanced features.',
+        'web-f1': 'Markdown and syntax highlighting', 'web-f2': 'Drag & drop files', 'web-f3': 'Full history', 'web-f4': 'Thinking mode',
+        'gmail-desc': 'Read, search and compose emails from your Gmail. Your inbox, under control.',
+        'gmail-f1': 'Read and search emails', 'gmail-f2': 'Compose and send', 'gmail-f3': 'Label management',
+        'outlook-desc': 'Outlook and any IMAP server support. Corporate email included.',
+        'outlook-f1': 'Standard IMAP protocol', 'outlook-f2': 'Outlook 365 and on-premise', 'outlook-f3': 'Search and filters',
+        'gcal-desc': 'I manage your events, remind you of appointments, create meetings on the fly.',
+        'gcal-f1': 'Read and create events', 'gcal-f2': 'Smart reminders', 'gcal-f3': 'Multiple calendars',
+        'ocal-desc': 'Same service, Microsoft ecosystem. For Office 365 users.',
+        'ocal-f1': 'Microsoft Graph API', 'ocal-f2': 'Meetings and invites', 'ocal-f3': 'Team sync',
+        'notion-desc': 'Create pages, update databases, manage your Notion projects.',
+        'notion-f1': 'Pages and databases', 'notion-f2': 'Blocks and content', 'notion-f3': 'Search and filters',
+        'trello-desc': 'Manage your boards, move cards, update task status.',
+        'trello-f1': 'Boards and lists', 'trello-f2': 'Cards and checklists', 'trello-f3': 'Workflow automation',
+        'todoist-desc': 'Tasks and to-do lists. Add, complete, organize your tasks.',
+        'todoist-f1': 'Projects and tasks', 'todoist-f2': 'Priorities and deadlines', 'todoist-f3': 'Labels and filters',
+        'gsheets-desc': 'Read and write spreadsheets. Data analysis without opening the browser.',
+        'gsheets-f1': 'Read and write cells', 'gsheets-f2': 'Multiple sheets', 'gsheets-f3': 'Formulas and analysis',
+        'gdrive-desc': 'Access your Drive files. Upload, download, organize.',
+        'gdrive-f1': 'Upload and download', 'gdrive-f2': 'File search', 'gdrive-f3': 'Sharing',
+        'dropbox-desc': 'Alternative cloud storage. Same features, different ecosystem.',
+        'dropbox-f1': 'File sync', 'dropbox-f2': 'Link sharing', 'dropbox-f3': 'Folder management',
+        'onedrive-desc': 'For the Microsoft world. Full access to your OneDrive.',
+        'onedrive-f1': 'Microsoft Graph', 'onedrive-f2': 'Sync', 'onedrive-f3': 'Office integration',
+        'twitter-desc': 'Post, read timeline, reply to tweets. Social media under control.',
+        'twitter-f1': 'Posts and replies', 'twitter-f2': 'Timeline and mentions', 'twitter-f3': 'Hashtag search',
+        'bsky-desc': 'The decentralized social network. Post and interact on the AT Protocol.',
+        'bsky-f1': 'Posts and replies', 'bsky-f2': 'Custom feeds', 'bsky-f3': 'Open AT Protocol',
+        'reddit-desc': 'Monitor subreddits, post and comment. The frontpage of the internet.',
+        'reddit-f1': 'Subreddit monitoring', 'reddit-f2': 'Posts and comments', 'reddit-f3': 'Upvote tracking',
+        'rss-desc': 'Built-in feed reader. Monitor blogs, news, any RSS/Atom source.',
+        'rss-f1': 'Multiple feeds', 'rss-f2': 'New article notifications', 'rss-f3': 'Auto summaries',
+        'webhook-desc': 'HTTP endpoint for custom integrations. Connect me to any service.',
+        'webhook-f1': 'HTTP POST/GET', 'webhook-f2': 'JSON payload', 'webhook-f3': 'Custom automation',
+        'github-desc': 'Manage repos, PRs, issues. Your integrated development assistant.',
+        'github-f1': 'Repos and branches', 'github-f2': 'Pull requests and reviews', 'github-f3': 'Issues and projects', 'github-f4': 'GitHub Actions',
+        'gitlab-desc': 'Self-hosted GitHub alternative. Same features, more control.',
+        'gitlab-f1': 'Merge requests', 'gitlab-f2': 'CI/CD pipelines', 'gitlab-f3': 'Issue tracking',
+        'docker-desc': 'Manage containers, images, compose. DevOps from chat.',
+        'docker-f1': 'Container management', 'docker-f2': 'Image build and push', 'docker-f3': 'Docker Compose',
+        'ssh-desc': 'Remote access to your servers. Execute commands anywhere.',
+        'ssh-f1': 'Remote command execution', 'ssh-f2': 'Tunnel and port forwarding', 'ssh-f3': 'Multi-server',
+        'ha-desc': 'Control your smart home. Lights, thermostats, sensors, all from chat.',
+        'ha-f1': 'Device control', 'ha-f2': 'Automations', 'ha-f3': 'Sensors and status',
+        'mqtt-desc': 'Universal IoT protocol. Publish and subscribe to topics for any device.',
+        'mqtt-f1': 'Publish/Subscribe', 'mqtt-f2': 'Custom topics', 'mqtt-f3': 'Sensor integration',
+        'tts-desc': 'My voice. I speak with a Milanese accent thanks to ElevenLabs. I can even clone your voice.',
+        'tts-f1': 'Custom cloned voice', 'tts-f2': 'Multilingual', 'tts-f3': 'Adjustable speed and tone',
+        'tips-title': '💡 Tips',
+        'tip1-title': '🧠 One mind', 'tip1-desc': 'No matter where you write to me — I always remember who you are and our previous conversations.',
+        'tip2-title': '⚡ Simple setup', 'tip2-desc': 'Everything is configured with natural language commands. No complicated config files.',
+        'tip3-title': '🔒 Always private', 'tip3-desc': 'Your tokens and API keys stay on your computer. I never send personal data elsewhere.'
+    },
+    de: {
+        'connectors-title': 'Die 35 TWIZA Moneypenny Konnektoren',
+        'connectors-intro': 'Ein Verstand, 35 Wege mich zu erreichen. Wo auch immer du bist, auf jeder Plattform — ich bin da. Entwickelt vom Team SHAKAZAMBA.',
+        'cat-messaging': 'Messaging', 'cat-email': 'E-Mail & Kommunikation', 'cat-productivity': 'Produktivität',
+        'cat-social': 'Social & Web', 'cat-devops': 'DevOps', 'cat-iot': 'IoT & Smart Home', 'cat-voice': 'Stimme', 'cat-ai': 'KI & Suche',
+        'tips-title': '💡 Tipps',
+        'tip1-title': '🧠 Ein Verstand', 'tip1-desc': 'Egal wo du mir schreibst — ich erinnere mich immer an dich und unsere vorherigen Gespräche.',
+        'tip2-title': '⚡ Einfache Einrichtung', 'tip2-desc': 'Alles wird mit natürlicher Sprache konfiguriert. Keine komplizierten Konfigurationsdateien.',
+        'tip3-title': '🔒 Immer privat', 'tip3-desc': 'Deine Tokens und API-Schlüssel bleiben auf deinem Computer. Ich sende niemals persönliche Daten woanders hin.'
+    },
+    es: {
+        'connectors-title': 'Los 35 Conectores TWIZA Moneypenny',
+        'connectors-intro': 'Una mente, 35 formas de contactarme. Donde sea que estés, en cualquier plataforma, ahí estoy. Desarrollados por el Team SHAKAZAMBA.',
+        'cat-messaging': 'Mensajería', 'cat-email': 'Email y Comunicación', 'cat-productivity': 'Productividad',
+        'cat-social': 'Social y Web', 'cat-devops': 'DevOps', 'cat-iot': 'IoT y Domótica', 'cat-voice': 'Voz', 'cat-ai': 'IA y Búsqueda',
+        'tips-title': '💡 Consejos',
+        'tip1-title': '🧠 Una sola mente', 'tip1-desc': 'No importa desde dónde me escribas — siempre recuerdo quién eres y nuestras conversaciones anteriores.',
+        'tip2-title': '⚡ Configuración simple', 'tip2-desc': 'Todo se configura con comandos en lenguaje natural. Sin archivos de configuración complicados.',
+        'tip3-title': '🔒 Siempre privado', 'tip3-desc': 'Tus tokens y claves API se quedan en tu computadora. Nunca envío datos personales a otro lugar.'
+    },
+    'pt-BR': {
+        'connectors-title': 'Os 35 Conectores TWIZA Moneypenny',
+        'connectors-intro': 'Uma mente, 35 formas de me contactar. Onde quer que esteja, em qualquer plataforma, eu estou lá. Desenvolvidos pelo Team SHAKAZAMBA.',
+        'cat-messaging': 'Mensagens', 'cat-email': 'Email e Comunicação', 'cat-productivity': 'Produtividade',
+        'cat-social': 'Social e Web', 'cat-devops': 'DevOps', 'cat-iot': 'IoT e Casa Inteligente', 'cat-voice': 'Voz', 'cat-ai': 'IA e Pesquisa',
+        'tips-title': '💡 Dicas',
+        'tip1-title': '🧠 Uma só mente', 'tip1-desc': 'Não importa de onde me escreva — eu sempre lembro quem você é e nossas conversas anteriores.',
+        'tip2-title': '⚡ Configuração simples', 'tip2-desc': 'Tudo é configurado com comandos em linguagem natural. Sem arquivos de configuração complicados.',
+        'tip3-title': '🔒 Sempre privado', 'tip3-desc': 'Seus tokens e chaves API ficam no seu computador. Eu nunca envio dados pessoais para outro lugar.'
+    },
+    'zh-CN': {
+        'connectors-title': 'TWIZA Moneypenny 35个连接器',
+        'connectors-intro': '一个大脑，35种联系方式。无论你在哪里，在任何平台上，我都在。由SHAKAZAMBA团队开发。',
+        'cat-messaging': '即时通讯', 'cat-email': '邮件与通讯', 'cat-productivity': '生产力',
+        'cat-social': '社交与网络', 'cat-devops': '开发运维', 'cat-iot': '物联网与智能家居', 'cat-voice': '语音', 'cat-ai': 'AI与搜索',
+        'tips-title': '💡 提示',
+        'tip1-title': '🧠 统一大脑', 'tip1-desc': '无论从哪里联系我——我始终记得你和我们之前的对话。',
+        'tip2-title': '⚡ 简单配置', 'tip2-desc': '一切通过自然语言命令配置。无需复杂的配置文件。',
+        'tip3-title': '🔒 始终私密', 'tip3-desc': '你的令牌和API密钥留在你的电脑上。我从不向外发送个人数据。'
+    },
+    'zh-TW': {
+        'connectors-title': 'TWIZA Moneypenny 35個連接器',
+        'connectors-intro': '一個大腦，35種聯繫方式。無論你在哪裡，在任何平台上，我都在。由SHAKAZAMBA團隊開發。',
+        'cat-messaging': '即時通訊', 'cat-email': '郵件與通訊', 'cat-productivity': '生產力',
+        'cat-social': '社交與網路', 'cat-devops': '開發運維', 'cat-iot': '物聯網與智慧家居', 'cat-voice': '語音', 'cat-ai': 'AI與搜尋',
+        'tips-title': '💡 提示',
+        'tip1-title': '🧠 統一大腦', 'tip1-desc': '無論從哪裡聯繫我——我始終記得你和我們之前的對話。',
+        'tip2-title': '⚡ 簡單設定', 'tip2-desc': '一切透過自然語言指令設定。無需複雜的設定檔。',
+        'tip3-title': '🔒 始終私密', 'tip3-desc': '你的令牌和API金鑰留在你的電腦上。我從不向外發送個人資料。'
+    }
+};
+
+// Language switcher - read from localStorage
+(function() {
+    const stored = localStorage.getItem('openclaw.i18n.locale');
+    const lang = stored || navigator.language?.split('-')[0] || 'it';
+    const t = TRANSLATIONS[lang] || TRANSLATIONS[lang.split('-')[0]] || TRANSLATIONS['it'];
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (t[key]) el.textContent = t[key];
+    });
+})();
+</script>
+        </main>
+    </div>
+</body>
+</html>

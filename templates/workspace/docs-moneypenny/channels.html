@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canali Chat - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Titillium Web',sans-serif; background:#0a0a0a; color:#fff; line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; flex:1; }
+        header { padding:2rem 0; border-bottom:1px solid #333; }
+        .back-link { display:inline-block; color:#FF0080; text-decoration:none; margin-bottom:1rem; font-weight:600; }
+        .back-link:hover { color:#ff3399; }
+        h1 { font-size:2.5rem; font-weight:700; color:#FF0080; margin-bottom:1rem; }
+        .subtitle { font-size:1.1rem; color:#ccc; margin-bottom:2rem; }
+        .lang-switcher { display:flex; gap:.5rem; margin-bottom:2rem; flex-wrap:wrap; }
+        .lang-btn { background:#1a1a1a; border:1px solid #333; color:#fff; padding:.5rem 1rem; border-radius:5px; cursor:pointer; font-family:inherit; transition:all .3s; }
+        .lang-btn:hover,.lang-btn.active { background:#FF0080; border-color:#FF0080; }
+        main { padding:2rem 0; }
+        .section-title { font-size:1.6rem; font-weight:600; color:#FF0080; margin:2rem 0 1rem; border-bottom:1px solid #333; padding-bottom:.5rem; }
+        .channels-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+        .channel-card { background:#1a1a1a; border-radius:10px; padding:1.5rem; border-left:4px solid #FF0080; transition:transform .2s; }
+        .channel-card:hover { transform:translateY(-3px); }
+        .channel-name { font-size:1.2rem; font-weight:600; color:#FF0080; margin-bottom:.5rem; }
+        .channel-desc { color:#ccc; font-size:.95rem; margin-bottom:.5rem; }
+        .channel-tag { display:inline-block; background:#FF0080; color:#fff; padding:2px 8px; border-radius:12px; font-size:.75rem; font-weight:600; margin-top:.5rem; }
+        .channel-tag.plugin { background:#6c757d; }
+        footer { text-align:center; padding:2rem; border-top:1px solid #333; color:#888; margin-top:auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+        <h1 data-lang-key="title">Canali Chat Supportati</h1>
+        <p class="subtitle" data-lang-key="subtitle">TWIZA Moneypenny ti raggiunge ovunque. Un'unica AI, decine di piattaforme.</p>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('it')">🇮🇹 IT</button>
+            <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+            <button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
+            <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+            <button class="lang-btn" onclick="setLang('pt-BR')">🇧🇷 PT</button>
+            <button class="lang-btn" onclick="setLang('zh-CN')">🇨🇳 简中</button>
+            <button class="lang-btn" onclick="setLang('zh-TW')">🇹🇼 繁中</button>
+        </div>
+    </header>
+    <main>
+        <h2 class="section-title" data-lang-key="builtin-title">📡 Canali Integrati</h2>
+        <p data-lang-key="builtin-desc" style="color:#ccc;margin-bottom:1.5rem;">Inclusi direttamente in OpenClaw. Configurazione immediata, zero plugin.</p>
+        <div class="channels-grid">
+            <div class="channel-card">
+                <div class="channel-name">💬 WhatsApp</div>
+                <div class="channel-desc" data-lang-key="whatsapp-desc">Il canale più popolare. Collegamento via QR code, supporta testo, immagini, audio, documenti, reaction e gruppi.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">✈️ Telegram</div>
+                <div class="channel-desc" data-lang-key="telegram-desc">Setup rapidissimo con bot token. Supporta testo, media, sticker, reaction, sondaggi, gruppi e canali.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🎮 Discord</div>
+                <div class="channel-desc" data-lang-key="discord-desc">Bot API + Gateway. Supporta server, canali, thread, DM, reaction, embed ricchi e comandi slash.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🔒 Signal</div>
+                <div class="channel-desc" data-lang-key="signal-desc">Privacy-first tramite signal-cli. Crittografia end-to-end, testo, media, reaction e gruppi.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🍎 iMessage / BlueBubbles</div>
+                <div class="channel-desc" data-lang-key="imessage-desc">Integrazione macOS nativa o via BlueBubbles (consigliato). Effetti messaggio, reaction, tapback, gruppi.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">💼 Slack</div>
+                <div class="channel-desc" data-lang-key="slack-desc">Bolt SDK per workspace app. Canali, thread, DM, reaction, file sharing e comandi personalizzati.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🏢 Google Chat</div>
+                <div class="channel-desc" data-lang-key="googlechat-desc">App API via webhook HTTP. Spazi, conversazioni, DM e card interattive per workspace Google.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">📟 IRC</div>
+                <div class="channel-desc" data-lang-key="irc-desc">Il classico dei classici. Canali, query private, supporto SSL/TLS, SASL auth.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🟢 LINE</div>
+                <div class="channel-desc" data-lang-key="line-desc">Messaging API bot. Popolare in Giappone e Sud-est asiatico. Testo, sticker, rich menu.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🌐 WebChat</div>
+                <div class="channel-desc" data-lang-key="webchat-desc">Interfaccia web integrata nella dashboard. Zero configurazione, funziona subito. Supporta testo, immagini e file.</div>
+                <span class="channel-tag" data-lang-key="tag-builtin">Integrato</span>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-lang-key="plugin-title">🔌 Canali Plugin</h2>
+        <p data-lang-key="plugin-desc" style="color:#ccc;margin-bottom:1.5rem;">Installabili separatamente per estendere le piattaforme supportate.</p>
+        <div class="channels-grid">
+            <div class="channel-card">
+                <div class="channel-name">🟣 Matrix</div>
+                <div class="channel-desc" data-lang-key="matrix-desc">Protocollo federato e decentralizzato. Stanze, crittografia E2E, bridge con altre piattaforme.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">💬 Mattermost</div>
+                <div class="channel-desc" data-lang-key="mattermost-desc">Bot API + WebSocket. Alternativa open-source a Slack per team self-hosted.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🏢 Microsoft Teams</div>
+                <div class="channel-desc" data-lang-key="teams-desc">Bot Framework per ambienti enterprise. Canali, chat 1:1, card adaptive.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">☁️ Nextcloud Talk</div>
+                <div class="channel-desc" data-lang-key="nextcloud-desc">Chat self-hosted integrata con Nextcloud. Conversazioni, gruppi e file condivisi.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🔑 Nostr</div>
+                <div class="channel-desc" data-lang-key="nostr-desc">Protocollo decentralizzato e censorship-resistant. DM crittografati, relay multipli.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🖥️ Synology Chat</div>
+                <div class="channel-desc" data-lang-key="synology-desc">Webhook per NAS Synology. Chat interna aziendale integrata con DiskStation.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🟣 Twitch</div>
+                <div class="channel-desc" data-lang-key="twitch-desc">Connessione IRC al chat di Twitch. Interazione live con viewer durante lo streaming.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">🐦 Feishu / Lark</div>
+                <div class="channel-desc" data-lang-key="feishu-desc">Bot via WebSocket per Feishu/Lark. Piattaforma enterprise popolare in Cina.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">💙 Zalo</div>
+                <div class="channel-desc" data-lang-key="zalo-desc">Bot API per Zalo. Il messenger più usato in Vietnam, 75M+ utenti attivi.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+            <div class="channel-card">
+                <div class="channel-name">⛵ Tlon / Urbit</div>
+                <div class="channel-desc" data-lang-key="tlon-desc">Messaggistica peer-to-peer su rete Urbit. Sovranità digitale totale.</div>
+                <span class="channel-tag plugin">Plugin</span>
+            </div>
+        </div>
+    </main>
+</div>
+<footer>
+    <p data-lang-key="footer">Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong></p>
+</footer>
+
+<script>
+const translations = {
+    'it': {
+        'back': 'Torna alla Home',
+        'title': 'Canali Chat Supportati',
+        'subtitle': 'TWIZA Moneypenny ti raggiunge ovunque. Un\'unica AI, decine di piattaforme.',
+        'builtin-title': '📡 Canali Integrati',
+        'builtin-desc': 'Inclusi direttamente in OpenClaw. Configurazione immediata, zero plugin.',
+        'plugin-title': '🔌 Canali Plugin',
+        'plugin-desc': 'Installabili separatamente per estendere le piattaforme supportate.',
+        'whatsapp-desc': 'Il canale più popolare. Collegamento via QR code, supporta testo, immagini, audio, documenti, reaction e gruppi.',
+        'telegram-desc': 'Setup rapidissimo con bot token. Supporta testo, media, sticker, reaction, sondaggi, gruppi e canali.',
+        'discord-desc': 'Bot API + Gateway. Supporta server, canali, thread, DM, reaction, embed ricchi e comandi slash.',
+        'signal-desc': 'Privacy-first tramite signal-cli. Crittografia end-to-end, testo, media, reaction e gruppi.',
+        'imessage-desc': 'Integrazione macOS nativa o via BlueBubbles (consigliato). Effetti messaggio, reaction, tapback, gruppi.',
+        'slack-desc': 'Bolt SDK per workspace app. Canali, thread, DM, reaction, file sharing e comandi personalizzati.',
+        'googlechat-desc': 'App API via webhook HTTP. Spazi, conversazioni, DM e card interattive per workspace Google.',
+        'irc-desc': 'Il classico dei classici. Canali, query private, supporto SSL/TLS, SASL auth.',
+        'line-desc': 'Messaging API bot. Popolare in Giappone e Sud-est asiatico. Testo, sticker, rich menu.',
+        'webchat-desc': 'Interfaccia web integrata nella dashboard. Zero configurazione, funziona subito. Supporta testo, immagini e file.',
+        'matrix-desc': 'Protocollo federato e decentralizzato. Stanze, crittografia E2E, bridge con altre piattaforme.',
+        'mattermost-desc': 'Bot API + WebSocket. Alternativa open-source a Slack per team self-hosted.',
+        'teams-desc': 'Bot Framework per ambienti enterprise. Canali, chat 1:1, card adaptive.',
+        'nextcloud-desc': 'Chat self-hosted integrata con Nextcloud. Conversazioni, gruppi e file condivisi.',
+        'nostr-desc': 'Protocollo decentralizzato e censorship-resistant. DM crittografati, relay multipli.',
+        'synology-desc': 'Webhook per NAS Synology. Chat interna aziendale integrata con DiskStation.',
+        'twitch-desc': 'Connessione IRC al chat di Twitch. Interazione live con viewer durante lo streaming.',
+        'feishu-desc': 'Bot via WebSocket per Feishu/Lark. Piattaforma enterprise popolare in Cina.',
+        'zalo-desc': 'Bot API per Zalo. Il messenger più usato in Vietnam, 75M+ utenti attivi.',
+        'tlon-desc': 'Messaggistica peer-to-peer su rete Urbit. Sovranità digitale totale.',
+        'tag-builtin': 'Integrato',
+        'footer': 'Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong>'
+    },
+    'en': {
+        'back': 'Back to Home',
+        'title': 'Supported Chat Channels',
+        'subtitle': 'TWIZA Moneypenny reaches you everywhere. One AI, dozens of platforms.',
+        'builtin-title': '📡 Built-in Channels',
+        'builtin-desc': 'Included directly in OpenClaw. Instant setup, zero plugins.',
+        'plugin-title': '🔌 Plugin Channels',
+        'plugin-desc': 'Installable separately to extend supported platforms.',
+        'whatsapp-desc': 'The most popular channel. QR code pairing, supports text, images, audio, docs, reactions and groups.',
+        'telegram-desc': 'Fastest setup with bot token. Supports text, media, stickers, reactions, polls, groups and channels.',
+        'discord-desc': 'Bot API + Gateway. Supports servers, channels, threads, DMs, reactions, rich embeds and slash commands.',
+        'signal-desc': 'Privacy-first via signal-cli. End-to-end encryption, text, media, reactions and groups.',
+        'imessage-desc': 'Native macOS or via BlueBubbles (recommended). Message effects, reactions, tapback, groups.',
+        'slack-desc': 'Bolt SDK for workspace apps. Channels, threads, DMs, reactions, file sharing and custom commands.',
+        'googlechat-desc': 'API app via HTTP webhook. Spaces, conversations, DMs and interactive cards for Google workspace.',
+        'irc-desc': 'The OG classic. Channels, private queries, SSL/TLS support, SASL auth.',
+        'line-desc': 'Messaging API bot. Popular in Japan and Southeast Asia. Text, stickers, rich menu.',
+        'webchat-desc': 'Built-in web interface in the dashboard. Zero config, works immediately. Supports text, images and files.',
+        'matrix-desc': 'Federated and decentralized protocol. Rooms, E2E encryption, bridges to other platforms.',
+        'mattermost-desc': 'Bot API + WebSocket. Open-source Slack alternative for self-hosted teams.',
+        'teams-desc': 'Bot Framework for enterprise environments. Channels, 1:1 chat, adaptive cards.',
+        'nextcloud-desc': 'Self-hosted chat integrated with Nextcloud. Conversations, groups and shared files.',
+        'nostr-desc': 'Decentralized and censorship-resistant protocol. Encrypted DMs, multiple relays.',
+        'synology-desc': 'Webhook for Synology NAS. Internal company chat integrated with DiskStation.',
+        'twitch-desc': 'IRC connection to Twitch chat. Live viewer interaction during streaming.',
+        'feishu-desc': 'WebSocket bot for Feishu/Lark. Enterprise platform popular in China.',
+        'zalo-desc': 'Bot API for Zalo. Vietnam\'s most used messenger, 75M+ active users.',
+        'tlon-desc': 'Peer-to-peer messaging on the Urbit network. Total digital sovereignty.',
+        'tag-builtin': 'Built-in',
+        'footer': 'Developed with 🦾 by <strong>Team SHAKAZAMBA</strong>'
+    },
+    'de': {
+        'back': 'Zurück zur Startseite',
+        'title': 'Unterstützte Chat-Kanäle',
+        'subtitle': 'TWIZA Moneypenny erreicht dich überall. Eine KI, dutzende Plattformen.',
+        'builtin-title': '📡 Integrierte Kanäle',
+        'builtin-desc': 'Direkt in OpenClaw enthalten. Sofortige Einrichtung, keine Plugins.',
+        'plugin-title': '🔌 Plugin-Kanäle',
+        'plugin-desc': 'Separat installierbar zur Erweiterung der unterstützten Plattformen.',
+        'whatsapp-desc': 'Der beliebteste Kanal. QR-Code-Kopplung, Text, Bilder, Audio, Dokumente, Reaktionen und Gruppen.',
+        'telegram-desc': 'Schnellstes Setup mit Bot-Token. Text, Medien, Sticker, Reaktionen, Umfragen, Gruppen und Kanäle.',
+        'discord-desc': 'Bot API + Gateway. Server, Kanäle, Threads, DMs, Reaktionen, Rich Embeds und Slash-Befehle.',
+        'signal-desc': 'Privacy-first über signal-cli. Ende-zu-Ende-Verschlüsselung, Text, Medien, Reaktionen und Gruppen.',
+        'imessage-desc': 'Natives macOS oder via BlueBubbles (empfohlen). Nachrichteneffekte, Reaktionen, Tapback, Gruppen.',
+        'slack-desc': 'Bolt SDK für Workspace-Apps. Kanäle, Threads, DMs, Reaktionen, Dateifreigabe und benutzerdefinierte Befehle.',
+        'googlechat-desc': 'API-App über HTTP-Webhook. Spaces, Konversationen, DMs und interaktive Karten für Google Workspace.',
+        'irc-desc': 'Der Klassiker schlechthin. Kanäle, Private Nachrichten, SSL/TLS, SASL-Auth.',
+        'line-desc': 'Messaging API Bot. Beliebt in Japan und Südostasien. Text, Sticker, Rich Menu.',
+        'webchat-desc': 'Integrierte Web-Oberfläche im Dashboard. Null Konfiguration, funktioniert sofort.',
+        'matrix-desc': 'Föderiertes und dezentrales Protokoll. Räume, E2E-Verschlüsselung, Bridges.',
+        'mattermost-desc': 'Bot API + WebSocket. Open-Source Slack-Alternative für Self-Hosted Teams.',
+        'teams-desc': 'Bot Framework für Enterprise. Kanäle, 1:1 Chat, Adaptive Cards.',
+        'nextcloud-desc': 'Self-Hosted Chat integriert mit Nextcloud. Konversationen, Gruppen, geteilte Dateien.',
+        'nostr-desc': 'Dezentrales, zensurresistentes Protokoll. Verschlüsselte DMs, mehrere Relays.',
+        'synology-desc': 'Webhook für Synology NAS. Interne Firmenkommunikation.',
+        'twitch-desc': 'IRC-Verbindung zum Twitch-Chat. Live-Zuschauer-Interaktion beim Streaming.',
+        'feishu-desc': 'WebSocket-Bot für Feishu/Lark. Enterprise-Plattform beliebt in China.',
+        'zalo-desc': 'Bot API für Zalo. Vietnams meistgenutzter Messenger, 75M+ aktive Nutzer.',
+        'tlon-desc': 'Peer-to-Peer Messaging im Urbit-Netzwerk. Totale digitale Souveränität.',
+        'tag-builtin': 'Integriert',
+        'footer': 'Entwickelt mit 🦾 vom <strong>Team SHAKAZAMBA</strong>'
+    },
+    'es': {
+        'back': 'Volver al Inicio',
+        'title': 'Canales de Chat Soportados',
+        'subtitle': 'TWIZA Moneypenny te alcanza en todas partes. Una IA, docenas de plataformas.',
+        'builtin-title': '📡 Canales Integrados',
+        'builtin-desc': 'Incluidos directamente en OpenClaw. Configuración inmediata, cero plugins.',
+        'plugin-title': '🔌 Canales Plugin',
+        'plugin-desc': 'Instalables por separado para ampliar las plataformas soportadas.',
+        'whatsapp-desc': 'El canal más popular. Vinculación por QR, texto, imágenes, audio, documentos, reacciones y grupos.',
+        'telegram-desc': 'Setup rapidísimo con bot token. Texto, media, stickers, reacciones, encuestas, grupos y canales.',
+        'discord-desc': 'Bot API + Gateway. Servidores, canales, hilos, DMs, reacciones, embeds y comandos slash.',
+        'signal-desc': 'Privacidad primero vía signal-cli. Cifrado end-to-end, texto, media, reacciones y grupos.',
+        'imessage-desc': 'macOS nativo o vía BlueBubbles (recomendado). Efectos de mensaje, reacciones, tapback, grupos.',
+        'slack-desc': 'Bolt SDK para apps de workspace. Canales, hilos, DMs, reacciones, archivos y comandos personalizados.',
+        'googlechat-desc': 'App API vía webhook HTTP. Espacios, conversaciones, DMs y tarjetas interactivas para Google Workspace.',
+        'irc-desc': 'El clásico de los clásicos. Canales, consultas privadas, SSL/TLS, SASL auth.',
+        'line-desc': 'Bot Messaging API. Popular en Japón y sudeste asiático. Texto, stickers, rich menu.',
+        'webchat-desc': 'Interfaz web integrada en el dashboard. Sin configuración, funciona al instante.',
+        'matrix-desc': 'Protocolo federado y descentralizado. Salas, cifrado E2E, bridges a otras plataformas.',
+        'mattermost-desc': 'Bot API + WebSocket. Alternativa open-source a Slack para equipos self-hosted.',
+        'teams-desc': 'Bot Framework para entornos enterprise. Canales, chat 1:1, tarjetas adaptivas.',
+        'nextcloud-desc': 'Chat self-hosted integrado con Nextcloud. Conversaciones, grupos y archivos compartidos.',
+        'nostr-desc': 'Protocolo descentralizado y resistente a la censura. DMs cifrados, múltiples relays.',
+        'synology-desc': 'Webhook para NAS Synology. Chat interno empresarial integrado con DiskStation.',
+        'twitch-desc': 'Conexión IRC al chat de Twitch. Interacción en vivo con viewers durante streaming.',
+        'feishu-desc': 'Bot WebSocket para Feishu/Lark. Plataforma enterprise popular en China.',
+        'zalo-desc': 'Bot API para Zalo. El messenger más usado en Vietnam, 75M+ usuarios activos.',
+        'tlon-desc': 'Mensajería peer-to-peer en la red Urbit. Soberanía digital total.',
+        'tag-builtin': 'Integrado',
+        'footer': 'Desarrollado con 🦾 por <strong>Team SHAKAZAMBA</strong>'
+    },
+    'pt-BR': {
+        'back': 'Voltar ao Início',
+        'title': 'Canais de Chat Suportados',
+        'subtitle': 'TWIZA Moneypenny te alcança em todo lugar. Uma IA, dezenas de plataformas.',
+        'builtin-title': '📡 Canais Integrados',
+        'builtin-desc': 'Incluídos diretamente no OpenClaw. Configuração imediata, zero plugins.',
+        'plugin-title': '🔌 Canais Plugin',
+        'plugin-desc': 'Instaláveis separadamente para estender as plataformas suportadas.',
+        'whatsapp-desc': 'O canal mais popular. Pareamento por QR, texto, imagens, áudio, documentos, reações e grupos.',
+        'telegram-desc': 'Setup rapidíssimo com bot token. Texto, mídia, stickers, reações, enquetes, grupos e canais.',
+        'discord-desc': 'Bot API + Gateway. Servidores, canais, threads, DMs, reações, embeds e comandos slash.',
+        'signal-desc': 'Privacidade em primeiro lugar via signal-cli. Criptografia E2E, texto, mídia, reações e grupos.',
+        'imessage-desc': 'macOS nativo ou via BlueBubbles (recomendado). Efeitos de mensagem, reações, tapback, grupos.',
+        'slack-desc': 'Bolt SDK para workspace apps. Canais, threads, DMs, reações, compartilhamento de arquivos e comandos.',
+        'googlechat-desc': 'App API via webhook HTTP. Espaços, conversas, DMs e cards interativos para Google Workspace.',
+        'irc-desc': 'O clássico dos clássicos. Canais, queries privadas, SSL/TLS, SASL auth.',
+        'line-desc': 'Bot Messaging API. Popular no Japão e sudeste asiático. Texto, stickers, rich menu.',
+        'webchat-desc': 'Interface web integrada no dashboard. Zero configuração, funciona imediatamente.',
+        'matrix-desc': 'Protocolo federado e descentralizado. Salas, criptografia E2E, bridges para outras plataformas.',
+        'mattermost-desc': 'Bot API + WebSocket. Alternativa open-source ao Slack para equipes self-hosted.',
+        'teams-desc': 'Bot Framework para ambientes enterprise. Canais, chat 1:1, cards adaptativos.',
+        'nextcloud-desc': 'Chat self-hosted integrado com Nextcloud. Conversas, grupos e arquivos compartilhados.',
+        'nostr-desc': 'Protocolo descentralizado e resistente à censura. DMs criptografados, múltiplos relays.',
+        'synology-desc': 'Webhook para NAS Synology. Chat interno empresarial integrado ao DiskStation.',
+        'twitch-desc': 'Conexão IRC ao chat do Twitch. Interação ao vivo com viewers durante streaming.',
+        'feishu-desc': 'Bot WebSocket para Feishu/Lark. Plataforma enterprise popular na China.',
+        'zalo-desc': 'Bot API para Zalo. O messenger mais usado no Vietnã, 75M+ usuários ativos.',
+        'tlon-desc': 'Mensagens peer-to-peer na rede Urbit. Soberania digital total.',
+        'tag-builtin': 'Integrado',
+        'footer': 'Desenvolvido com 🦾 pelo <strong>Team SHAKAZAMBA</strong>'
+    },
+    'zh-CN': {
+        'back': '返回首页',
+        'title': '支持的聊天频道',
+        'subtitle': 'TWIZA Moneypenny 随时随地为你服务。一个AI，数十个平台。',
+        'builtin-title': '📡 内置频道',
+        'builtin-desc': '直接包含在OpenClaw中。即时配置，无需插件。',
+        'plugin-title': '🔌 插件频道',
+        'plugin-desc': '可单独安装以扩展支持的平台。',
+        'whatsapp-desc': '最受欢迎的频道。二维码配对，支持文本、图片、音频、文档、表情和群组。',
+        'telegram-desc': '最快设置。Bot token配置，支持文本、媒体、贴纸、表情、投票、群组和频道。',
+        'discord-desc': 'Bot API + Gateway。支持服务器、频道、帖子、私信、表情、嵌入和斜杠命令。',
+        'signal-desc': '隐私优先，通过signal-cli。端到端加密、文本、媒体、表情和群组。',
+        'imessage-desc': '原生macOS或通过BlueBubbles（推荐）。消息效果、表情、tapback、群组。',
+        'slack-desc': 'Bolt SDK工作区应用。频道、帖子、私信、表情、文件共享和自定义命令。',
+        'googlechat-desc': '通过HTTP webhook的API应用。空间、对话、私信和Google Workspace交互卡片。',
+        'irc-desc': '经典中的经典。频道、私聊、SSL/TLS、SASL认证。',
+        'line-desc': 'Messaging API机器人。在日本和东南亚流行。文本、贴纸、丰富菜单。',
+        'webchat-desc': '仪表板内置Web界面。零配置，立即可用。支持文本、图片和文件。',
+        'matrix-desc': '联邦和去中心化协议。房间、端到端加密、跨平台桥接。',
+        'mattermost-desc': 'Bot API + WebSocket。自托管团队的开源Slack替代方案。',
+        'teams-desc': '企业Bot Framework。频道、1对1聊天、自适应卡片。',
+        'nextcloud-desc': '与Nextcloud集成的自托管聊天。对话、群组和共享文件。',
+        'nostr-desc': '去中心化和抗审查协议。加密私信，多个中继。',
+        'synology-desc': 'Synology NAS Webhook。与DiskStation集成的内部企业聊天。',
+        'twitch-desc': 'Twitch聊天IRC连接。直播期间与观众实时互动。',
+        'feishu-desc': 'Feishu/Lark WebSocket机器人。在中国流行的企业平台。',
+        'zalo-desc': 'Zalo Bot API。越南最常用的聊天工具，7500万+活跃用户。',
+        'tlon-desc': 'Urbit网络上的点对点消息。完全数字主权。',
+        'tag-builtin': '内置',
+        'footer': '由 <strong>Team SHAKAZAMBA</strong> 🦾 开发'
+    },
+    'zh-TW': {
+        'back': '返回首頁',
+        'title': '支援的聊天頻道',
+        'subtitle': 'TWIZA Moneypenny 隨時隨地為你服務。一個AI，數十個平台。',
+        'builtin-title': '📡 內建頻道',
+        'builtin-desc': '直接包含在OpenClaw中。即時配置，無需外掛。',
+        'plugin-title': '🔌 外掛頻道',
+        'plugin-desc': '可單獨安裝以擴展支援的平台。',
+        'whatsapp-desc': '最受歡迎的頻道。QR碼配對，支援文字、圖片、音訊、文件、表情和群組。',
+        'telegram-desc': '最快設置。Bot token配置，支援文字、媒體、貼圖、表情、投票、群組和頻道。',
+        'discord-desc': 'Bot API + Gateway。支援伺服器、頻道、討論串、私訊、表情、嵌入和斜線命令。',
+        'signal-desc': '隱私優先，透過signal-cli。端對端加密、文字、媒體、表情和群組。',
+        'imessage-desc': '原生macOS或透過BlueBubbles（建議）。訊息效果、表情、tapback、群組。',
+        'slack-desc': 'Bolt SDK工作區應用。頻道、討論串、私訊、表情、檔案分享和自訂命令。',
+        'googlechat-desc': '透過HTTP webhook的API應用。空間、對話、私訊和Google Workspace互動卡片。',
+        'irc-desc': '經典中的經典。頻道、私聊、SSL/TLS、SASL認證。',
+        'line-desc': 'Messaging API機器人。在日本和東南亞流行。文字、貼圖、豐富選單。',
+        'webchat-desc': '儀表板內建Web介面。零配置，立即可用。支援文字、圖片和檔案。',
+        'matrix-desc': '聯邦和去中心化協定。房間、端對端加密、跨平台橋接。',
+        'mattermost-desc': 'Bot API + WebSocket。自託管團隊的開源Slack替代方案。',
+        'teams-desc': '企業Bot Framework。頻道、1對1聊天、自適應卡片。',
+        'nextcloud-desc': '與Nextcloud整合的自託管聊天。對話、群組和共享檔案。',
+        'nostr-desc': '去中心化和抗審查協定。加密私訊，多個中繼。',
+        'synology-desc': 'Synology NAS Webhook。與DiskStation整合的內部企業聊天。',
+        'twitch-desc': 'Twitch聊天IRC連線。直播期間與觀眾即時互動。',
+        'feishu-desc': 'Feishu/Lark WebSocket機器人。在中國流行的企業平台。',
+        'zalo-desc': 'Zalo Bot API。越南最常用的通訊工具，7500萬+活躍用戶。',
+        'tlon-desc': 'Urbit網路上的點對點訊息。完全數位主權。',
+        'tag-builtin': '內建',
+        'footer': '由 <strong>Team SHAKAZAMBA</strong> 🦾 開發'
+    }
+};
+
+let currentLang = 'it';
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    const t = translations[lang] || translations['it'];
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (t[key]) el.innerHTML = t[key];
+    });
+}
+</script>
+</body>
+</html>

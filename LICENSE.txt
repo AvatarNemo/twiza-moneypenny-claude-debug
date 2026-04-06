@@ -1,0 +1,36 @@
+TWIZA Moneypenny - Licenza d'Uso
+
+Copyright (c) 2026 SHAKAZAMBA S.r.l.
+BREVETTO UIBM N. 102024000025755
+
+ACCORDO DI LICENZA SOFTWARE
+
+Questo accordo di licenza ("Accordo") è un contratto legale tra te ("Utente") e SHAKAZAMBA S.r.l. ("SHAKAZAMBA") per l'uso del software TWIZA Moneypenny ("Software").
+
+INSTALLANDO, COPIANDO O UTILIZZANDO IL SOFTWARE, L'UTENTE ACCETTA DI ESSERE VINCOLATO DAI TERMINI DI QUESTO ACCORDO.
+
+1. CONCESSIONE DELLA LICENZA
+   SHAKAZAMBA concede all'Utente una licenza non esclusiva, non trasferibile per utilizzare il Software sui propri sistemi.
+
+2. RESTRIZIONI
+   - Non è consentito reverse engineering, decompilazione o disassemblaggio
+   - Non è consentita la redistribuzione senza autorizzazione scritta
+   - Il Software è protetto da brevetto UIBM N. 102024000025755
+
+3. PROPRIETÀ INTELLETTUALE
+   Il Software e la tecnologia RAG TWIZA sono di proprietà esclusiva di SHAKAZAMBA e protetti da brevetto italiano.
+
+4. SUPPORTO
+   Il supporto è disponibile tramite shakazamba.com
+
+5. LIMITAZIONE DI RESPONSABILITÀ
+   IL SOFTWARE È FORNITO "COSÌ COM'È" SENZA GARANZIE DI ALCUN TIPO.
+
+6. RISOLUZIONE
+   Questo accordo rimane in vigore fino alla risoluzione da parte dell'Utente o di SHAKAZAMBA.
+
+Per supporto e informazioni: info@shakazamba.com
+
+SHAKAZAMBA S.r.l.
+Via Matteotti 13, 22066 - Mariano Comense (CO), Italia
+P.IVA: IT03703480131

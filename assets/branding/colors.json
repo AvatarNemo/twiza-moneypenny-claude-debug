@@ -1,0 +1,33 @@
+{
+  "brand": "TWIZA Moneypenny",
+  "version": "1.0",
+  "palette": {
+    "primary": {
+      "fuchsia": "#D4006A",
+      "purple": "#6600FF",
+      "green": "#5EC900"
+    },
+    "backgrounds": {
+      "deepBlack": "#010205",
+      "darkNavy": "#050913",
+      "darkGray": "#0D111A",
+      "mediumDark": "#171420",
+      "cardGray": "#2A2E36"
+    },
+    "text": {
+      "white": "#FFFFFF",
+      "lightGray": "#74727B",
+      "muted": "#54595F"
+    },
+    "accent": {
+      "orangeWarm": "#FFBC7D",
+      "cyanTeal": "#6EC1E4",
+      "darkPurple": "#370039"
+    },
+    "gradients": {
+      "primary": "linear-gradient(135deg, #D4006A, #6600FF)",
+      "background": "linear-gradient(180deg, #010205, #050913, #0D111A)",
+      "accent": "linear-gradient(135deg, #440c2a, #370039)"
+    }
+  }
+}

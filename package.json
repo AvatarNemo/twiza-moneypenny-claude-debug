@@ -1,0 +1,133 @@
+{
+  "name": "twiza-moneypenny",
+  "version": "1.0.2-rc7",
+  "description": "TWIZA Moneypenny \u2014 Your Personal AI Agent for Windows. One-click installer with multi-channel chat, local models, and a customizable personality.",
+  "main": "src/main.js",
+  "homepage": "https://github.com/AvatarNemo/twiza-moneypenny",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AvatarNemo/twiza-moneypenny.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AvatarNemo/twiza-moneypenny/issues"
+  },
+  "author": {
+    "name": "TWIZA by SHAKAZAMBA",
+    "url": "https://shakazamba.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai-agent",
+    "personal-assistant",
+    "electron",
+    "openclaw",
+    "ollama",
+    "windows",
+    "wsl2",
+    "chatbot",
+    "whatsapp",
+    "telegram",
+    "discord"
+  ],
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:win": "electron-builder --win --publish never",
+    "build:nsis": "electron-builder --win nsis --publish never",
+    "build:portable": "electron-builder --win portable --publish never",
+    "build:publish": "electron-builder --win --publish always",
+    "postinstall": "electron-builder install-app-deps",
+    "tauri:dev": "cargo tauri dev",
+    "tauri:build": "cargo tauri build",
+    "tauri:build:msi": "cargo tauri build -- --target x86_64-pc-windows-msvc",
+    "tauri:build:nsis": "cargo tauri build --bundles nsis"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.twiza.moneypenny",
+    "productName": "TWIZA Moneypenny",
+    "copyright": "Copyright \u00a9 2025 TWIZA by SHAKAZAMBA",
+    "artifactName": "TWIZA-Moneypenny-${version}-Setup.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "workspace-template/**/*",
+      "docs/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/branding/twiza-icon.png",
+      "requestedExecutionLevel": "requireAdministrator",
+      "publisherName": "TWIZA by SHAKAZAMBA",
+      "fileAssociations": [
+        {
+          "ext": "soul",
+          "name": "TWIZA Personality File",
+          "description": "TWIZA Agent Personality Template",
+          "role": "Editor"
+        },
+        {
+          "ext": "twiza",
+          "name": "TWIZA Config",
+          "description": "TWIZA Agent Configuration",
+          "role": "Editor"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TWIZA Moneypenny",
+      "installerIcon": "assets/branding/twiza-icon.png",
+      "uninstallerIcon": "assets/branding/twiza-icon.png",
+      "installerSidebar": "assets/installer-sidebar.bmp",
+      "uninstallDisplayName": "TWIZA Moneypenny",
+      "menuCategory": "TWIZA",
+      "include": "scripts/nsis-hooks.nsh",
+      "allowElevation": true,
+      "runAfterFinish": true,
+      "installerLanguages": [
+        "en_US"
+      ],
+      "license": "LICENSE"
+    },
+    "extraResources": [
+      {
+        "from": "scripts/bootstrap-wsl.ps1",
+        "to": "scripts/bootstrap-wsl.ps1"
+      },
+      {
+        "from": "workspace-template",
+        "to": "workspace-template"
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "AvatarNemo",
+        "repo": "twiza-moneypenny"
+      }
+    ]
+  },
+  "dependencies": {
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5"
+  }
+}

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../i18n.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to TWIZA Moneypenny</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @font-face {
+      font-family: 'DK Jambo';
+      src: url('../fonts/DKJambo.otf') format('opentype');
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --fuchsia: #D4006A;
+      --purple: #6600FF;
+      --green: #5EC900;
+      --orange: #FFBC7D;
+      --cyan: #6EC1E4;
+      --bg-deep: #010205;
+      --bg-dark: #050913;
+      --bg-panel: #0D111A;
+      --bg-card: #2A2E36;
+      --text-primary: #FFFFFF;
+      --text-secondary: #74727B;
+      --gradient-primary: linear-gradient(135deg, #D4006A, #6600FF);
+      --border: rgba(255, 255, 255, 0.05);
+      --glow-fuchsia: 0 0 20px rgba(212, 0, 106, 0.35);
+    }
+
+    body {
+      font-family: 'Titillium Web', system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    .titlebar {
+      display: flex; justify-content: flex-end; padding: 10px 16px;
+      -webkit-app-region: drag;
+    }
+    .titlebar-controls { display: flex; gap: 8px; -webkit-app-region: no-drag; }
+    .titlebar-btn { width: 14px; height: 14px; border-radius: 50%; border: none; cursor: pointer; }
+    .btn-close { background: #ff5f57; }
+
+    .slides-container {
+      flex: 1; position: relative; overflow: hidden;
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 40px 60px; text-align: center;
+      opacity: 0; transform: translateX(60px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    .slide.active {
+      opacity: 1; transform: translateX(0); pointer-events: auto;
+    }
+    .slide.exit {
+      opacity: 0; transform: translateX(-60px);
+    }
+
+    .slide-icon {
+      font-size: 4.6rem; margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .slide h2 {
+      font-size: 2.07rem; font-weight: 800; margin-bottom: 16px;
+      background: var(--gradient-primary); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .slide p {
+      font-size: 1.15rem; color: var(--text-secondary); max-width: 500px;
+      line-height: 1.7; margin-bottom: 12px;
+    }
+    .payoff {
+      font-style: italic;
+      font-weight: 700;
+      color: #FFFFFF;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      -webkit-text-fill-color: #FFFFFF;
+      background: none;
+    }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+      max-width: 520px; margin-top: 16px; text-align: left;
+    }
+    .feature-item {
+      background: var(--bg-dark); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+    }
+    .feature-item .fi-icon { font-size: 1.73rem; margin-bottom: 6px; }
+    .feature-item .fi-name { font-weight: 600; font-size: 0.98rem; margin-bottom: 4px; }
+    .feature-item .fi-desc { font-size: 0.86rem; color: var(--text-secondary); }
+
+    .nav {
+      display: flex; justify-content: center; align-items: center;
+      gap: 16px; padding: 24px;
+    }
+
+    .dots {
+      display: flex; gap: 8px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--bg-card); transition: all 0.3s;
+    }
+    .dot.active {
+      background: var(--fuchsia); width: 28px; border-radius: 5px;
+    }
+
+    .nav-btn {
+      padding: 12px 32px; border-radius: 8px; border: none;
+      font-family: inherit; font-size: 1.035rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .nav-btn.primary {
+      background: var(--gradient-primary); color: white;
+    }
+    .nav-btn.primary:hover { filter: brightness(1.15); box-shadow: var(--glow-fuchsia); }
+    .nav-btn.secondary {
+      background: transparent; color: var(--text-secondary); border: 1px solid var(--border);
+    }
+    .nav-btn.secondary:hover { color: white; border-color: var(--text-secondary); }
+
+    .logo-img { max-width: 200px; margin-bottom: 20px; filter: brightness(1.1); }
+
+    .links { display: flex; gap: 20px; margin-top: 20px; }
+    .links a {
+      color: var(--cyan); text-decoration: none; font-size: 0.98rem;
+      transition: color 0.2s;
+    }
+    .links a:hover { color: var(--fuchsia); }
+
+    /* Language selection buttons */
+    .lang-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 24px 48px; border-radius: 14px;
+      border: 2px solid var(--border); background: var(--bg-card);
+      cursor: pointer; font-size: 20px; font-weight: 600;
+      color: var(--text-primary); transition: all 0.3s;
+    }
+    .lang-btn:hover {
+      border-color: var(--fuchsia);
+      box-shadow: var(--glow-fuchsia);
+    }
+    .lang-btn .flag { font-size: 38px; }
+  </style>
+</head>
+<body>
+  <div class="titlebar">
+    <div class="titlebar-controls">
+      <button class="titlebar-btn btn-close" onclick="window.electronAPI?.close()"></button>
+    </div>
+  </div>
+
+  <div class="slides-container">
+    <!-- SLIDE 0: Language Selection — ALWAYS FIRST -->
+    <div class="slide active" data-slide="0">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <img src="./assets/moneypenny-avatar.jpg" alt="TWIZA" style="width:90px;height:90px;border-radius:50%;border:2px solid var(--fuchsia);box-shadow:var(--glow-fuchsia);margin-bottom:16px;" onerror="this.style.display='none'" />
+      <h1 style="font-family:'DK Jambo',sans-serif;font-size:42px;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;">TWIZA Moneypenny</h1>
+      <p style="color:var(--text-secondary);font-size:18px;margin-bottom:24px;">Choose your language / Scegli la lingua</p>
+      <div style="display:flex;gap:24px;">
+        <button class="lang-btn" onclick="chooseLang('it')">
+          <span class="flag">🇮🇹</span>
+          <span>Italiano</span>
+        </button>
+        <button class="lang-btn" onclick="chooseLang('en')">
+          <span class="flag">🇬🇧</span>
+          <span>English</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slide 1: Welcome -->
+    <div class="slide" data-slide="1">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <img class="logo-img" src="./assets/moneypenny-avatar.jpg" alt="Moneypenny" style="width:60px;height:60px;border-radius:50%;" onerror="this.style.display='none'">
+      <div class="slide-icon">🚀</div>
+      <h2 data-i18n="onboarding.slide1.title">Welcome to TWIZA Moneypenny</h2>
+      <p class="payoff" data-i18n="onboarding.slide1.payoff">...more than an agent!</p>
+      <p data-i18n="onboarding.slide1.text">Your personal AI Agent for Windows — private, powerful, and completely yours.</p>
+    </div>
+
+    <!-- Slide 2: What it does -->
+    <div class="slide" data-slide="2">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <div class="slide-icon">🧠</div>
+      <h2 data-i18n="onboarding.slide2.title">What Can Your Agent Do?</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="fi-icon">💬</div>
+          <div class="fi-name" data-i18n="onboarding.slide2.f1.name">Multi-Channel Chat</div>
+          <div class="fi-desc" data-i18n="onboarding.slide2.f1.desc">WhatsApp, Telegram, Discord and more — all in one</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🧠</div>
+          <div class="fi-name" data-i18n="onboarding.slide2.f2.name">Persistent Memory</div>
+          <div class="fi-desc" data-i18n="onboarding.slide2.f2.desc">Remembers context across sessions</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🔒</div>
+          <div class="fi-name" data-i18n="onboarding.slide2.f3.name">Privacy First</div>
+          <div class="fi-desc" data-i18n="onboarding.slide2.f3.desc">Everything runs on your machine</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🎭</div>
+          <div class="fi-name" data-i18n="onboarding.slide2.f4.name">Custom Personality</div>
+          <div class="fi-desc" data-i18n="onboarding.slide2.f4.desc">Make it unique with your own instructions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: How it works -->
+    <div class="slide" data-slide="3">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <div class="slide-icon">⚙️</div>
+      <h2 data-i18n="onboarding.slide3.title">How It Works</h2>
+      <p data-i18n="onboarding.slide3.text">TWIZA runs OpenClaw inside WSL2 — a full AI backend on your Windows machine. Cloud models for power, local models for privacy. You choose.</p>
+      <p style="color: var(--orange); font-size: 0.98rem; margin-top: 12px;" data-i18n="onboarding.slide3.tip">💡 The setup wizard handles everything automatically. No terminal required!</p>
+    </div>
+
+    <!-- Slide 4: Integrations -->
+    <div class="slide" data-slide="4">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <div class="slide-icon">🔌</div>
+      <h2 data-i18n="onboarding.slide4.title">Connect Everything</h2>
+      <p data-i18n="onboarding.slide4.text">Chat via WhatsApp, Telegram, and more. Manage GitHub, email, files — all through your personal agent.</p>
+      <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="feature-item"><div class="fi-icon">📱</div><div class="fi-name">WhatsApp</div></div>
+        <div class="feature-item"><div class="fi-icon">✈️</div><div class="fi-name">Telegram</div></div>
+        <div class="feature-item"><div class="fi-icon">📁</div><div class="fi-name" data-i18n="onboarding.slide4.files">Your Files</div></div>
+        <div class="feature-item"><div class="fi-icon">🐙</div><div class="fi-name">GitHub</div></div>
+        <div class="feature-item"><div class="fi-icon">📧</div><div class="fi-name">Email</div></div>
+        <div class="feature-item"><div class="fi-icon">🎙️</div><div class="fi-name">Voice</div></div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Get Started -->
+    <div class="slide" data-slide="5">
+      <img src="../../assets/branding/shakazamba-logo-white.png" alt="SHAKAZAMBA" style="position:absolute;top:24px;left:24px;width:140px;height:auto;opacity:0.9;" onerror="this.style.display='none'" />
+      <div class="slide-icon">✨</div>
+      <h2 data-i18n="onboarding.slide5.title">Ready to Begin?</h2>
+      <p data-i18n="onboarding.slide5.text">The setup wizard will guide you through configuring your API keys, choosing a personality, and connecting your channels.</p>
+      <p style="margin-top: 8px;" data-i18n="onboarding.slide5.time">It takes about 5 minutes. Let's go!</p>
+      <div class="links">
+        <a href="#" onclick="event.preventDefault(); window.twiza?.openDocsPdf?.() || window.twiza?.openExternal('https://github.com/AvatarNemo/twiza-moneypenny');" data-i18n="onboarding.link.docs">📖 Documentazione</a>
+        <a href="https://www.shakazamba.com" onclick="event.preventDefault(); window.twiza?.openExternal(this.href);" data-i18n="onboarding.link.website">🌐 Sito Web</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn secondary" id="prevBtn" onclick="navigate(-1)" style="visibility: hidden;" data-i18n="onboarding.btn.back">Back</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn primary" id="nextBtn" onclick="navigate(1)" style="visibility: hidden;" data-i18n="onboarding.btn.next">Next</button>
+  </div>
+
+  <script>
+    const totalSlides = 6;
+    let current = 0;
+    let langChosen = false;
+
+    function chooseLang(lang) {
+      langChosen = true;
+      if (typeof I18N !== 'undefined') I18N.setLang(lang);
+      try { window.twiza?.saveWizardState({ lang: lang }); } catch {}
+      // Auto-advance to slide 1 after language choice
+      navigate(1);
+    }
+
+    function renderDots() {
+      const dots = document.getElementById('dots');
+      dots.innerHTML = Array.from({ length: totalSlides }, (_, i) =>
+        `<div class="dot ${i === current ? 'active' : ''}"></div>`
+      ).join('');
+    }
+
+    function updateNav() {
+      // Hide Back on slide 0 and 1 (can't go back to lang selection)
+      document.getElementById('prevBtn').style.visibility = current <= 1 ? 'hidden' : 'visible';
+      // Hide Next on slide 0 (must click a language button)
+      document.getElementById('nextBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+      // Change button text on last slide
+      if (current === totalSlides - 1) {
+        document.getElementById('nextBtn').textContent = typeof I18N !== 'undefined' ? I18N.t('onboarding.btn.start') : 'Get Started';
+      } else {
+        document.getElementById('nextBtn').textContent = typeof I18N !== 'undefined' ? I18N.t('onboarding.btn.next') : 'Next';
+      }
+    }
+
+    function navigate(dir) {
+      // Block going back to slide 0 (language)
+      if (current + dir < 1 && current > 0) return;
+      // Block manual next on slide 0 (must click language)
+      if (current === 0 && !langChosen) return;
+
+      if (current + dir >= totalSlides) {
+        if (current === totalSlides - 1 && dir === 1) {
+          window.twiza?.completeOnboarding();
+          return;
+        }
+        return;
+      }
+
+      const slides = document.querySelectorAll('.slide');
+      slides[current].classList.remove('active');
+      slides[current].classList.add('exit');
+
+      current += dir;
+
+      setTimeout(() => {
+        document.querySelectorAll('.slide').forEach(s => {
+          s.classList.remove('exit');
+        });
+        slides[current].classList.add('active');
+      }, 100);
+
+      renderDots();
+      updateNav();
+    }
+
+    renderDots();
+    updateNav();
+  </script>
+</body>
+</html>

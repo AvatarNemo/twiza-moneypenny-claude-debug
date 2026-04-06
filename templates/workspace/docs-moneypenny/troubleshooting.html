@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risoluzione Problemi - TWIZA Moneypenny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Titillium Web',sans-serif; background:#0a0a0a; color:#fff; line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; flex:1; }
+        header { padding:2rem 0; border-bottom:1px solid #333; }
+        .back-link { display:inline-block; color:#FF0080; text-decoration:none; margin-bottom:1rem; font-weight:600; }
+        .back-link:hover { color:#ff3399; }
+        h1 { font-size:2.5rem; font-weight:700; color:#FF0080; margin-bottom:1rem; }
+        .subtitle { font-size:1.1rem; color:#ccc; margin-bottom:2rem; }
+        .lang-switcher { display:flex; gap:.5rem; margin-bottom:2rem; flex-wrap:wrap; }
+        .lang-btn { background:#1a1a1a; border:1px solid #333; color:#fff; padding:.5rem 1rem; border-radius:5px; cursor:pointer; font-family:inherit; transition:all .3s; }
+        .lang-btn:hover,.lang-btn.active { background:#FF0080; border-color:#FF0080; }
+        main { padding:2rem 0; }
+        .problem { background:#1a1a1a; border-radius:10px; margin-bottom:1.5rem; overflow:hidden; border-left:4px solid #FF0080; }
+        .problem-header { padding:1.2rem 1.5rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:background .2s; }
+        .problem-header:hover { background:#222; }
+        .problem-title { font-weight:600; color:#FF0080; font-size:1.1rem; }
+        .problem-toggle { color:#FF0080; font-size:1.5rem; transition:transform .3s; }
+        .problem-body { padding:0 1.5rem 1.5rem; display:none; }
+        .problem.open .problem-body { display:block; }
+        .problem.open .problem-toggle { transform:rotate(45deg); }
+        .problem-body p { color:#ccc; margin-bottom:.8rem; }
+        .problem-body strong { color:#ff6b6b; }
+        .solution { color:#28a745 !important; }
+        .code-block { background:#0a0a0a; border:1px solid #333; border-radius:5px; padding:1rem; margin:.8rem 0; font-family:'Monaco','Menlo',monospace; color:#00ff00; overflow-x:auto; font-size:.9rem; }
+        .section-title { font-size:1.6rem; font-weight:600; color:#FF0080; margin:2rem 0 1rem; border-bottom:1px solid #333; padding-bottom:.5rem; }
+        .commands-card { background:#1a1a1a; border-radius:10px; padding:1.5rem; margin:1rem 0; }
+        .commands-card h3 { color:#FF0080; margin-bottom:1rem; }
+        .cmd-row { display:flex; gap:1rem; margin:.5rem 0; flex-wrap:wrap; }
+        .cmd-row code { color:#00ff00; background:#0a0a0a; padding:4px 10px; border-radius:4px; flex-shrink:0; }
+        .cmd-row span { color:#ccc; }
+        footer { text-align:center; padding:2rem; border-top:1px solid #333; color:#888; margin-top:auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="back-link">← <span data-lang-key="back">Torna alla Home</span></a>
+        <h1 data-lang-key="title">🔧 Risoluzione Problemi</h1>
+        <p class="subtitle" data-lang-key="subtitle">Problemi comuni e come risolverli. Clicca su un problema per espandere la soluzione.</p>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('it')">🇮🇹 IT</button>
+            <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+            <button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
+            <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+            <button class="lang-btn" onclick="setLang('pt-BR')">🇧🇷 PT</button>
+            <button class="lang-btn" onclick="setLang('zh-CN')">🇨🇳 简中</button>
+            <button class="lang-btn" onclick="setLang('zh-TW')">🇹🇼 繁中</button>
+        </div>
+    </header>
+    <main>
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p1-title">❌ Il Gateway non si avvia</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p1-cause"><strong>Cause comuni:</strong> Porta 18789 già occupata, Node.js troppo vecchio, errore di sintassi nella configurazione.</p>
+                <p class="solution" data-lang-key="p1-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Controlla se la porta è occupata
+lsof -i :18789
+
+# Verifica versione Node.js (serve 22.14+ o 24)
+node --version
+
+# Valida la configurazione
+openclaw config get
+
+# Controlla i log per errori specifici
+openclaw gateway logs --lines 50</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p2-title">📱 WhatsApp si disconnette</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p2-cause"><strong>Cause comuni:</strong> Sessione scaduta, WhatsApp Web aperto altrove, aggiornamento app telefono.</p>
+                <p class="solution" data-lang-key="p2-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Ri-effettua il pairing WhatsApp
+# Vai nella dashboard → Canali → WhatsApp → Ri-connetti
+# Oppure riavvia il gateway per forzare un nuovo QR
+
+openclaw gateway restart
+
+# Se persiste, cancella la sessione e ricollega
+rm -rf ~/.openclaw/state/whatsapp/signalstore
+openclaw gateway restart</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p3-title">🤖 Errori del modello AI</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p3-cause"><strong>Cause comuni:</strong> API key non valida, provider down, rate limit raggiunto, modello non disponibile.</p>
+                <p class="solution" data-lang-key="p3-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Verifica la configurazione del modello
+openclaw config get agents.model
+
+# Controlla la API key
+openclaw config get providers
+
+# Testa con un modello diverso
+openclaw config set agents.model anthropic/claude-sonnet-4-20250514
+
+# Per errori 429 (rate limit): aspetta qualche minuto e riprova
+# Per Ollama locale: verifica che sia in esecuzione
+ollama list
+ollama serve</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p4-title">🐌 Risposte lente</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p4-cause"><strong>Cause comuni:</strong> Modello troppo grande per l'hardware, context overflow, troppi tool in uso, rete lenta.</p>
+                <p class="solution" data-lang-key="p4-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Usa un modello più piccolo/veloce
+openclaw config set agents.model groq/llama-3.3-70b-versatile   # cloud veloce
+openclaw config set agents.model ollama/qwen2.5:1.5b             # locale piccolo
+
+# Controlla lo status per vedere l'uso di token
+# Nella webchat: /status
+
+# Riduci la finestra di contesto se necessario
+# Compatta la conversazione con /compact</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p5-title">🚫 Permesso negato (exec)</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p5-cause"><strong>Cause comuni:</strong> Comando non approvato, policy di sicurezza restrittiva.</p>
+                <p class="solution" data-lang-key="p5-fix">✅ <strong>Soluzione:</strong> Quando l'AI chiede di eseguire un comando, la dashboard mostra un prompt di approvazione. Puoi approvare una volta (/approve allow-once) o sempre per quel comando (/approve allow-always). Per configurare la policy:</p>
+                <div class="code-block"># Vedi le approvazioni attuali
+cat ~/.openclaw/exec-approvals.json
+
+# Configura la security policy
+openclaw config get agents.tools.exec</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p6-title">💾 Problemi di memoria/contesto</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p6-cause"><strong>Cause comuni:</strong> Conversazione troppo lunga, file grandi nel contesto, troppi tool result.</p>
+                <p class="solution" data-lang-key="p6-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Compatta la conversazione nella webchat
+/compact
+
+# Inizia una nuova sessione
+/new
+
+# Controlla l'uso attuale
+/status</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p7-title">🌐 WebChat non si carica</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p7-cause"><strong>Cause comuni:</strong> Gateway non avviato, porta bloccata, problema CORS, firewall.</p>
+                <p class="solution" data-lang-key="p7-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Verifica che il gateway sia attivo
+openclaw gateway status
+
+# Apri la dashboard (auto-rileva la porta)
+openclaw dashboard
+
+# Se accedi da un'altra macchina, verifica il binding
+openclaw config get gateway.bind
+# Deve essere 0.0.0.0 per accesso non-locale</div>
+            </div>
+        </div>
+
+        <div class="problem" onclick="this.classList.toggle('open')">
+            <div class="problem-header">
+                <span class="problem-title" data-lang-key="p8-title">🔄 Problemi con gli aggiornamenti</span>
+                <span class="problem-toggle">+</span>
+            </div>
+            <div class="problem-body">
+                <p data-lang-key="p8-cause"><strong>Cause comuni:</strong> Versione npm incompatibile, cache corrotta, permessi file.</p>
+                <p class="solution" data-lang-key="p8-fix">✅ <strong>Soluzione:</strong></p>
+                <div class="code-block"># Aggiornamento standard
+openclaw update
+
+# Se fallisce, aggiornamento manuale
+npm install -g openclaw@latest
+
+# Verifica la versione
+openclaw --version
+
+# Dopo l'aggiornamento, riavvia il gateway
+openclaw gateway restart</div>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-lang-key="useful-title">📋 Comandi Utili per il Debug</h2>
+        <div class="commands-card">
+            <div class="cmd-row"><code>openclaw status</code> <span data-lang-key="cmd-status">— Stato completo del sistema</span></div>
+            <div class="cmd-row"><code>openclaw gateway status</code> <span data-lang-key="cmd-gw-status">— Stato del gateway</span></div>
+            <div class="cmd-row"><code>openclaw gateway logs</code> <span data-lang-key="cmd-logs">— Log in tempo reale</span></div>
+            <div class="cmd-row"><code>openclaw config get</code> <span data-lang-key="cmd-config">— Mostra configurazione completa</span></div>
+            <div class="cmd-row"><code>openclaw dashboard</code> <span data-lang-key="cmd-dash">— Apri dashboard nel browser</span></div>
+            <div class="cmd-row"><code>openclaw --version</code> <span data-lang-key="cmd-version">— Versione installata</span></div>
+            <div class="cmd-row"><code>openclaw gateway restart</code> <span data-lang-key="cmd-restart">— Riavvia il gateway</span></div>
+        </div>
+    </main>
+</div>
+<footer>
+    <p data-lang-key="footer">Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong></p>
+</footer>
+
+<script>
+const translations = {
+    'it': {
+        'back':'Torna alla Home','title':'🔧 Risoluzione Problemi','subtitle':'Problemi comuni e come risolverli. Clicca su un problema per espandere la soluzione.',
+        'p1-title':'❌ Il Gateway non si avvia','p2-title':'📱 WhatsApp si disconnette','p3-title':'🤖 Errori del modello AI','p4-title':'🐌 Risposte lente','p5-title':'🚫 Permesso negato (exec)','p6-title':'💾 Problemi di memoria/contesto','p7-title':'🌐 WebChat non si carica','p8-title':'🔄 Problemi con gli aggiornamenti',
+        'useful-title':'📋 Comandi Utili per il Debug',
+        'cmd-status':'— Stato completo del sistema','cmd-gw-status':'— Stato del gateway','cmd-logs':'— Log in tempo reale','cmd-config':'— Mostra configurazione completa','cmd-dash':'— Apri dashboard nel browser','cmd-version':'— Versione installata','cmd-restart':'— Riavvia il gateway',
+        'footer':'Sviluppato con 🦾 dal <strong>Team SHAKAZAMBA</strong>'
+    },
+    'en': {
+        'back':'Back to Home','title':'🔧 Troubleshooting','subtitle':'Common problems and how to fix them. Click a problem to expand the solution.',
+        'p1-title':'❌ Gateway won\'t start','p2-title':'📱 WhatsApp disconnects','p3-title':'🤖 AI model errors','p4-title':'🐌 Slow responses','p5-title':'🚫 Permission denied (exec)','p6-title':'💾 Memory/context issues','p7-title':'🌐 WebChat won\'t load','p8-title':'🔄 Update problems',
+        'useful-title':'📋 Useful Debug Commands',
+        'cmd-status':'— Full system status','cmd-gw-status':'— Gateway status','cmd-logs':'— Real-time logs','cmd-config':'— Show full configuration','cmd-dash':'— Open dashboard in browser','cmd-version':'— Installed version','cmd-restart':'— Restart the gateway',
+        'footer':'Developed with 🦾 by <strong>Team SHAKAZAMBA</strong>'
+    },
+    'de': {
+        'back':'Zurück zur Startseite','title':'🔧 Fehlerbehebung','subtitle':'Häufige Probleme und ihre Lösungen. Klicke auf ein Problem um die Lösung zu sehen.',
+        'p1-title':'❌ Gateway startet nicht','p2-title':'📱 WhatsApp trennt sich','p3-title':'🤖 KI-Modellfehler','p4-title':'🐌 Langsame Antworten','p5-title':'🚫 Berechtigung verweigert','p6-title':'💾 Speicher-/Kontextprobleme','p7-title':'🌐 WebChat lädt nicht','p8-title':'🔄 Update-Probleme',
+        'useful-title':'📋 Nützliche Debug-Befehle',
+        'footer':'Entwickelt mit 🦾 vom <strong>Team SHAKAZAMBA</strong>'
+    },
+    'es': {
+        'back':'Volver al Inicio','title':'🔧 Resolución de Problemas','subtitle':'Problemas comunes y cómo resolverlos. Haz clic en un problema para ver la solución.',
+        'p1-title':'❌ El Gateway no arranca','p2-title':'📱 WhatsApp se desconecta','p3-title':'🤖 Errores del modelo IA','p4-title':'🐌 Respuestas lentas','p5-title':'🚫 Permiso denegado','p6-title':'💾 Problemas de memoria/contexto','p7-title':'🌐 WebChat no carga','p8-title':'🔄 Problemas con actualizaciones',
+        'useful-title':'📋 Comandos Útiles para Debug',
+        'footer':'Desarrollado con 🦾 por <strong>Team SHAKAZAMBA</strong>'
+    },
+    'pt-BR': {
+        'back':'Voltar ao Início','title':'🔧 Resolução de Problemas','subtitle':'Problemas comuns e como resolvê-los. Clique em um problema para expandir a solução.',
+        'p1-title':'❌ O Gateway não inicia','p2-title':'📱 WhatsApp desconecta','p3-title':'🤖 Erros do modelo IA','p4-title':'🐌 Respostas lentas','p5-title':'🚫 Permissão negada','p6-title':'💾 Problemas de memória/contexto','p7-title':'🌐 WebChat não carrega','p8-title':'🔄 Problemas com atualizações',
+        'useful-title':'📋 Comandos Úteis para Debug',
+        'footer':'Desenvolvido com 🦾 pelo <strong>Team SHAKAZAMBA</strong>'
+    },
+    'zh-CN': {
+        'back':'返回首页','title':'🔧 故障排除','subtitle':'常见问题及解决方法。点击问题查看解决方案。',
+        'p1-title':'❌ 网关无法启动','p2-title':'📱 WhatsApp断开连接','p3-title':'🤖 AI模型错误','p4-title':'🐌 响应缓慢','p5-title':'🚫 权限被拒绝','p6-title':'💾 内存/上下文问题','p7-title':'🌐 WebChat无法加载','p8-title':'🔄 更新问题',
+        'useful-title':'📋 有用的调试命令',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 开发'
+    },
+    'zh-TW': {
+        'back':'返回首頁','title':'🔧 故障排除','subtitle':'常見問題及解決方法。點擊問題查看解決方案。',
+        'p1-title':'❌ 閘道無法啟動','p2-title':'📱 WhatsApp斷開連線','p3-title':'🤖 AI模型錯誤','p4-title':'🐌 回應緩慢','p5-title':'🚫 權限被拒絕','p6-title':'💾 記憶體/上下文問題','p7-title':'🌐 WebChat無法載入','p8-title':'🔄 更新問題',
+        'useful-title':'📋 有用的除錯命令',
+        'footer':'由 <strong>Team SHAKAZAMBA</strong> 🦾 開發'
+    }
+};
+
+let currentLang = 'it';
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    const t = translations[lang] || translations['it'];
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (t[key]) el.innerHTML = t[key];
+    });
+}
+</script>
+</body>
+</html>
